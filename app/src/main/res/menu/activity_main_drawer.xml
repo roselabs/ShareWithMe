@@ -3,33 +3,49 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/menu_profile"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Profile" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/menu_preferences"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Preferences" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/menu_help_and_feedback"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Help and Feedback" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Categories">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/categories_rides"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Rides" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/categories_buy"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Buy" />
+            <item
+                android:id="@+id/categories_sell"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Sell" />
+            <item
+                android:id="@+id/categories_sports"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Sports" />
+            <item
+                android:id="@+id/categories_music"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Music" />
+            <item
+                android:id="@+id/categories_events"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Events" />
+            <item
+                android:id="@+id/categories_others"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Others" />
         </menu>
     </item>
 
