@@ -9,4 +9,13 @@
     <string name="password_edit_hint">Password</string>
     <string name="user_edit_hint">Username</string>
     <string name="field_required">This field is required</string>
+    <string name="buy_sell_i_wanna_text">I want to...</string>
+    <string name="buy_radio_button_text">Buy</string>
+    <string name="sell_radio_button_text">Sell</string>
+    <string name="description_edit_text">Description</string>
+    <string name="default_expiration_text">Default expiration: 14 days</string>
+    <string name="create_button_text">Create</string>
+    <string name="keywords_text">Keywords</string>
+    <string name="description_text">Description</string>
+    <string name="title_text">Title</string>
 </resources>
