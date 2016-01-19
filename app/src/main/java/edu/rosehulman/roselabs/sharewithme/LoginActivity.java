@@ -17,7 +17,7 @@ import edu.rosehulman.rosefire.RosefireAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String FIREBASE_URL = "https://sharewithme.firebaseio.com/";
+    protected static final String FIREBASE_URL = "https://sharewithme.firebaseio.com/";
     private EditText mUserEdit;
     private EditText mPasswordEdit;
     private Button mLoginButton;
@@ -30,6 +30,9 @@ public class LoginActivity extends AppCompatActivity {
         if(savedInstanceState == null){
             Firebase.setAndroidContext(this);
         }
+        Firebase firebase = new Firebase(FIREBASE_URL);
+        if (firebase.getAuth() != null && !isExpired(firebase.getAuth()))
+            startApp();
 
         mUserEdit = (EditText)findViewById(R.id.user_edit_text);
         mPasswordEdit = (EditText) findViewById(R.id.password_edit_text);
@@ -41,6 +44,10 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
+    }
+
+    private boolean isExpired(AuthData authData) {
+        return (System.currentTimeMillis() / 1000) >= authData.getExpires();
     }
 
     protected void login (){
@@ -62,16 +69,17 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void startApp(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
     class MyAuthResultHandler implements Firebase.AuthResultHandler {
 
         @Override
         public void onAuthenticated(AuthData authData) {
 //          switchToPasswordFragment(Constants.FIREBASE_URL + "/users/" + authData.getUid());
-
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-
-            startActivity(intent);
-
+            startApp();
         }
 
         @Override

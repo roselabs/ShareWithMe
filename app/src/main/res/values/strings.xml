@@ -18,4 +18,9 @@
     <string name="keywords_text">Keywords</string>
     <string name="description_text">Description</string>
     <string name="title_text">Title</string>
+    <string name="value_hint">$ 0.00</string>
+    <string name="title_hint">Type the title here...</string>
+    <string name="description_hint">Type the description here...</string>
+    <string name="keyword_hint">Insert keywords to optimize searches</string>
+    <string name="action_logout">Logout</string>
 </resources>
