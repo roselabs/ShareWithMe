@@ -14,7 +14,7 @@
     <string name="sell_radio_button_text">Sell</string>
     <string name="description_edit_text">Description</string>
     <string name="default_expiration_text">Default expiration: 14 days</string>
-    <string name="create_button_text">Create</string>
+    <string name="create_button_text">Post</string>
     <string name="keywords_text">Keywords</string>
     <string name="description_text">Description</string>
     <string name="title_text">Title</string>
@@ -23,4 +23,8 @@
     <string name="description_hint">Type the description here...</string>
     <string name="keyword_hint">Insert keywords to optimize searches</string>
     <string name="action_logout">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="draft_button_text">Save as Draft</string>
 </resources>

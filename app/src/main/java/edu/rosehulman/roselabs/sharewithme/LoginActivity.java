@@ -27,12 +27,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if(savedInstanceState == null){
-            Firebase.setAndroidContext(this);
-        }
+        Firebase.setAndroidContext(this);
         Firebase firebase = new Firebase(FIREBASE_URL);
-        if (firebase.getAuth() != null && !isExpired(firebase.getAuth()))
+        if (firebase.getAuth() != null && !isExpired(firebase.getAuth())) {
             startApp();
+        }
 
         mUserEdit = (EditText)findViewById(R.id.user_edit_text);
         mPasswordEdit = (EditText) findViewById(R.id.password_edit_text);
@@ -70,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startApp(){
+        finish();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onAuthenticated(AuthData authData) {
-//          switchToPasswordFragment(Constants.FIREBASE_URL + "/users/" + authData.getUid());
             startApp();
         }
 
