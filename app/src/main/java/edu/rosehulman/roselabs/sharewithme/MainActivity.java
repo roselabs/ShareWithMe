@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new HelpAndFeedbackFragment();
                 break;
             case R.id.categories_rides:
-                //TODO Implement: switchTo = new RidesFragment();
+                switchTo = new RidesFragment();
                 break;
             case R.id.categories_buy:
                 switchTo = new BuyAndSellFragment();
