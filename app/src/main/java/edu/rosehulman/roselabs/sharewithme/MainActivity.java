@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -109,5 +110,7 @@ public class MainActivity extends AppCompatActivity
         Firebase firebase = new Firebase(LoginActivity.FIREBASE_URL);
         firebase.unauth();
         finish();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
