@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/request_radio_button_text"
-            android:id="@+id/request_radio_button"
+            android:id="@+id/feedback_radio_button"
             android:layout_gravity="right" />
 
     </RadioGroup>

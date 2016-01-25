@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/help_feedback"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/title_help_and_feedback_text"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/title_help_feedback_text_view" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/help_feedback_instructions_text"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/help_feedback_instructions_text_view" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_radio_button_text"
+            android:id="@+id/help_radio_button"
+            android:layout_gravity="right" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feedback_radio_button_text"
+            android:id="@+id/feedback_radio_button"
+            android:layout_gravity="right" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/help_feedback_type_text"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/help_feedback_type_below_text_view" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:hint="@string/description_hint"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/help_description_edit_text" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send_text"
+        android:id="@+id/help_send_button"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

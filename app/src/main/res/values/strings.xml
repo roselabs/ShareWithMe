@@ -42,4 +42,10 @@
     <string name="cat_lost_found_text">Lost and Found</string>
     <string name="cat_events_text">Events</string>
     <string name="cat_others_text">Others</string>
+    <string name="title_help_and_feedback_text">Help and Feedback</string>
+    <string name="help_feedback_instructions_text">Please choose below if you want to request help or to provide feedback:</string>
+    <string name="help_radio_button_text">Help</string>
+    <string name="feedback_radio_button_text">Feedback</string>
+    <string name="help_feedback_type_text">Please type the details:</string>
+    <string name="send_text">SEND</string>
 </resources>
