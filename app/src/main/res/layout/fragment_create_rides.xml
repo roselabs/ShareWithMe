@@ -2,14 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/create_buy_sell"
+    android:id="@+id/create_rides"
     android:padding="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,15 +25,15 @@
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buy_radio_button_text"
-            android:id="@+id/buy_radio_button"
+            android:text="@string/offer_radio_button_text"
+            android:id="@+id/offer_radio_button"
             android:layout_gravity="right" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sell_radio_button_text"
-            android:id="@+id/sell_radio_button"
+            android:text="@string/request_radio_button_text"
+            android:id="@+id/request_radio_button"
             android:layout_gravity="right" />
 
     </RadioGroup>
@@ -53,12 +53,49 @@
         android:text="@string/title_text"
         android:id="@+id/title_text_view" />
 
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title_hint"
         android:id="@+id/title_edit_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/departure_text"
+        android:id="@+id/departure_text_view" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/departure_hint"
+        android:id="@+id/departure_edit_text"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date_text"
+        android:id="@+id/date_text_view" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/date_edit_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/destination_text"
+        android:id="@+id/destination_text_view" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/destination_hint"
+        android:id="@+id/destination_edit_text" />
 
     <TextView
         android:layout_width="wrap_content"

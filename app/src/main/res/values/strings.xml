@@ -27,4 +27,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="draft_button_text">Save as Draft</string>
+    <string name="offer_radio_button_text">Offer</string>
+    <string name="request_radio_button_text">Request</string>
+    <string name="destination_text">Destination</string>
+    <string name="destination_hint">Optional destination info</string>
+    <string name="departure_text">Departure</string>
+    <string name="departure_hint">Optional departure location</string>
+    <string name="date_text">Date</string>
 </resources>
