@@ -5,43 +5,35 @@
         <item
             android:id="@+id/menu_preferences"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Preferences" />
+            android:title="@string/menu_preferences_text" />
         <item
             android:id="@+id/menu_help_and_feedback"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Help and Feedback" />
+            android:title="@string/menu_help_text" />
     </group>
 
-    <item android:title="Categories">
+    <item android:title="@string/categories_text">
         <menu>
             <item
                 android:id="@+id/categories_rides"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Rides" />
+                android:icon="@drawable/ic_menu_send"
+                android:title="@string/cat_rides_text" />
             <item
                 android:id="@+id/categories_buy"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Buy" />
+                android:title="@string/cat_buy_sell_text" />
             <item
-                android:id="@+id/categories_sell"
+                android:id="@+id/categories_lost_found"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Sell" />
-            <item
-                android:id="@+id/categories_sports"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Sports" />
-            <item
-                android:id="@+id/categories_music"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Music" />
+                android:title="@string/cat_lost_found_text" />
             <item
                 android:id="@+id/categories_events"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Events" />
+                android:title="@string/cat_events_text" />
             <item
                 android:id="@+id/categories_others"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Others" />
+                android:title="@string/cat_others_text" />
         </menu>
     </item>
 
