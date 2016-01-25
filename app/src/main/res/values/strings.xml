@@ -34,4 +34,12 @@
     <string name="departure_text">Departure</string>
     <string name="departure_hint">Optional departure location</string>
     <string name="date_text">Date</string>
+    <string name="menu_preferences_text">Preferences</string>
+    <string name="menu_help_text">Help and Feedback</string>
+    <string name="categories_text">Categories</string>
+    <string name="cat_rides_text">Rides</string>
+    <string name="cat_buy_sell_text">Buy and Sell</string>
+    <string name="cat_lost_found_text">Lost and Found</string>
+    <string name="cat_events_text">Events</string>
+    <string name="cat_others_text">Others</string>
 </resources>
