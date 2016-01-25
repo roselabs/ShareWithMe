@@ -2,13 +2,9 @@ package edu.rosehulman.roselabs.sharewithme;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -84,12 +80,13 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.menu_help_and_feedback:
                 //TODO Implement: switchTo = new HelpAndFeedbackFragment();
-                break;
-            case R.id.categories_buy:
-                switchTo = new BuyAndSellFragment();
+                switchTo = new HelpAndFeedbackFragment();
                 break;
             case R.id.categories_rides:
                 //TODO Implement: switchTo = new RidesFragment();
+                break;
+            case R.id.categories_buy:
+                switchTo = new BuyAndSellFragment();
                 break;
             default:
                 break;
