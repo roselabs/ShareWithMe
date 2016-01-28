@@ -15,13 +15,19 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     private BuyAndSellFragment mBuyAndSellFragment;
     private ProfileFragment mProfileFragment;
     private ImageView mImageView;
+    private UserProfile mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +57,12 @@ public class MainActivity extends AppCompatActivity
             switchToLogin();
             return;
         }
+        mUser = new UserProfile();
         mProfileFragment = new ProfileFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
+
+        mUser.setUserID(firebase.getAuth().getUid());
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,13 +79,51 @@ public class MainActivity extends AppCompatActivity
         TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
         emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
 
+        //TODO Refactor the code for storing picture in Firebase and displaying on ImageViews
+        //Current code is terrible and add duplicated images to the database
+
         mImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_picture_image_view);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mProfileFragment.getArguments() == null){
+                    Bundle b = new Bundle();
+                    b.putParcelable("User", mUser);
+                    mProfileFragment.setArguments(b);
+                }
                 switchToFragment(mProfileFragment);
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        Query query = firebase.child("/users");
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                UserProfile user = dataSnapshot.getValue(UserProfile.class);
+                mUser.setPicture(user.getPicture());
+                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
             }
         });
 
@@ -174,7 +223,7 @@ public class MainActivity extends AppCompatActivity
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    private Bitmap decodeStringToBitmap(String encodedString){
+    protected static Bitmap decodeStringToBitmap(String encodedString){
         try{
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
@@ -198,8 +247,11 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             String str = encodeBitmap(mBitmap);
-            mImageView.setImageBitmap(decodeStringToBitmap(str));
-            mProfileFragment.setImage(decodeStringToBitmap(str));
+            Firebase firebase = new Firebase(Constants.FIREBASE_URL + "/users/");
+            UserProfile user = new UserProfile();
+            user.setUserID(firebase.getAuth().getUid());
+            user.setPicture(str);
+            firebase.push().setValue(user);
         }
     }
 

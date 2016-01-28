@@ -30,7 +30,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
     public BuySellAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
-        mRefFirebase = new Firebase(Constants.FIREBASE_URL);
+        mRefFirebase = new Firebase(Constants.FIREBASE_URL + "/categories/BuyAndSell/posts");
         mChildEventListener = new WeatherPicsChildEventListener();
         mRefFirebase.addChildEventListener(mChildEventListener);
     }
