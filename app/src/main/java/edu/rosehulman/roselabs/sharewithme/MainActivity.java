@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity
                 //TODO Implement: switchTo = new PreferencesFragment();
                 break;
             case R.id.menu_help_and_feedback:
-                //TODO Implement: switchTo = new HelpAndFeedbackFragment();
                 switchTo = new HelpAndFeedbackFragment();
                 break;
             case R.id.categories_rides:
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (switchTo != null){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container, switchTo);
+            ft.replace(R.id.fragment_container, switchTo);
             ft.addToBackStack("fragBack");
             ft.commit();
         }
