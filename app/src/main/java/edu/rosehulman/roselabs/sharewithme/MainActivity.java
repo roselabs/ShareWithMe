@@ -1,7 +1,10 @@
 package edu.rosehulman.roselabs.sharewithme;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -18,6 +21,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.io.IOException;
+
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.CreateBuySellPostDialog;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
@@ -29,6 +34,8 @@ public class MainActivity extends AppCompatActivity
 
     private BuySellAdapter mBuySellAdapter;
     private BuyAndSellFragment mBuyAndSellFragment;
+    private ProfileFragment mProfileFragment;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class MainActivity extends AppCompatActivity
             switchToLogin();
             return;
         }
-
+        mProfileFragment = new ProfileFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,11 +65,11 @@ public class MainActivity extends AppCompatActivity
         TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
         emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
 
-        ImageView imageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_picture_image_view);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        mImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_picture_image_view);
+        mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToFragment(new ProfileFragment());
+                switchToFragment(mProfileFragment);
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
             }
@@ -155,6 +162,23 @@ public class MainActivity extends AppCompatActivity
 
     public void onLogout() {
         switchToLogin();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == MainActivity.RESULT_OK) {
+            Uri chosenImageUri = data.getData();
+
+            Bitmap mBitmap = null;
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mProfileFragment.setImage(mBitmap);
+            mImageView.setImageBitmap(mBitmap);
+        }
     }
 
     @Override
