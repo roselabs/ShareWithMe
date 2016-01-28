@@ -16,13 +16,22 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.CreateBuySellPostDialog;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.MyPostRecyclerViewAdapter;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BuyAndSellFragment.OnListFragmentInteractionListener, CreateBuySellPostDialog.CreateBuySellCallback {
+
+    private MyPostRecyclerViewAdapter mAdapter;
+    private BuyAndSellFragment mBuyAndSellFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mBuyAndSellFragment = new BuyAndSellFragment();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,6 +87,15 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_preferences:
                 //TODO Implement: switchTo = new PreferencesFragment();
                 break;
+            case R.id.categories_lost_found:
+                //TODO Implement: switchTo = new LostFoundFragment();
+                break;
+            case R.id.categories_events:
+                //TODO Implement: switchTo = new EventsFragment();
+                break;
+            case R.id.categories_others:
+                //TODO Implement: switchTo = new OthersFragment();
+                break;
             case R.id.menu_help_and_feedback:
                 switchTo = new HelpAndFeedbackFragment();
                 break;
@@ -85,7 +103,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new RidesFragment();
                 break;
             case R.id.categories_buy:
-                switchTo = new BuyAndSellFragment();
+                switchTo = mBuyAndSellFragment;
                 break;
             default:
                 break;
@@ -108,5 +126,15 @@ public class MainActivity extends AppCompatActivity
         finish();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void sendAdapterToMain(MyPostRecyclerViewAdapter adapter) {
+        mAdapter = adapter;
+    }
+
+    @Override
+    public void onCreatePostFinished(BuySellPost post) {
+        mBuyAndSellFragment.addPost(post);
     }
 }
