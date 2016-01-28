@@ -18,14 +18,14 @@ import com.firebase.client.Firebase;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.CreateBuySellPostDialog;
-import edu.rosehulman.roselabs.sharewithme.BuyAndSell.MyPostRecyclerViewAdapter;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BuyAndSellFragment.OnListFragmentInteractionListener, CreateBuySellPostDialog.CreateBuySellCallback {
 
-    private MyPostRecyclerViewAdapter mAdapter;
+    private BuySellAdapter mBuySellAdapter;
     private BuyAndSellFragment mBuyAndSellFragment;
 
     @Override
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
-        emailView.setText(new Firebase(LoginActivity.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
+        emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
 
     }
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onLogout() {
-        Firebase firebase = new Firebase(LoginActivity.FIREBASE_URL);
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         firebase.unauth();
         finish();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -129,12 +129,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void sendAdapterToMain(MyPostRecyclerViewAdapter adapter) {
-        mAdapter = adapter;
+    public void sendAdapterToMain(BuySellAdapter adapter) {
+        mBuySellAdapter = adapter;
     }
 
     @Override
     public void onCreatePostFinished(BuySellPost post) {
-        mBuyAndSellFragment.addPost(post);
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        mBuySellAdapter.add(post);
     }
 }

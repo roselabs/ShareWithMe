@@ -11,22 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.rosehulman.roselabs.sharewithme.R;
 
 public class BuyAndSellFragment extends Fragment{
 
     private OnListFragmentInteractionListener mListener;
-    private MyPostRecyclerViewAdapter mAdapter;
-    private List<BuySellPost> mBuyPosts;
-    private List<BuySellPost> mSellPosts;
+    private BuySellAdapter mAdapter;
 
     public BuyAndSellFragment() {
         // Required empty public constructor
-        mBuyPosts = new ArrayList<>();
-        mSellPosts = new ArrayList<>();
     }
 
     @Override
@@ -34,7 +27,7 @@ public class BuyAndSellFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_buy_and_sell, container, false);
-        mAdapter = new MyPostRecyclerViewAdapter(mListener, mBuyPosts);
+        mAdapter = new BuySellAdapter(mListener);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
@@ -53,10 +46,7 @@ public class BuyAndSellFragment extends Fragment{
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.buy_radio_button_filter)
-                    mAdapter.setmValues(mBuyPosts);
-                else
-                    mAdapter.setmValues(mSellPosts);
+                mAdapter.setFilter(checkedId == R.id.buy_radio_button_filter);
             }
         });
 
@@ -80,15 +70,8 @@ public class BuyAndSellFragment extends Fragment{
         mListener = null;
     }
 
-    public void addPost(BuySellPost post){
-        if (post.isBuy())
-            mBuyPosts.add(post);
-        else mSellPosts.add(post);
-        mAdapter.notifyDataSetChanged();
-    }
-
     public interface OnListFragmentInteractionListener {
-        void sendAdapterToMain(MyPostRecyclerViewAdapter adapter);
+        void sendAdapterToMain(BuySellAdapter adapter);
     }
 
 }

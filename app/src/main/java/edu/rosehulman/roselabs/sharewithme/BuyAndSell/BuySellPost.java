@@ -1,5 +1,7 @@
 package edu.rosehulman.roselabs.sharewithme.BuyAndSell;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -14,6 +16,11 @@ public class BuySellPost {
     private String price;
     private Date postDate;
     private Date expirationDate;
+
+    @JsonIgnore
+    private String key;
+
+    public BuySellPost() {}
 
     public BuySellPost(int postId, boolean buy, String title, String description, String keywords, String userId, String price) {
         this.postId = postId;
@@ -31,6 +38,14 @@ public class BuySellPost {
         this.title = title;
         this.description = desc;
         this.buy = buy;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getPostId() {
