@@ -2,6 +2,7 @@ package edu.rosehulman.roselabs.sharewithme;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
@@ -164,6 +167,24 @@ public class MainActivity extends AppCompatActivity
         switchToLogin();
     }
 
+    private String encodeBitmap(Bitmap bitmap){
+        ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
+        byte[] byteArray = bYtE.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    private Bitmap decodeStringToBitmap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,8 +197,9 @@ public class MainActivity extends AppCompatActivity
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            mProfileFragment.setImage(mBitmap);
-            mImageView.setImageBitmap(mBitmap);
+            String str = encodeBitmap(mBitmap);
+            mImageView.setImageBitmap(decodeStringToBitmap(str));
+            mProfileFragment.setImage(decodeStringToBitmap(str));
         }
     }
 
