@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -31,6 +33,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Firebase.setAndroidContext(this);
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
+        if (firebase.getAuth() == null) {
+            switchToLogin();
+            return;
+        }
+
         mBuyAndSellFragment = new BuyAndSellFragment();
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -47,6 +57,16 @@ public class MainActivity extends AppCompatActivity
 
         TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
         emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
+
+        ImageView imageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_picture_image_view);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToFragment(new ProfileFragment());
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
 
     }
 
@@ -108,11 +128,9 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
         }
+
         if (switchTo != null){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, switchTo);
-            ft.addToBackStack("fragBack");
-            ft.commit();
+            switchToFragment(switchTo);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -120,12 +138,23 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void onLogout() {
+    private void switchToFragment(Fragment fragment){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, fragment);
+        ft.addToBackStack("fragBack");
+        ft.commit();
+    }
+
+    private void switchToLogin(){
         Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         firebase.unauth();
         finish();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    public void onLogout() {
+        switchToLogin();
     }
 
     @Override

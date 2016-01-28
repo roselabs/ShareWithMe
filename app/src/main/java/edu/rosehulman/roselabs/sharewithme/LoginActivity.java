@@ -26,12 +26,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Firebase.setAndroidContext(this);
-        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
-        if (firebase.getAuth() != null && !isExpired(firebase.getAuth())) {
-            startApp();
-        }
-
         mUserEdit = (EditText)findViewById(R.id.user_edit_text);
         mPasswordEdit = (EditText) findViewById(R.id.password_edit_text);
         mLoginButton = (Button) findViewById(R.id.login_button);
@@ -42,10 +36,6 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-    }
-
-    private boolean isExpired(AuthData authData) {
-        return (System.currentTimeMillis() / 1000) >= authData.getExpires();
     }
 
     protected void login (){

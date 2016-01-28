@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class HelpAndFeedbackFragment extends Fragment {
+public class ProfileFragment extends Fragment{
 
-    public HelpAndFeedbackFragment() {
+    public ProfileFragment() {
         // Required empty constructor.
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_help_feedback, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         return view;
     }
