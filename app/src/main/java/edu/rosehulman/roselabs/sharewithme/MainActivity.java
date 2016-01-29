@@ -46,22 +46,24 @@ public class MainActivity extends AppCompatActivity
     private ProfileFragment mProfileFragment;
     private ImageView mImageView;
     private UserProfile mUser;
+    private Firebase mFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Firebase.setAndroidContext(this);
-        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
-        if (firebase.getAuth() == null) {
+        mFirebase = new Firebase(Constants.FIREBASE_URL);
+        if (mFirebase.getAuth() == null) {
             switchToLogin();
             return;
         }
-        mUser = new UserProfile();
+
+        setupUser(mFirebase.getAuth().getUid());
+
         mProfileFragment = new ProfileFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
 
-        mUser.setUserID(firebase.getAuth().getUid());
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mProfileFragment.getArguments() == null){
+                if (mProfileFragment.getArguments() == null) {
                     Bundle b = new Bundle();
                     b.putParcelable("User", mUser);
                     mProfileFragment.setArguments(b);
@@ -97,18 +99,27 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        Query query = firebase.child("/users");
+    }
+
+    private void setupUser(String uid){
+        mUser = new UserProfile();
+        mUser.setUserID(uid);
+
+        Query query = mFirebase.child("users").orderByChild("userID").equalTo(uid);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 UserProfile user = dataSnapshot.getValue(UserProfile.class);
+                mUser.setKey(dataSnapshot.getKey());
                 mUser.setPicture(user.getPicture());
                 mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                String key = dataSnapshot.getKey();
+                UserProfile user = dataSnapshot.getValue(UserProfile.class);
+                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
             }
 
             @Override
@@ -126,7 +137,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
     }
 
     @Override
@@ -247,11 +257,10 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             String str = encodeBitmap(mBitmap);
-            Firebase firebase = new Firebase(Constants.FIREBASE_URL + "/users/");
-            UserProfile user = new UserProfile();
-            user.setUserID(firebase.getAuth().getUid());
-            user.setPicture(str);
-            firebase.push().setValue(user);
+            mUser.setPicture(str);
+            mFirebase.child("users").child(mUser.getKey()).setValue(mUser);
+            ImageView imageView = (ImageView) findViewById(R.id.profile_image_view);
+            imageView.setImageBitmap(decodeStringToBitmap(str));
         }
     }
 

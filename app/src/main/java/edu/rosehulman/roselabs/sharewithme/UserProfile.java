@@ -12,8 +12,12 @@ public class UserProfile implements Parcelable {
     private String name;
     private String userID;
     private String picture;
+    private String phone;
 
     public UserProfile() {
+        this.picture = null;
+        this.phone = null;
+        this.name = null;
     }
 
     protected UserProfile(Parcel in) {
@@ -34,6 +38,14 @@ public class UserProfile implements Parcelable {
             return new UserProfile[size];
         }
     };
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getKey() {
         return key;
@@ -78,5 +90,6 @@ public class UserProfile implements Parcelable {
         dest.writeString(name);
         dest.writeString(userID);
         dest.writeString(picture);
+        dest.writeString(phone);
     }
 }
