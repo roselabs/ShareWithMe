@@ -1,18 +1,27 @@
 package edu.rosehulman.roselabs.sharewithme.Rides;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RidesFragment extends Fragment {
+
+    private OnListFragmentInteractionListener mListener;
+    private RidesAdapter mAdapter;
 
     public RidesFragment() {
         // Required empty public constructor
@@ -25,6 +34,12 @@ public class RidesFragment extends Fragment {
 
         //substitute by a rides fragment view
         View view = inflater.inflate(R.layout.fragment_rides, container, false);
+        mAdapter = new RidesAdapter(mListener);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mAdapter);
+        mListener.sendAdapterToMain(mAdapter);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.buy_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,7 +49,37 @@ public class RidesFragment extends Fragment {
             }
         });
 
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupFilter);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mAdapter.setFilter(checkedId == R.id.offer_radio_button_filter);
+            }
+        });
+
         return view;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof OnListFragmentInteractionListener){
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    //
+//    public interface OnListFragmentInteractionListener{
+//        void sendAdapterToMain()
+//    }
 
 }

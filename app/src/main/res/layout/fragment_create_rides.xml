@@ -20,12 +20,14 @@
     <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/offer_radio_group"
         android:orientation="horizontal">
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/offer_radio_button_text"
+            android:checked="true"
             android:id="@+id/offer_radio_button"
             android:layout_gravity="right" />
 

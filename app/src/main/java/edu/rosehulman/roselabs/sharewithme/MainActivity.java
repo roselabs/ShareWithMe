@@ -33,16 +33,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
-import edu.rosehulman.roselabs.sharewithme.BuyAndSell.CreateBuySellPostDialog;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BuyAndSellFragment.OnListFragmentInteractionListener, CreateBuySellPostDialog.CreateBuySellCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, OnListFragmentInteractionListener, CreateCallback {
 
     private BuySellAdapter mBuySellAdapter;
+    private RidesAdapter mRidesAdapter;
     private BuyAndSellFragment mBuyAndSellFragment;
+    private RidesFragment mRidesFragment;
     private ProfileFragment mProfileFragment;
     private ImageView mImageView;
     private UserProfile mUser;
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         setupUser(mFirebase.getAuth().getUid());
 
         mBuyAndSellFragment = new BuyAndSellFragment();
+        mRidesFragment = new RidesFragment();
         mProfileFragment = new ProfileFragment();
 
         setContentView(R.layout.activity_main);
@@ -179,7 +185,7 @@ public class MainActivity extends AppCompatActivity
                 switchTo = new HelpAndFeedbackFragment();
                 break;
             case R.id.categories_rides:
-                switchTo = new RidesFragment();
+                switchTo = mRidesFragment;
                 break;
             case R.id.categories_buy:
                 switchTo = mBuyAndSellFragment;
@@ -261,9 +267,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void sendAdapterToMain(RidesAdapter adapter){
+        mRidesAdapter = adapter;
+    }
+
+    @Override
     public void onCreatePostFinished(BuySellPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mBuySellAdapter.add(post);
+    }
+
+    @Override
+    public void onCreatePostFinished(RidesPost post){
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        mRidesAdapter.add(post);
     }
 
     class MyChildEvent implements ChildEventListener {

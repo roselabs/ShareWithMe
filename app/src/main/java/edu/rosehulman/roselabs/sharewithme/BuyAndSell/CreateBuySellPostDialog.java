@@ -10,12 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.R;
 
 
 public class CreateBuySellPostDialog extends DialogFragment {
 
-    CreateBuySellCallback mCallback;
+    CreateCallback mCallback;
 
     public CreateBuySellPostDialog(){
 
@@ -24,7 +25,7 @@ public class CreateBuySellPostDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        mCallback = (CreateBuySellCallback) getActivity();
+        mCallback = (CreateCallback) getActivity();
         View v = inflater.inflate(R.layout.fragment_create_buy_sell, null);
         final EditText postTitle = (EditText) v.findViewById(R.id.title_edit_text);
         final EditText postDescription = (EditText) v.findViewById(R.id.description_edit_text);
@@ -36,9 +37,9 @@ public class CreateBuySellPostDialog extends DialogFragment {
                 .setPositiveButton(R.string.create_button_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BuySellPost post = new BuySellPost(postTitle.getText().toString(), postDescription.getText().toString(), true);
-                        if (radioGroup.getCheckedRadioButtonId() != R.id.buy_radio_button)
-                            post.setBuy(false);
+                        BuySellPost post = new BuySellPost(postTitle.getText().toString(), postDescription.getText().toString(), (radioGroup.getCheckedRadioButtonId() == R.id.buy_radio_button));
+//                        if (radioGroup.getCheckedRadioButtonId() != R.id.buy_radio_button)
+//                            post.setBuy(false);
                         mCallback.onCreatePostFinished(post);
                     }
                 })
@@ -47,8 +48,8 @@ public class CreateBuySellPostDialog extends DialogFragment {
 
         return builder.create();
     }
-
-    public interface CreateBuySellCallback{
-        void onCreatePostFinished(BuySellPost post);
-    }
+//
+//    public interface CreateCallback {
+//        void onCreatePostFinished(BuySellPost post);
+//    }
 }

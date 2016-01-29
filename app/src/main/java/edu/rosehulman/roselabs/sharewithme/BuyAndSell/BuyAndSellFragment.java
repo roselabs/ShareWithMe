@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
 public class BuyAndSellFragment extends Fragment{
@@ -70,8 +71,8 @@ public class BuyAndSellFragment extends Fragment{
         mListener = null;
     }
 
-    public interface OnListFragmentInteractionListener {
-        void sendAdapterToMain(BuySellAdapter adapter);
-    }
+//    public interface OnListFragmentInteractionListener {
+//        void sendAdapterToMain(BuySellAdapter adapter);
+//    }
 
 }

@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme.BuyAndSell;
+package edu.rosehulman.roselabs.sharewithme.Rides;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,25 +13,28 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
-import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
-import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHolder> {
+import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
+import edu.rosehulman.roselabs.sharewithme.R;
 
-    private List<BuySellPost> mValues;
+/**
+ * Created by Thais Faria on 1/29/2016.
+ */
+public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
+
+    private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebase;
     private ChildEventListener mChildEventListener;
 
-    public BuySellAdapter(OnListFragmentInteractionListener listener) {
+    public RidesAdapter(OnListFragmentInteractionListener listener){
         mValues = new ArrayList<>();
         mListener = listener;
-        mRefFirebase = new Firebase(Constants.FIREBASE_URL + "/categories/BuyAndSell/posts");
-        mChildEventListener = new WeatherPicsChildEventListener();
+        mRefFirebase = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
+        mChildEventListener = new RidesChildEventListener();
         mRefFirebase.addChildEventListener(mChildEventListener);
     }
 
@@ -43,22 +46,19 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
-        final BuySellPost post = mValues.get(position);
+        final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
         holder.mDescriptionTextView.setText(post.getDescription());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.sendAdapterToMain(holder.mPost);
-                }
+
             }
         });
+
     }
 
     @Override
@@ -66,18 +66,19 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         return mValues.size();
     }
 
-    public void setFilter(boolean buy){
+    public void setFilter(boolean offer){
+        //TODO deal to when there is no post on other toggle (update view)
         Query query;
         mRefFirebase.removeEventListener(mChildEventListener);
-        if (buy)
-            query = mRefFirebase.orderByChild("buy").equalTo(true);
+        if(offer)
+            query = mRefFirebase.orderByChild("offer").equalTo(true);
         else
-            query = mRefFirebase.orderByChild("buy").equalTo(false);
+            query = mRefFirebase.orderByChild("offer").equalTo(false);
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
     }
 
-    public void add(BuySellPost post){
+    public void add(RidesPost post){
         mRefFirebase.push().setValue(post);
     }
 
@@ -99,12 +100,12 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         }
     }
 
-    private class WeatherPicsChildEventListener implements ChildEventListener {
+    private class RidesChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            BuySellPost wp = dataSnapshot.getValue(BuySellPost.class);
-            wp.setKey(dataSnapshot.getKey());
-            mValues.add(0, wp);
+            RidesPost rp = dataSnapshot.getValue(RidesPost.class);
+            rp.setKey(dataSnapshot.getKey());
+            mValues.add(0, rp);
             notifyDataSetChanged();
         }
 
