@@ -17,7 +17,6 @@ import edu.rosehulman.rosefire.RosefireAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    protected static final String FIREBASE_URL = "https://sharewithme.firebaseio.com/";
     private EditText mUserEdit;
     private EditText mPasswordEdit;
     private Button mLoginButton;
@@ -26,12 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        Firebase.setAndroidContext(this);
-        Firebase firebase = new Firebase(FIREBASE_URL);
-        if (firebase.getAuth() != null && !isExpired(firebase.getAuth())) {
-            startApp();
-        }
 
         mUserEdit = (EditText)findViewById(R.id.user_edit_text);
         mPasswordEdit = (EditText) findViewById(R.id.password_edit_text);
@@ -43,10 +36,6 @@ public class LoginActivity extends AppCompatActivity {
                 login();
             }
         });
-    }
-
-    private boolean isExpired(AuthData authData) {
-        return (System.currentTimeMillis() / 1000) >= authData.getExpires();
     }
 
     protected void login (){
@@ -62,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             email += "@rose-hulman.edu";
         }
 
-        Firebase firebase = new Firebase(FIREBASE_URL);
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         RosefireAuth roseAuth = new RosefireAuth(firebase, getString(R.string.rosefire_token));
         roseAuth.authWithRoseHulman(email, password, new MyAuthResultHandler());
 
