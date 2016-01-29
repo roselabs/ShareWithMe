@@ -31,8 +31,10 @@ public class ProfileFragment extends Fragment{
         emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
 
         mImageView = (ImageView) view.findViewById(R.id.profile_image_view);
-        UserProfile user = getArguments().getParcelable("User");
-        mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(user.getPicture()));
+        if (getArguments() != null) {
+            UserProfile user = getArguments().getParcelable("User");
+            mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(user.getPicture()));
+        }
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

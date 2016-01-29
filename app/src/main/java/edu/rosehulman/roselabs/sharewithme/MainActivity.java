@@ -61,9 +61,8 @@ public class MainActivity extends AppCompatActivity
 
         setupUser(mFirebase.getAuth().getUid());
 
-        mProfileFragment = new ProfileFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
-
+        mProfileFragment = new ProfileFragment();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,10 +87,15 @@ public class MainActivity extends AppCompatActivity
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mProfileFragment.getArguments() == null) {
+                if (mUser.getPicture() != null) {
+                    Log.d("BILADA", mUser.getPicture());
                     Bundle b = new Bundle();
                     b.putParcelable("User", mUser);
-                    mProfileFragment.setArguments(b);
+                    try {
+                        mProfileFragment.setArguments(b);
+                    } catch (IllegalStateException e){
+                        e.printStackTrace();
+                    }
                 }
                 switchToFragment(mProfileFragment);
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -105,31 +109,16 @@ public class MainActivity extends AppCompatActivity
         mUser = new UserProfile();
         mUser.setUserID(uid);
 
+        MyChildEvent myChildEvent = new MyChildEvent();
+
         Query query = mFirebase.child("users").orderByChild("userID").equalTo(uid);
-        query.addChildEventListener(new ChildEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                UserProfile user = dataSnapshot.getValue(UserProfile.class);
-                mUser.setKey(dataSnapshot.getKey());
-                mUser.setPicture(user.getPicture());
-                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                String key = dataSnapshot.getKey();
-                UserProfile user = dataSnapshot.getValue(UserProfile.class);
-                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChildren()) {
+                    if (mUser.getKey() == null)
+                        mFirebase.child("users").push().setValue(mUser);
+                }
             }
 
             @Override
@@ -137,6 +126,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        query.addChildEventListener(myChildEvent);
     }
 
     @Override
@@ -247,6 +237,7 @@ public class MainActivity extends AppCompatActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == MainActivity.RESULT_OK) {
             Uri chosenImageUri = data.getData();
 
@@ -273,5 +264,39 @@ public class MainActivity extends AppCompatActivity
     public void onCreatePostFinished(BuySellPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mBuySellAdapter.add(post);
+    }
+
+    class MyChildEvent implements ChildEventListener {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            UserProfile user = dataSnapshot.getValue(UserProfile.class);
+            mUser.setKey(dataSnapshot.getKey());
+            if (user.getPicture() != null) {
+                mUser.setPicture(user.getPicture());
+                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
+            }
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            String key = dataSnapshot.getKey();
+            UserProfile user = dataSnapshot.getValue(UserProfile.class);
+            mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+
+        }
     }
 }
