@@ -15,6 +15,7 @@ import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
@@ -42,11 +43,12 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
@@ -56,6 +58,17 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("THAIS", "Chamou a funcao");
+                String key = post.getKey();
+              //  String user = post.get
+                mRefFirebase.child(key).removeValue();
+                return false;
             }
         });
 
@@ -92,6 +105,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             mView = view;
             mTitleTextView = (TextView) view.findViewById(R.id.post_title);
             mDescriptionTextView = (TextView) view.findViewById(R.id.post_description);
+
         }
 
         @Override
