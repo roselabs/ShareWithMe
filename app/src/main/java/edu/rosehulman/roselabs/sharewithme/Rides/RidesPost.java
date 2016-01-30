@@ -2,8 +2,10 @@ package edu.rosehulman.roselabs.sharewithme.Rides;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.SimpleTimeZone;
 
 /**
  * Created by Thais Faria on 1/29/2016.
@@ -19,7 +21,7 @@ public class RidesPost {
     private String price;//
     private String departureLocal;//
     private String destinationLocal;//
-    private Date rideDate;//
+    private String rideDate;//
     private Date postDate;
     private Date expirationDate;
 
@@ -28,10 +30,10 @@ public class RidesPost {
 
     public RidesPost() {}
 
-    public RidesPost(int postId, boolean offer, String title, String description,
-                     String keywords, String userId, String price, String departureLocal,
-                     String destinationLocal, Date rideDate){
-        this.postId = postId;
+    public RidesPost(boolean offer, String price, String title, String departureLocal,
+                     String rideDate, String destinationLocal, String description,
+                     String keywords){
+        //this.postId = postId;
         this.offer = offer;
         this.title = title;
         this.description = description;
@@ -40,6 +42,7 @@ public class RidesPost {
         this.price = price;
         this.departureLocal = departureLocal;
         this.destinationLocal = destinationLocal;
+
         this.rideDate = rideDate;
         this.postDate = Calendar.getInstance().getTime();
     }
@@ -122,11 +125,11 @@ public class RidesPost {
         this.destinationLocal = destinationLocal;
     }
 
-    public Date getRideDate() {
+    public String getRideDate() {
         return rideDate;
     }
 
-    public void setRideDate(Date rideDate) {
+    public void setRideDate(String rideDate) {
         this.rideDate = rideDate;
     }
 

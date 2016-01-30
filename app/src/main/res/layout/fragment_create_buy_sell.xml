@@ -46,7 +46,7 @@
         android:inputType="numberDecimal"
         android:ems="6"
         android:hint="@string/value_hint"
-        android:id="@+id/value_edit_text"
+        android:id="@+id/price_edit_text"
         android:layout_gravity="right" />
 
     <TextView
