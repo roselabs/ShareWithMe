@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.R;
 
@@ -50,7 +51,7 @@ public class CreateRidesPostDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String price = postPrice.getText().toString();
 
-                        price = formatPrice(price);
+                        price = FormatData.formatPrice(price);
 
                         RidesPost post = new RidesPost((radioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
                            price, postTitle.getText().toString(), postDeparture.getText().toString(),
@@ -65,24 +66,5 @@ public class CreateRidesPostDialog extends DialogFragment {
         return builder.create();
     }
 
-    private String formatPrice(String price){
-        String formattedPrice = price;
 
-        if(formattedPrice.contains(".")){
-            int decimal = formattedPrice.indexOf(".");
-
-            if(formattedPrice.length() -1 < decimal + 2){
-                for(int i = formattedPrice.length() -1; i < decimal + 2; i++){
-                    formattedPrice += 0;
-                }
-            }else if (formattedPrice.length() - 1 > decimal + 2) {
-                formattedPrice = formattedPrice.substring(0, decimal + 3);
-            }
-            //else do nothing
-        }else{
-            formattedPrice += ".00";
-        }
-
-        return formattedPrice;
-    }
 }
