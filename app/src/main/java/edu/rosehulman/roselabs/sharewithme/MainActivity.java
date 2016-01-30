@@ -272,6 +272,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void sendFragmentToInflate(Fragment fragment) {
+        switchToFragment(fragment);
+    }
+
+    @Override
     public void onCreatePostFinished(BuySellPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mBuySellAdapter.add(post);

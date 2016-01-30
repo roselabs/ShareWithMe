@@ -1,5 +1,7 @@
 package edu.rosehulman.roselabs.sharewithme.Rides;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,16 +59,18 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment fragment = new RidesDetailFragment(mValues.get(position));
+                mListener.sendFragmentToInflate(fragment);
             }
         });
 
+        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Log.d("THAIS", "Chamou a funcao");
                 String key = post.getKey();
-              //  String user = post.get
+                //TODO verify user permission
                 mRefFirebase.child(key).removeValue();
                 return false;
             }
@@ -89,6 +93,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             query = mRefFirebase.orderByChild("offer").equalTo(false);
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
+        notifyDataSetChanged();
     }
 
     public void add(RidesPost post){
@@ -130,7 +135,14 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+            String key = dataSnapshot.getKey();
+            for (int i = 0; i < mValues.size(); i++){
+                if(mValues.get(i).getKey().equals(key)){
+                    mValues.remove(i);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
