@@ -5,14 +5,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
@@ -38,10 +35,11 @@ public class CreateRidesPostDialog extends DialogFragment {
         final EditText postPrice = (EditText) v.findViewById(R.id.price_edit_text);
         final EditText postTitle = (EditText) v.findViewById(R.id.title_edit_text);
         final EditText postDeparture = (EditText) v.findViewById(R.id.departure_edit_text);
-        final EditText postRideDate = (EditText) v.findViewById(R.id.date_edit_text);
+        final DatePicker postRideDate = (DatePicker) v.findViewById(R.id.ride_date_picker);
         final EditText postDestination = (EditText) v.findViewById(R.id.destination_edit_text);
         final EditText postDescription = (EditText) v.findViewById(R.id.description_edit_text);
         final EditText postKeywords = (EditText) v.findViewById(R.id.keyword_edit_text);
+//        final Button buttonDate = (Button) v.findViewById(R.id.button_date);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Create a post in Rides")
@@ -49,13 +47,14 @@ public class CreateRidesPostDialog extends DialogFragment {
                 .setPositiveButton(R.string.create_button_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String price = postPrice.getText().toString();
 
-                        price = FormatData.formatPrice(price);
+                        String price = FormatData.formatPrice(postPrice);
+
+                        String date = FormatData.formatDateFromPicker(postRideDate);
 
                         RidesPost post = new RidesPost((radioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
                            price, postTitle.getText().toString(), postDeparture.getText().toString(),
-                           postRideDate.getText().toString(), postDestination.getText().toString(), postDescription.getText().toString(),
+                           date, postDestination.getText().toString(), postDescription.getText().toString(),
                            postKeywords.getText().toString());
                         mCallback.onCreatePostFinished(post);
                     }
@@ -65,6 +64,5 @@ public class CreateRidesPostDialog extends DialogFragment {
 
         return builder.create();
     }
-
 
 }

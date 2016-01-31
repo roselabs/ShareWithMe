@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
@@ -86,7 +87,7 @@ public class RidesDetailFragment extends Fragment {
         price.setText("$ " + mPost.getPrice());
         title.setText(mPost.getTitle());
         departure.setText(mPost.getDepartureLocal());
-        date.setText(mPost.getRideDate());
+        date.setText(FormatData.formatDateToAmerican(mPost.getRideDate()));
         destination.setText(mPost.getDestinationLocal());
         description.setText(mPost.getDescription());
 //        expiration.setText(mPost.getExpirationDate().toString());
