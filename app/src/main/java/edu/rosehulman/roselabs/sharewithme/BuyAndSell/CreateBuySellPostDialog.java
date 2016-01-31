@@ -38,8 +38,6 @@ public class CreateBuySellPostDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         BuySellPost post = new BuySellPost(postTitle.getText().toString(), postDescription.getText().toString(), (radioGroup.getCheckedRadioButtonId() == R.id.buy_radio_button));
-//                        if (radioGroup.getCheckedRadioButtonId() != R.id.buy_radio_button)
-//                            post.setBuy(false);
                         mCallback.onCreatePostFinished(post);
                     }
                 })
@@ -48,8 +46,4 @@ public class CreateBuySellPostDialog extends DialogFragment {
 
         return builder.create();
     }
-//
-//    public interface CreateCallback {
-//        void onCreatePostFinished(BuySellPost post);
-//    }
 }

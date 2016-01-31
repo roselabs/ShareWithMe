@@ -70,9 +70,4 @@ public class BuyAndSellFragment extends Fragment{
         super.onDetach();
         mListener = null;
     }
-
-//    public interface OnListFragmentInteractionListener {
-//        void sendAdapterToMain(BuySellAdapter adapter);
-//    }
-
 }

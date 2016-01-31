@@ -21,8 +21,6 @@ import edu.rosehulman.roselabs.sharewithme.R;
  */
 public class RidesDetailFragment extends Fragment {
 
-    private OnListFragmentInteractionListener mListener;
-    private RidesAdapter mAdapter;
     private RidesPost mPost;
 
     public RidesDetailFragment() {
@@ -36,35 +34,6 @@ public class RidesDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        //substitute by a rides fragment view
-//        View view = inflater.inflate(R.layout.fragment_rides_detail, container, false);
-//        mAdapter = new RidesAdapter(mListener);
-
-
-
-//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setAdapter(mAdapter);
-//        mListener.sendAdapterToMain(mAdapter);
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.buy_fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                CreateRidesPostDialog dialog = new CreateRidesPostDialog();
-//                dialog.show(getFragmentManager(), "Create new post on Rides");
-//            }
-//        });
-
-//        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupFilter);
-//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                mAdapter.setFilter(checkedId == R.id.offer_radio_button_filter);
-//            }
-//        });
         View view = inflater.inflate(R.layout.fragment_rides_detail, container, false);
 
         TextView option = (TextView) view.findViewById(R.id.result_option_text_view);
@@ -95,29 +64,5 @@ public class RidesDetailFragment extends Fragment {
 
         return view;
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if(context instanceof OnListFragmentInteractionListener){
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-
-//        mListener.sendFragmentToInflate(this);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    //
-//    public interface OnListFragmentInteractionListener{
-//        void sendAdapterToMain()
-//    }
 
 }

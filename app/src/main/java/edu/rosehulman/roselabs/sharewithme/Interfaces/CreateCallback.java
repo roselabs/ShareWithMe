@@ -8,8 +8,8 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
  */
 public interface CreateCallback {
 
-    public void onCreatePostFinished(BuySellPost post);
+    void onCreatePostFinished(BuySellPost post);
 
-    public void onCreatePostFinished(RidesPost post);
+    void onCreatePostFinished(RidesPost post);
 
 }

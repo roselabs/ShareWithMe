@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (mUser.getPicture() != null) {
-                    Log.d("BILADA", mUser.getPicture());
                     Bundle b = new Bundle();
                     b.putParcelable("User", mUser);
                     try {
@@ -246,7 +245,6 @@ public class MainActivity extends AppCompatActivity
 
         if (resultCode == MainActivity.RESULT_OK) {
             Uri chosenImageUri = data.getData();
-
             Bitmap mBitmap = null;
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);

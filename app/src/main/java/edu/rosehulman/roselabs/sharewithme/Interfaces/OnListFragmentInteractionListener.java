@@ -11,10 +11,10 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
  */
 public interface OnListFragmentInteractionListener {
 
-    public void sendAdapterToMain(BuySellAdapter adapter);
+    void sendAdapterToMain(BuySellAdapter adapter);
 
-    public void sendAdapterToMain(RidesAdapter adapter);
+    void sendAdapterToMain(RidesAdapter adapter);
 
-    public void sendFragmentToInflate(Fragment fragment);
+    void sendFragmentToInflate(Fragment fragment);
 
 }
