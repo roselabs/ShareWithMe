@@ -3,9 +3,9 @@ package edu.rosehulman.roselabs.sharewithme.Rides;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
@@ -24,30 +25,39 @@ import edu.rosehulman.roselabs.sharewithme.R;
  */
 public class CreateRidesPostDialog extends DialogFragment {
 
+    private RidesPost mPost;
     CreateCallback mCallback;
-    private boolean flag;
-    private RadioGroup radioGroup;
-    private EditText postPrice, postTitle, postDeparture, postDestination, postDescription, postKeywords;
-    private DatePicker postRideDate;
+    private boolean mFlag;
+    private RadioGroup mRadioGroup;
+    private EditText mPostPrice, mPostTitle, mPostDeparture, mPostDestination, mPostDescription, mPostKeywords;
+    private DatePicker mPostRideDate;
 
     public CreateRidesPostDialog(){
-
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+        if (getArguments() != null){
+            mPost = getArguments().getParcelable("post");
+        } else {
+            mPost = null;
+        }
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mCallback = (CreateCallback) getActivity();
         View v = inflater.inflate(R.layout.fragment_create_rides, null);
-        radioGroup = (RadioGroup) v.findViewById(R.id.offer_radio_group);
-        postPrice = (EditText) v.findViewById(R.id.price_edit_text);
-        postTitle = (EditText) v.findViewById(R.id.title_edit_text);
-        postDeparture = (EditText) v.findViewById(R.id.departure_edit_text);
-        postRideDate = (DatePicker) v.findViewById(R.id.ride_date_picker);
-        postDestination = (EditText) v.findViewById(R.id.destination_edit_text);
-        postDescription = (EditText) v.findViewById(R.id.description_edit_text);
-        postKeywords = (EditText) v.findViewById(R.id.keyword_edit_text);
+        mRadioGroup = (RadioGroup) v.findViewById(R.id.offer_radio_group);
+        mPostPrice = (EditText) v.findViewById(R.id.price_edit_text);
+        mPostTitle = (EditText) v.findViewById(R.id.title_edit_text);
+        mPostDeparture = (EditText) v.findViewById(R.id.departure_edit_text);
+        mPostRideDate = (DatePicker) v.findViewById(R.id.ride_date_picker);
+        mPostDestination = (EditText) v.findViewById(R.id.destination_edit_text);
+        mPostDescription = (EditText) v.findViewById(R.id.description_edit_text);
+        mPostKeywords = (EditText) v.findViewById(R.id.keyword_edit_text);
 //        final Button buttonDate = (Button) v.findViewById(R.id.button_date);
+
+        if (mPost != null){
+            updateEditTexts();
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Create a post in Rides")
@@ -76,21 +86,28 @@ public class CreateRidesPostDialog extends DialogFragment {
                 @Override
                 public void onClick(View v)
                 {
-                    flag = true;
+                    mFlag = true;
 
-                    checkEditText(postTitle, "Title is required!", 3);
-                    checkEditText(postDescription, "Description is required!", 3);
+                    checkEditText(mPostTitle, "Title is required!", 3);
+                    checkEditText(mPostDescription, "Description is required!", 3);
 
-                    if(flag){
-                        String price = FormatData.formatPrice(postPrice);
+                    if(mFlag){
+                        String price = FormatData.formatPrice(mPostPrice);
 
-                        String date = FormatData.formatDateFromPicker(postRideDate);
+                        Calendar c = Calendar.getInstance();
+                        c.set(mPostRideDate.getYear(), mPostRideDate.getMonth(), mPostRideDate.getDayOfMonth());
 
-                        RidesPost post = new RidesPost((radioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
-                                price, postTitle.getText().toString(), postDeparture.getText().toString(),
-                                date, postDestination.getText().toString(), postDescription.getText().toString(),
-                                postKeywords.getText().toString());
-                        mCallback.onCreatePostFinished(post);
+                        RidesPost post = new RidesPost((mRadioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
+                                price, mPostTitle.getText().toString(), mPostDeparture.getText().toString(),
+                                c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
+                                mPostKeywords.getText().toString());
+                        if (mPost == null)
+                            mCallback.onCreatePostFinished(post);
+                        else {
+                            post.setKey(mPost.getKey());
+                            post.setUserId(mPost.getUserId());
+                            mCallback.onEditPostFinished(post);
+                        }
                         d.dismiss();
                     }
                 }
@@ -101,7 +118,23 @@ public class CreateRidesPostDialog extends DialogFragment {
     private void checkEditText(EditText et, String message, int minChar){
         if (et.getText().toString().length() < minChar){
             et.setError(message);
-            flag = false;
+            mFlag = false;
         }
+    }
+
+    private void updateEditTexts(){
+        //radio button
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(mPost.getRideDate());
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        mPostPrice.setText(mPost.getPrice());
+        mPostTitle.setText(mPost.getTitle());
+        mPostDescription.setText(mPost.getDescription());
+        mPostDeparture.setText(mPost.getDepartureLocal());
+        mPostRideDate.updateDate(year, month, day);
+        mPostDestination.setText(mPost.getDestinationLocal());
+        mPostKeywords.setText(mPost.getKeywords());
     }
 }

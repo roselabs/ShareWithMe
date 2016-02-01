@@ -12,4 +12,6 @@ public interface CreateCallback {
 
     void onCreatePostFinished(RidesPost post);
 
+    void onEditPostFinished(RidesPost post);
+
 }

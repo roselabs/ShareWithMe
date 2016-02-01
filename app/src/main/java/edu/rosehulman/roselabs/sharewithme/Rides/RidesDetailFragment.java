@@ -59,6 +59,18 @@ public class RidesDetailFragment extends Fragment {
         TextView expiration = (TextView) view.findViewById(R.id.result_expiration_date_text_view);
         TextView keyword = (TextView) view.findViewById(R.id.result_keyword_text_view);
         TextView authorTextView = (TextView) view.findViewById(R.id.author_textView);
+        TextView editButton = (TextView) view.findViewById(R.id.edit_ride_post_text_view);
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateRidesPostDialog crpd = new CreateRidesPostDialog();
+                Bundle b = new Bundle();
+                b.putParcelable("post", mPost);
+                crpd.setArguments(b);
+                crpd.show(getFragmentManager(), "Edit Post");
+            }
+        });
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), FormatData.getStringDate(mPost.getPostDate())));
 
         mAdapter = new CommentsAdapter("rides", mPost.getKey());
@@ -114,8 +126,8 @@ public class RidesDetailFragment extends Fragment {
         }else{
             departure.setText(mPost.getDepartureLocal());
         }
-
-        date.setText(FormatData.formatDateToAmerican(mPost.getRideDate()));
+        if (mPost.getRideDate() != null)
+            date.setText(FormatData.getStringDate(mPost.getRideDate()));
 
         if(mPost.getDestinationLocal().isEmpty()){
             hideView(destination);

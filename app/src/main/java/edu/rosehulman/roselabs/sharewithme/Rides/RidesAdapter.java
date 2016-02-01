@@ -101,6 +101,10 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         mRefFirebase.push().setValue(post);
     }
 
+    public void update(RidesPost post) {
+        mRefFirebase.child(post.getKey()).setValue(post);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public TextView mTitleTextView;

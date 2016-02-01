@@ -40,6 +40,7 @@ import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 
@@ -276,6 +277,14 @@ public class MainActivity extends AppCompatActivity
     public void onCreatePostFinished(RidesPost post){
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mRidesAdapter.add(post);
+    }
+
+    @Override
+    public void onEditPostFinished(RidesPost post) {
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        mRidesAdapter.update(post);
+        getSupportFragmentManager().popBackStack();
+        switchToFragment(new RidesDetailFragment(post));
     }
 
     class MyChildEvent implements ChildEventListener {
