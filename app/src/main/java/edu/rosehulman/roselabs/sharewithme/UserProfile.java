@@ -7,17 +7,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserProfile implements Parcelable {
 
-    @JsonIgnore
-    private String key;
     private String name;
     private String userID;
     private String picture;
     private String phone;
 
+    @JsonIgnore
+    private String key;
+
     public UserProfile() {
         this.picture = null;
         this.phone = null;
         this.name = null;
+        this.userID = null;
     }
 
     protected UserProfile(Parcel in) {

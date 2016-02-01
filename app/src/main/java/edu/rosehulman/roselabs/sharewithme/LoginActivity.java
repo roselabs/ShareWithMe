@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -43,8 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = mPasswordEdit.getText().toString();
 
         if(email.isEmpty() || password.isEmpty()){
-            //show error
-
+            Toast.makeText(this, R.string.login_email_password_empty, Toast.LENGTH_SHORT).show();
         }
 
         if(!email.endsWith("@rose-hulman.edu")){

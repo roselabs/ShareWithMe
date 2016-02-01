@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Thais"
+            android:text="@string/profile_default_name"
             android:layout_marginTop="20dp"
             android:id="@+id/name_text_view" />
 
@@ -31,15 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Student"
-            android:layout_marginTop="20dp"
-            android:id="@+id/status_text_view" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="e-mail: defaritl@rose-hulman.edu"
+            android:text="@string/profile_default_email"
             android:layout_marginTop="20dp"
             android:id="@+id/email_text_view" />
 
@@ -47,9 +39,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="phone: +1 (812) 201-5484"
+            android:text="@string/profile_default_phone"
             android:layout_marginTop="20dp"
             android:id="@+id/phone_text_view" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_update"
+            android:id="@+id/update_profile_button"
+            android:layout_gravity="right" />
 
     </LinearLayout>
 

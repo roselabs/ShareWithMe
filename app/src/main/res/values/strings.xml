@@ -48,4 +48,10 @@
     <string name="feedback_radio_button_text">Feedback</string>
     <string name="help_feedback_type_text">Please type the details:</string>
     <string name="send_text">SEND</string>
+
+    <string name="profile_default_phone">phone: +1 (999) 999-9999</string>
+    <string name="profile_default_email">e-mail: username@rose-hulman.edu</string>
+    <string name="profile_default_name">username: Profile Name</string>
+    <string name="profile_update">Update</string>
+    <string name="login_email_password_empty">Please fill all the fields to login</string>
 </resources>

@@ -45,4 +45,21 @@ public class FormatData {
 
         return formattedDate;
     }
+
+    public static String formatPhoneNumber(String phoneNumber){
+        String phone = null;
+
+        //phone: +1 (999) 999-9999
+
+        phone = "phone: +";
+        phone = phone + phoneNumber.substring(0, 1);
+        phone = phone + " (";
+        phone = phone + phoneNumber.substring(1, 4);
+        phone = phone + ") ";
+        phone = phone + phoneNumber.substring(4, 7);
+        phone = phone + "-";
+        phone = phone + phoneNumber.substring(7);
+
+        return phone;
+    }
 }
