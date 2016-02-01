@@ -40,7 +40,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 Log.d("BILADA", mPostKey);
                 Comment comment = dataSnapshot.getValue(Comment.class);
                 comment.setKey(dataSnapshot.getKey());
-                mComments.add(0, comment);
+                mComments.add(comment);
                 notifyDataSetChanged();
             }
 
@@ -77,6 +77,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     public void onBindViewHolder(CommentsAdapter.ViewHolder holder, int position) {
         final Comment comment = mComments.get(position);
         holder.mContentTextView.setText(comment.getContent());
+        holder.mAuthorTextView.setText("@" + comment.getUserId() + " at " + comment.getDate());
     }
 
     @Override
@@ -87,11 +88,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public TextView mContentTextView;
+        public TextView mAuthorTextView;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
             mContentTextView = (TextView) view.findViewById(R.id.comment_message);
+            mAuthorTextView = (TextView) view.findViewById(R.id.author_textView);
         }
     }
 

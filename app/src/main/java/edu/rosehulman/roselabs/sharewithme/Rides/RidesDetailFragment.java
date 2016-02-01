@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
@@ -65,9 +69,14 @@ public class RidesDetailFragment extends Fragment {
             public void onClick(View v) {
                 String comment = commentEditText.getText().toString();
                 if (!comment.isEmpty()){
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+                    String date = dateFormat.format(calendar.getTime());
+
                     Comment c = new Comment();
                     c.setContent(comment);
                     c.setPostKey(mPost.getKey());
+                    c.setDate(date);
                     mAdapter.add(c);
                     commentEditText.setText("");
                     //TODO hide device keyboard here

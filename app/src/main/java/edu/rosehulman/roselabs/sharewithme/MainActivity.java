@@ -86,9 +86,6 @@ public class MainActivity extends AppCompatActivity
         TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
         emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
 
-        //TODO Refactor the code for storing picture in Firebase and displaying on ImageViews
-        //Current code is terrible and add duplicated images to the database
-
         mImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_picture_image_view);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override

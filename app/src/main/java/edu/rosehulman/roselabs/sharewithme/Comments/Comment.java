@@ -2,15 +2,13 @@ package edu.rosehulman.roselabs.sharewithme.Comments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.Date;
-
 public class Comment {
 
     @JsonIgnore
     private String key;
     private String content;
     private String userId;
-    private Date date;
+    private String date;
     private String postKey;
 
     public Comment() {
@@ -48,11 +46,11 @@ public class Comment {
         this.userId = userId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

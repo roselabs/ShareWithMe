@@ -80,9 +80,4 @@ public class RidesFragment extends Fragment {
         mListener = null;
     }
 
-    //
-//    public interface OnListFragmentInteractionListener{
-//        void sendAdapterToMain()
-//    }
-
 }

@@ -18,19 +18,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Insert a comment here..."
+                android:text="Write a comment..."
                 android:id="@+id/comment_message"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Small Text"
-                android:id="@+id/textView"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/comment_message"
-                android:layout_toEndOf="@+id/comment_message" />
+                android:text="\@author"
+                android:id="@+id/author_textView"
+                android:layout_below="@+id/comment_message"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="5dp"
+                android:textSize="9sp" />
 
         </RelativeLayout>
 
