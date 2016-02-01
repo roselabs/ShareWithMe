@@ -123,7 +123,10 @@ public class CreateRidesPostDialog extends DialogFragment {
     }
 
     private void updateEditTexts(){
-        //radio button
+        if (mPost.isOffer())
+            mRadioGroup.check(R.id.offer_radio_button);
+        else
+            mRadioGroup.check(R.id.request_radio_button);
         Calendar cal = Calendar.getInstance();
         cal.setTime(mPost.getRideDate());
         int year = cal.get(Calendar.YEAR);

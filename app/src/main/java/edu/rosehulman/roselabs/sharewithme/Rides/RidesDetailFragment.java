@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -24,6 +25,7 @@ import java.util.Date;
 
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
+import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
@@ -60,6 +62,9 @@ public class RidesDetailFragment extends Fragment {
         TextView keyword = (TextView) view.findViewById(R.id.result_keyword_text_view);
         TextView authorTextView = (TextView) view.findViewById(R.id.author_textView);
         TextView editButton = (TextView) view.findViewById(R.id.edit_ride_post_text_view);
+
+        if (!mPost.getUserId().equalsIgnoreCase(new Firebase(Constants.FIREBASE_URL).getAuth().getUid()))
+            hideView(editButton);
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +103,11 @@ public class RidesDetailFragment extends Fragment {
                     c.setDate(date);
                     mAdapter.add(c);
                     commentEditText.setText("");
-                    //TODO hide device keyboard here
+                    View view = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
                 }
             }
         });
