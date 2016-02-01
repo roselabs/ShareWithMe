@@ -38,7 +38,7 @@ public class RidesPost {
         this.title = title;
         this.description = description;
         this.keywords = keywords;
-        this.userId = userId;
+//        this.userId = userId;
         this.price = price;
         this.departureLocal = departureLocal;
         this.destinationLocal = destinationLocal;
