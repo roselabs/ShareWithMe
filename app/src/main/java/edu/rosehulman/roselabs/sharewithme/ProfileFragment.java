@@ -94,11 +94,21 @@ public class ProfileFragment extends Fragment{
                 builder.setView(view);
 
                 final EditText nameEditText = (EditText)view.findViewById(R.id.dialog_name_text);
-                String name = "" + mUserProfile.getName();
+                String name;
+                if(mUserProfile.getName().isEmpty()){
+                    name = "";
+                } else {
+                    name = "" + mUserProfile.getName();
+                }
                 nameEditText.setText(name);
 
                 final EditText phoneEditText = (EditText)view.findViewById(R.id.dialog_phone_text);
-                String phone = "" + mUserProfile.getPhone();
+                String phone;
+                if(mUserProfile.getPhone().isEmpty()){
+                    phone = "";
+                } else {
+                    phone = "" + mUserProfile.getPhone();
+                }
                 phoneEditText.setText(phone);
 
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
