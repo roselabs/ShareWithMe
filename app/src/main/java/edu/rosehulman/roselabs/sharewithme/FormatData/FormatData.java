@@ -45,7 +45,7 @@ public class FormatData {
     }
 
     public static String formatPhoneNumber(String phoneNumber){
-        if(phoneNumber.isEmpty()){
+        if(phoneNumber == null || phoneNumber.isEmpty()){
             return "";
         }
 

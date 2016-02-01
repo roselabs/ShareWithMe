@@ -95,19 +95,19 @@ public class ProfileFragment extends Fragment{
 
                 final EditText nameEditText = (EditText)view.findViewById(R.id.dialog_name_text);
                 String name;
-                if(mUserProfile.getName().isEmpty()){
+                if(mUserProfile.getName() == null || mUserProfile.getName().isEmpty()){
                     name = "";
                 } else {
-                    name = "" + mUserProfile.getName();
+                    name = mUserProfile.getName();
                 }
                 nameEditText.setText(name);
 
                 final EditText phoneEditText = (EditText)view.findViewById(R.id.dialog_phone_text);
                 String phone;
-                if(mUserProfile.getPhone().isEmpty()){
+                if(mUserProfile.getPhone() == null || mUserProfile.getPhone().isEmpty()){
                     phone = "";
                 } else {
-                    phone = "" + mUserProfile.getPhone();
+                    phone = mUserProfile.getPhone();
                 }
                 phoneEditText.setText(phone);
 
@@ -139,8 +139,10 @@ public class ProfileFragment extends Fragment{
             mUserProfile = snapshot.getValue(UserProfile.class);
             mUserProfile.setKey(snapshot.getKey());
             if(mUserProfile != null){
-                String userName = "username: " + mUserProfile.getName();
-                mProfileNameView.setText(userName);
+                if (mUserProfile.getName() != null) {
+                    String userName = "name: " + mUserProfile.getName();
+                    mProfileNameView.setText(userName);
+                }
                 String email = "email: " + mUserProfile.getUserID() + "@rose-hulman.edu";
                 mProfileEmailView.setText(email);
                 String phone = FormatData.formatPhoneNumber(mUserProfile.getPhone());
@@ -166,6 +168,15 @@ public class ProfileFragment extends Fragment{
         @Override
         public void onCancelled(FirebaseError firebaseError) {
             //Do nothing
+        }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (getArguments() != null) {
+            UserProfile user = getArguments().getParcelable("User");
+            mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(user.getPicture()));
         }
     }
 }
