@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
+
+import org.solovyev.android.views.llm.DividerItemDecoration;
+import org.solovyev.android.views.llm.LinearLayoutManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,9 +62,13 @@ public class RidesDetailFragment extends Fragment {
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), FormatData.getStringDate(mPost.getPostDate())));
 
         mAdapter = new CommentsAdapter("rides", mPost.getKey());
+
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comments_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(mAdapter);
 
         Button sendButton = (Button) view.findViewById(R.id.send_comment_button);
