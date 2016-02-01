@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
+import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
@@ -22,6 +26,7 @@ import edu.rosehulman.roselabs.sharewithme.R;
 public class RidesDetailFragment extends Fragment {
 
     private RidesPost mPost;
+    private CommentsAdapter mAdapter;
 
     public RidesDetailFragment() {
         // Required empty public constructor
@@ -45,6 +50,30 @@ public class RidesDetailFragment extends Fragment {
         TextView description = (TextView) view.findViewById(R.id.result_description_text_view);
         TextView expiration = (TextView) view.findViewById(R.id.result_expiration_date_text_view);
         TextView keyword = (TextView) view.findViewById(R.id.result_keyword_text_view);
+
+        mAdapter = new CommentsAdapter("rides", mPost.getKey());
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comments_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(mAdapter);
+
+        Button sendButton = (Button) view.findViewById(R.id.send_comment_button);
+        final EditText commentEditText = (EditText) view.findViewById(R.id.comment_message_edit_text);
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String comment = commentEditText.getText().toString();
+                if (!comment.isEmpty()){
+                    Comment c = new Comment();
+                    c.setContent(comment);
+                    c.setPostKey(mPost.getKey());
+                    mAdapter.add(c);
+                    commentEditText.setText("");
+                    //TODO hide device keyboard here
+                }
+            }
+        });
 
         String optionValue;
         if(mPost.isOffer())

@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
@@ -35,6 +37,7 @@ public class RidesFragment extends Fragment {
         //substitute by a rides fragment view
         View view = inflater.inflate(R.layout.fragment_rides, container, false);
         mAdapter = new RidesAdapter(mListener);
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
