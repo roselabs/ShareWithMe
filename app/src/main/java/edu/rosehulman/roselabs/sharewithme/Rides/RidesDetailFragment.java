@@ -52,17 +52,53 @@ public class RidesDetailFragment extends Fragment {
         else
             optionValue = "Request";
 
+        //Displays the values and hides the view if empty
         option.setText(optionValue);
-        price.setText("$ " + mPost.getPrice());
+
+        if(mPost.getPrice().isEmpty()){
+            price.setText("$ not informed");
+        }else{
+            price.setText("$ " + mPost.getPrice());
+        }
+
         title.setText(mPost.getTitle());
-        departure.setText(mPost.getDepartureLocal());
+
+        if(mPost.getDepartureLocal().isEmpty()){
+            hideView(departure);
+            hideView(view.findViewById(R.id.departure_text_view));
+        }else{
+            departure.setText(mPost.getDepartureLocal());
+        }
+
         date.setText(FormatData.formatDateToAmerican(mPost.getRideDate()));
-        destination.setText(mPost.getDestinationLocal());
-        description.setText(mPost.getDescription());
+
+        if(mPost.getDestinationLocal().isEmpty()){
+            hideView(destination);
+            hideView(view.findViewById(R.id.destination_text_view));
+        }else {
+            destination.setText(mPost.getDestinationLocal());
+        }
+
+        if(mPost.getDescription().isEmpty()){
+            hideView(description);
+            hideView(view.findViewById(R.id.description_text_view));
+        }else{
+            description.setText(mPost.getDescription());
+        }
 //        expiration.setText(mPost.getExpirationDate().toString());
-        keyword.setText(mPost.getKeywords());
+
+        if(mPost.getKeywords().isEmpty()){
+            hideView(keyword);
+            hideView(view.findViewById(R.id.keyword_text_view));
+        }else{
+            keyword.setText(mPost.getKeywords());
+        }
 
         return view;
+    }
+
+    private void hideView(View view){
+        view.setVisibility(View.GONE);
     }
 
 }

@@ -13,17 +13,18 @@ public class FormatData {
     public static String formatPrice(EditText price){
         String formattedPrice = price.getText().toString();
 
-        if(formattedPrice.contains(".")){
+        if(formattedPrice.isEmpty())
+            return formattedPrice;
+
+        if(formattedPrice.contains(".")) {
             int decimal = formattedPrice.indexOf(".");
 
-            if(formattedPrice.length() -1 < decimal + 2){
-                for(int i = formattedPrice.length() -1; i < decimal + 2; i++){
+            if (formattedPrice.length() - 1 < decimal + 2) {
+                for (int i = formattedPrice.length() - 1; i < decimal + 2; i++)
                     formattedPrice += 0;
-                }
-            }else if (formattedPrice.length() - 1 > decimal + 2) {
+            } else if (formattedPrice.length() - 1 > decimal + 2) {
                 formattedPrice = formattedPrice.substring(0, decimal + 3);
             }
-            //else is right, do nothing
         }else{
             formattedPrice += ".00";
         }

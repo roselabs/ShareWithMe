@@ -48,15 +48,24 @@ public class CreateRidesPostDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String price = FormatData.formatPrice(postPrice);
+                        if(postTitle.getText().toString().isEmpty() || postDescription.getText().toString().isEmpty()){
+                            if(postTitle.getText().toString().isEmpty()){
+                                postTitle.setError( "Title is required!" );
+                            }
+                            if(postDescription.getText().toString().isEmpty()){
+                                postDescription.setError( "Description is required!" );
+                            }
+                        }else{
+                            String price = FormatData.formatPrice(postPrice);
 
-                        String date = FormatData.formatDateFromPicker(postRideDate);
+                            String date = FormatData.formatDateFromPicker(postRideDate);
 
-                        RidesPost post = new RidesPost((radioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
-                           price, postTitle.getText().toString(), postDeparture.getText().toString(),
-                           date, postDestination.getText().toString(), postDescription.getText().toString(),
-                           postKeywords.getText().toString());
-                        mCallback.onCreatePostFinished(post);
+                            RidesPost post = new RidesPost((radioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
+                                    price, postTitle.getText().toString(), postDeparture.getText().toString(),
+                                    date, postDestination.getText().toString(), postDescription.getText().toString(),
+                                    postKeywords.getText().toString());
+                            mCallback.onCreatePostFinished(post);
+                        }
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
