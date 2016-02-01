@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.zip.Inflater;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
@@ -54,7 +55,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
 
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(post.getDescription());
+        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), FormatData.getStringDate(post.getPostDate())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

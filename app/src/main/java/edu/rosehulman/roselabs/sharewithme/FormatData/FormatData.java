@@ -3,6 +3,9 @@ package edu.rosehulman.roselabs.sharewithme.FormatData;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Thais Faria on 1/30/2016.
  */
@@ -63,5 +66,10 @@ public class FormatData {
         phone = phone + phoneNumber.substring(7);
 
         return phone;
+    }
+
+    public static String getStringDate(Date date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+        return dateFormat.format(date);
     }
 }

@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,6 +56,8 @@ public class RidesDetailFragment extends Fragment {
         TextView description = (TextView) view.findViewById(R.id.result_description_text_view);
         TextView expiration = (TextView) view.findViewById(R.id.result_expiration_date_text_view);
         TextView keyword = (TextView) view.findViewById(R.id.result_keyword_text_view);
+        TextView authorTextView = (TextView) view.findViewById(R.id.author_textView);
+        authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), FormatData.getStringDate(mPost.getPostDate())));
 
         mAdapter = new CommentsAdapter("rides", mPost.getKey());
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.comments_recycler_view);
@@ -69,10 +73,7 @@ public class RidesDetailFragment extends Fragment {
             public void onClick(View v) {
                 String comment = commentEditText.getText().toString();
                 if (!comment.isEmpty()){
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
-                    String date = dateFormat.format(calendar.getTime());
-
+                    Date date = new Date();
                     Comment c = new Comment();
                     c.setContent(comment);
                     c.setPostKey(mPost.getKey());
