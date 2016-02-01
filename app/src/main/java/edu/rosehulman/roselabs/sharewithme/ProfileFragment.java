@@ -65,11 +65,6 @@ public class ProfileFragment extends Fragment{
         Query queryRef = mFirebaseRef.child("users").orderByChild("userID").equalTo(mFirebaseRef.getAuth().getUid());
         queryRef.addChildEventListener(new MyChildEventListener());
 
-        if (getArguments() != null) {
-            UserProfile user = getArguments().getParcelable("User");
-            mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(user.getPicture()));
-        }
-
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,6 +142,8 @@ public class ProfileFragment extends Fragment{
                 mProfileEmailView.setText(email);
                 String phone = FormatData.formatPhoneNumber(mUserProfile.getPhone());
                 mProfilePhoneView.setText(phone);
+                if (mUserProfile.getPicture() != null)
+                    mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(mUserProfile.getPicture()));
             }
         }
 
@@ -168,15 +165,6 @@ public class ProfileFragment extends Fragment{
         @Override
         public void onCancelled(FirebaseError firebaseError) {
             //Do nothing
-        }
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        if (getArguments() != null) {
-            UserProfile user = getArguments().getParcelable("User");
-            mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(user.getPicture()));
         }
     }
 }

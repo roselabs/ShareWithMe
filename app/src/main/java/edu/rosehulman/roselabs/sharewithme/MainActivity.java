@@ -93,15 +93,6 @@ public class MainActivity extends AppCompatActivity
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mUser.getPicture() != null) {
-                    Bundle b = new Bundle();
-                    b.putParcelable("User", mUser);
-                    try {
-                        mProfileFragment.setArguments(b);
-                    } catch (IllegalStateException e){
-                        e.printStackTrace();
-                    }
-                }
                 switchToFragment(mProfileFragment);
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
