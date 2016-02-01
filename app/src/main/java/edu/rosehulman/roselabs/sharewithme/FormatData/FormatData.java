@@ -3,8 +3,6 @@ package edu.rosehulman.roselabs.sharewithme.FormatData;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.util.Date;
-
 /**
  * Created by Thais Faria on 1/30/2016.
  */
@@ -47,7 +45,11 @@ public class FormatData {
     }
 
     public static String formatPhoneNumber(String phoneNumber){
-        String phone = null;
+        if(phoneNumber.isEmpty()){
+            return "";
+        }
+
+        String phone;
 
         //phone: +1 (999) 999-9999
 
