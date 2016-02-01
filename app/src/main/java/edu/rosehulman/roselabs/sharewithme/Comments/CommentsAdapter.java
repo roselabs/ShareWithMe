@@ -37,7 +37,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("BILADA", mPostKey);
                 Comment comment = dataSnapshot.getValue(Comment.class);
                 comment.setKey(dataSnapshot.getKey());
                 mComments.add(comment);

@@ -128,6 +128,13 @@ public class ProfileFragment extends Fragment{
         df.show(getFragmentManager(), "update profile dialog");
     }
 
+    private void updateUserProfile(UserProfile user){
+        mUserProfile.setName(user.getName());
+        mProfileNameView.setText(user.getName());
+        mUserProfile.setPhone(user.getPhone());
+        mProfilePhoneView.setText(user.getPhone());
+    }
+
     class MyChildEventListener implements ChildEventListener{
         @Override
         public void onChildAdded(DataSnapshot snapshot, String previousChild) {
@@ -149,7 +156,8 @@ public class ProfileFragment extends Fragment{
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            //Do nothing
+            UserProfile user = dataSnapshot.getValue(UserProfile.class);
+            updateUserProfile(user);
         }
 
         @Override

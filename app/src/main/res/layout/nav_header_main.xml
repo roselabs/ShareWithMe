@@ -21,6 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/profile_name_header_text_view"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Profile Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />

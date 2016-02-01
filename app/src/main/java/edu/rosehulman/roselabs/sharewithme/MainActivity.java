@@ -29,6 +29,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView mImageView;
     private UserProfile mUser;
     private Firebase mFirebase;
+    private TextView mProfileNameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,8 @@ public class MainActivity extends AppCompatActivity
 
         TextView emailView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
         emailView.setText(new Firebase(Constants.FIREBASE_URL).getAuth().getUid() + "@rose-hulman.edu");
+
+        mProfileNameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.profile_name_header_text_view);
 
         mImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_picture_image_view);
         mImageView.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +287,7 @@ public class MainActivity extends AppCompatActivity
                 mUser.setPicture(user.getPicture());
                 mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
             }
+            if (user.getName() != null) mProfileNameTextView.setText(user.getName());
         }
 
         @Override
@@ -289,6 +295,7 @@ public class MainActivity extends AppCompatActivity
             String key = dataSnapshot.getKey();
             UserProfile user = dataSnapshot.getValue(UserProfile.class);
             mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
+            if (user.getName() != null) mProfileNameTextView.setText(user.getName());
         }
 
         @Override
