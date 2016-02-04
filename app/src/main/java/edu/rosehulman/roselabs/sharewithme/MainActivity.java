@@ -1,6 +1,5 @@
 package edu.rosehulman.roselabs.sharewithme;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,12 +15,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,8 +28,6 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -42,6 +36,8 @@ import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
+import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
+import edu.rosehulman.roselabs.sharewithme.Profile.UserProfile;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
@@ -225,7 +221,7 @@ public class MainActivity extends AppCompatActivity
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    protected static Bitmap decodeStringToBitmap(String encodedString){
+    public static Bitmap decodeStringToBitmap(String encodedString){
         try{
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
             Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);

@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme;
+package edu.rosehulman.roselabs.sharewithme.Profile;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,7 +22,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
+import edu.rosehulman.roselabs.sharewithme.MainActivity;
+import edu.rosehulman.roselabs.sharewithme.R;
 
 public class ProfileFragment extends Fragment{
 

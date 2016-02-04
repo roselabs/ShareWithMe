@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme;
+package edu.rosehulman.roselabs.sharewithme.Profile;
 
 import android.os.Parcel;
 import android.os.Parcelable;
