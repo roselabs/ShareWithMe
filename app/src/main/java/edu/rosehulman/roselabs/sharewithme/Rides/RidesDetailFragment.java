@@ -26,7 +26,7 @@ import java.util.Date;
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
@@ -76,7 +76,7 @@ public class RidesDetailFragment extends Fragment {
                 crpd.show(getFragmentManager(), "Edit Post");
             }
         });
-        authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), FormatData.getStringDate(mPost.getPostDate())));
+        authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), Utils.getStringDate(mPost.getPostDate())));
 
         mAdapter = new CommentsAdapter("rides", mPost.getKey());
 
@@ -136,7 +136,7 @@ public class RidesDetailFragment extends Fragment {
             departure.setText(mPost.getDepartureLocal());
         }
         if (mPost.getRideDate() != null)
-            date.setText(FormatData.getStringDate(mPost.getRideDate()));
+            date.setText(Utils.getStringDate(mPost.getRideDate()));
 
         if(mPost.getDestinationLocal().isEmpty()){
             hideView(destination);

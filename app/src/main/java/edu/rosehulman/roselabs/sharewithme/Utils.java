@@ -1,15 +1,37 @@
-package edu.rosehulman.roselabs.sharewithme.FormatData;
+package edu.rosehulman.roselabs.sharewithme;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Thais Faria on 1/30/2016.
+ * Created by rodrigr1 on 2/6/2016.
  */
-public class FormatData {
+public class Utils {
+
+    public static String encodeBitmap(Bitmap bitmap){
+        ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
+        byte[] byteArray = bYtE.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public static Bitmap decodeStringToBitmap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
 
     public static String formatPrice(EditText price){
         String formattedPrice = price.getText().toString();
@@ -72,4 +94,5 @@ public class FormatData {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
         return dateFormat.format(date);
     }
+
 }

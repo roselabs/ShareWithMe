@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +20,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.camera.CropImageIntentBuilder;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.MainActivity;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 public class ProfileFragment extends Fragment{
 
@@ -73,7 +82,7 @@ public class ProfileFragment extends Fragment{
             public void onClick(View v) {
                 Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, 1);
+                getActivity().startActivityForResult(photoPickerIntent, Constants.PICK_IMAGE_REQUEST);
             }
         });
 
@@ -117,8 +126,10 @@ public class ProfileFragment extends Fragment{
 
                         String phone = phoneEditText.getText().toString();
                         mUserProfile.setPhone(phone);
-
-                        mFirebaseRef.child("users").child(mUserProfile.getKey()).setValue(mUserProfile);
+                        Map<String, Object> newUser = new HashMap<>();
+                        newUser.put("name", name);
+                        newUser.put("phone", phone);
+                        mFirebaseRef.child("users").child(mUserProfile.getKey()).updateChildren(newUser);
                     }
                 });
 
@@ -132,10 +143,10 @@ public class ProfileFragment extends Fragment{
     }
 
     private void updateUserProfile(UserProfile user){
-        mUserProfile.setName(user.getName());
         mProfileNameView.setText(user.getName());
-        mUserProfile.setPhone(user.getPhone());
         mProfilePhoneView.setText(user.getPhone());
+        if (user.getPicture() != null)
+            mImageView.setImageBitmap(Utils.decodeStringToBitmap(user.getPicture()));
     }
 
     class MyChildEventListener implements ChildEventListener{
@@ -150,10 +161,10 @@ public class ProfileFragment extends Fragment{
                 }
                 String email = "email: " + mUserProfile.getUserID() + "@rose-hulman.edu";
                 mProfileEmailView.setText(email);
-                String phone = FormatData.formatPhoneNumber(mUserProfile.getPhone());
+                String phone = Utils.formatPhoneNumber(mUserProfile.getPhone());
                 mProfilePhoneView.setText(phone);
                 if (mUserProfile.getPicture() != null)
-                    mImageView.setImageBitmap(MainActivity.decodeStringToBitmap(mUserProfile.getPicture()));
+                    mImageView.setImageBitmap(Utils.decodeStringToBitmap(mUserProfile.getPicture()));
             }
         }
 

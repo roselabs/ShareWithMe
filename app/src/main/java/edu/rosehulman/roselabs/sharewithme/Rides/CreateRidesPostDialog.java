@@ -16,7 +16,7 @@ import android.widget.RadioGroup;
 import java.util.Calendar;
 import java.util.Date;
 
-import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.R;
 
@@ -92,7 +92,7 @@ public class CreateRidesPostDialog extends DialogFragment {
                     checkEditText(mPostDescription, "Description is required!", 3);
 
                     if(mFlag){
-                        String price = FormatData.formatPrice(mPostPrice);
+                        String price = Utils.formatPrice(mPostPrice);
 
                         Calendar c = Calendar.getInstance();
                         c.set(mPostRideDate.getYear(), mPostRideDate.getMonth(), mPostRideDate.getDayOfMonth());

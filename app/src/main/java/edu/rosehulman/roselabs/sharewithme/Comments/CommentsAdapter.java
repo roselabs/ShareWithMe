@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.R;
 
 /**
@@ -77,7 +77,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     public void onBindViewHolder(CommentsAdapter.ViewHolder holder, int position) {
         final Comment comment = mComments.get(position);
         holder.mContentTextView.setText(comment.getContent());
-        holder.mAuthorTextView.setText(String.format("@%s at %s", comment.getUserId(), FormatData.getStringDate(comment.getDate())));
+        holder.mAuthorTextView.setText(String.format("@%s at %s", comment.getUserId(), Utils.getStringDate(comment.getDate())));
     }
 
     @Override
