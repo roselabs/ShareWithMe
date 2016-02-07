@@ -45,6 +45,7 @@ import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
+import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsRidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity
     private UserProfile mUser;
     private Firebase mFirebase;
     private TextView mProfileNameTextView;
+    private DraftsBuySellAdapter mDraftsBuySellAdapter;
+    private DraftsRidesAdapter mDraftsRidesAdapter;
+    private DraftsFragment mDraftsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity
 
         setupUser(mFirebase.getAuth().getUid());
 
+        mDraftsFragment = new DraftsFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
         mRidesFragment = new RidesFragment();
         mProfileFragment = new ProfileFragment();
@@ -188,6 +193,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_help_and_feedback:
                 switchTo = new HelpAndFeedbackFragment();
                 break;
+            case R.id.menu_drafts:
+                switchTo = mDraftsFragment;
+                break;
             case R.id.categories_rides:
                 switchTo = mRidesFragment;
                 break;
@@ -238,12 +246,12 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void sendAdapterToMain(DraftsBuySellAdapter adapter) {
-
+        mDraftsBuySellAdapter = adapter;
     }
 
     @Override
     public void sendAdapterToMain(DraftsRidesAdapter adapter) {
-
+        mDraftsRidesAdapter = adapter;
     }
 
     @Override
@@ -273,12 +281,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDraftPostFinished(RidesPost post) {
-
+        //TODO DRAFT
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
+        mRidesAdapter.addDraft(post);
     }
 
     @Override
     public void onDraftPostFinished(BuySellPost post) {
-
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
+        mBuySellAdapter.addDraft(post);
     }
 
 
