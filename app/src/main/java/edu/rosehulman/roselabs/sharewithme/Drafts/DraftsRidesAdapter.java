@@ -12,17 +12,16 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
  * Created by Thais Faria on 1/29/2016.
@@ -60,7 +59,7 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
 
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), FormatData.getStringDate(post.getPostDate())));
+        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

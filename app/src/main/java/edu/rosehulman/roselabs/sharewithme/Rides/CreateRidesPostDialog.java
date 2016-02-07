@@ -122,7 +122,7 @@ public class CreateRidesPostDialog extends DialogFragment {
                     checkEditText(mPostDescription, "Description is required!", 3);
 
                     if(mFlag){
-                        String price = FormatData.formatPrice(mPostPrice);
+                        String price = Utils.formatPrice(mPostPrice);
 
                         Calendar c = Calendar.getInstance();
                         c.set(mPostRideDate.getYear(), mPostRideDate.getMonth(), mPostRideDate.getDayOfMonth());
