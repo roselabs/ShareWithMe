@@ -27,5 +27,4 @@ public interface OnListFragmentInteractionListener {
     void sendFragmentToInflate(Fragment fragment);
 
     void sendDialogFragmentToInflate(DialogFragment dialogFragment, String title);
-
 }

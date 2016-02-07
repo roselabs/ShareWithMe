@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.LostAndFound;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,7 +75,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         LostAndFoundPost post = mLostAndFoundList.get(position);
 
         holder.mTitleTextView.setText(post.getTitle());
@@ -82,7 +83,13 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(),
                 Utils.getStringDate(post.getPostDate())));
 
-        //TODO: Implement the click listeners
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new LostAndFoundDetailFragment(mLostAndFoundList.get(position));
+                mListener.sendFragmentToInflate(fragment);
+            }
+        });
     }
 
     @Override

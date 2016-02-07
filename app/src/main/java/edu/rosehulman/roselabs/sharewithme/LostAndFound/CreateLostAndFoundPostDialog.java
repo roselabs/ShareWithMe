@@ -20,7 +20,7 @@ public class CreateLostAndFoundPostDialog extends DialogFragment {
 
     private LostAndFoundPost mPost;
     CreateCallback mCallback;
-    private boolean mLostFoundFlag;
+    private boolean mLostFoundFlag; // Not being used yet
     private EditText mPostTitle, mPostDescription, mPostKeywords;
     private RadioGroup mRadioGroup;
 
