@@ -36,17 +36,16 @@ public class RidesPost implements Parcelable{
         this.price = "";
         this.departureLocal = "";
         this.destinationLocal = "";
+        this.postDate = Calendar.getInstance().getTime();
     }
 
     public RidesPost(boolean offer, String price, String title, String departureLocal,
                      Date rideDate, String destinationLocal, String description,
                      String keywords){
-        //this.postId = postId;
         this.offer = offer;
         this.title = title;
         this.description = description;
         this.keywords = keywords;
-        //this.userId = userId;
         this.price = price;
         this.departureLocal = departureLocal;
         this.destinationLocal = destinationLocal;

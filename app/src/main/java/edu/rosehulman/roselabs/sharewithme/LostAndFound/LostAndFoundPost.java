@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -28,9 +29,16 @@ public class LostAndFoundPost implements Parcelable{
         this.title = "";
         this.description = "";
         this.keywords = "";
+        this.postDate = Calendar.getInstance().getTime();
     }
 
-
+    public LostAndFoundPost(boolean lostFound, String title, String description, String keywords) {
+        this.lostFound = lostFound;
+        this.title = title;
+        this.description = description;
+        this.keywords = keywords;
+        this.postDate = Calendar.getInstance().getTime();
+    }
 
     public int getPostId() {
         return postId;
