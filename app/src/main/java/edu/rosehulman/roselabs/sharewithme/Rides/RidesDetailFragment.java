@@ -26,6 +26,7 @@ import java.util.Date;
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.SendNotificationTask;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
@@ -101,7 +102,10 @@ public class RidesDetailFragment extends Fragment {
                     c.setContent(comment);
                     c.setPostKey(mPost.getKey());
                     c.setDate(date);
+                    c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
                     mAdapter.add(c);
+                    SendNotificationTask task = new SendNotificationTask();
+                    task.execute("New comment from " + c.getUserId());
                     commentEditText.setText("");
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
@@ -109,6 +113,8 @@ public class RidesDetailFragment extends Fragment {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                 }
+
+
             }
         });
 
