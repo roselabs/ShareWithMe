@@ -57,4 +57,7 @@
     <string name="dialog_update_profile_title">Update your profile</string>
     <string name="edit_post_button_text"><u>Edit</u></string>
     <string name="menu_drafts_text">Drafts</string>
+
+    <string name="lost_radio_button_text">Lost</string>
+    <string name="found_radio_button_text">Found</string>
 </resources>

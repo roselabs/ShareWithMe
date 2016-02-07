@@ -13,12 +13,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
-import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
-import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.R;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
+import edu.rosehulman.roselabs.sharewithme.R;
 
 public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHolder> {
 

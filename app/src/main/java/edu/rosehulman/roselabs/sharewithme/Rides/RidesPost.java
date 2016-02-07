@@ -5,10 +5,8 @@ import android.os.Parcelable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.SimpleTimeZone;
 
 /**
  * Created by Thais Faria on 1/29/2016.
@@ -48,11 +46,10 @@ public class RidesPost implements Parcelable{
         this.title = title;
         this.description = description;
         this.keywords = keywords;
-//        this.userId = userId;
+        //this.userId = userId;
         this.price = price;
         this.departureLocal = departureLocal;
         this.destinationLocal = destinationLocal;
-
         this.rideDate = rideDate;
         this.postDate = Calendar.getInstance().getTime();
     }
