@@ -11,6 +11,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,32 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         mLostAndFoundRef = new Firebase(Constants.FIREBASE_URL + "/categories/LostAndFound/posts");
         mChildEventListener = new LostAndFoundEventListener();
         mLostAndFoundRef.addChildEventListener(mChildEventListener);
+    }
+
+    public void addPost(LostAndFoundPost post){
+        mLostAndFoundRef.push().setValue(post);
+    }
+
+    public void addDraft(LostAndFoundPost post){
+        mLostAndFoundRef.push().setValue(post);
+    }
+
+    public void update(LostAndFoundPost post) {
+        mLostAndFoundRef.child(post.getKey()).setValue(post);
+    }
+
+    public void setFilterPost(int checkedId){
+        Query query;
+        mLostAndFoundRef.removeEventListener(mChildEventListener);
+
+        if(checkedId == R.id.lost_radio_button_filter)
+            query = mLostAndFoundRef.orderByChild("lostFound").equalTo(true);
+        else
+            query = mLostAndFoundRef.orderByChild("lostFound").equalTo(false);
+
+        mLostAndFoundList.clear();
+        query.addChildEventListener(mChildEventListener);
+        notifyDataSetChanged();
     }
 
     @Override

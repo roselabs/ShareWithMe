@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme.Rides;
+package edu.rosehulman.roselabs.sharewithme.LostAndFound;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,50 +15,45 @@ import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionL
 import edu.rosehulman.roselabs.sharewithme.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by josebaf on 2/7/2016.
  */
-public class RidesFragment extends Fragment {
+public class LostAndFoundFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
-    private RidesAdapter mAdapter;
-
-    public RidesFragment() {
-        // Required empty public constructor
-    }
+    private LostAndFoundAdapter mAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_lost_and_found, container, false);
+        mAdapter = new LostAndFoundAdapter(mListener);
 
-        //substitute by a rides fragment view
-        View view = inflater.inflate(R.layout.fragment_rides, container, false);
-        mAdapter = new RidesAdapter(mListener);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.setHasFixedSize(true);
         mListener.sendAdapterToMain(mAdapter);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.buy_fab);
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.buy_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateRidesPostDialog dialog = new CreateRidesPostDialog();
-                dialog.show(getFragmentManager(), "Create new post on Rides");
+                //TODO: implement CreateLostAndFoundDialog
+//                CreateRidesPostDialog dialog = new CreateRidesPostDialog();
+//                dialog.show(getFragmentManager(), "Create new post on Rides");
             }
         });
 
-        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupFilter);
+        RadioGroup radioGroup = (RadioGroup) rootView.findViewById(R.id.radioGroupFilter);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mAdapter.setFilter(checkedId == R.id.offer_radio_button_filter);
+                mAdapter.setFilterPost(checkedId);
             }
         });
 
-        return view;
+        return rootView;
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -76,5 +71,4 @@ public class RidesFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 }
