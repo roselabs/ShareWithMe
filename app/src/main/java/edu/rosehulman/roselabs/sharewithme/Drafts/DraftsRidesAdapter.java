@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.Drafts;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
@@ -64,8 +66,15 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new RidesDetailFragment(mValues.get(position));
-                mListener.sendFragmentToInflate(fragment);
+                CreateRidesPostDialog crpd = new CreateRidesPostDialog();
+                Bundle b = new Bundle();
+                b.putParcelable("post", mValues.get(position));
+                crpd.setArguments(b);
+//                crpd.show(getFragmentManager(), "Edit Post");
+
+                mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
+//                Fragment fragment = new CreateRidesPostDialog();
+//                mListener.sendFragmentToInflate(crpd);
             }
         });
 
@@ -87,19 +96,6 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     public int getItemCount() {
         return mValues.size();
     }
-
-//    public void setFilter(boolean offer){
-//        //TODO deal to when there is no post on other toggle (update view)
-//        Query query;
-//        mRefFirebasePosts.removeEventListener(mChildEventListener);
-//        if(offer)
-//            query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
-//        else
-//            query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
-//        mValues.clear();
-//        query.addChildEventListener(mChildEventListener);
-//        notifyDataSetChanged();
-//    }
 
     public void addPost(RidesPost post){
         mRefFirebasePosts.push().setValue(post);
@@ -140,10 +136,6 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);
             notifyDataSetChanged();
-//            Log.d("THAIS", "Value of ref " + dataSnapshot.getRef());
-//            String a = dataSnapshot.getRef().toString();
-//            String b[] = a.split("/");
-//            Log.d("THAIS", "Value of ref " + b[4]);
         }
 
         @Override

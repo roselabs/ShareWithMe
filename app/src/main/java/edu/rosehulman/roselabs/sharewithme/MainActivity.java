@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -257,6 +258,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendFragmentToInflate(Fragment fragment) {
         switchToFragment(fragment);
+    }
+
+    @Override
+    public void sendDialogFragmentToInflate(DialogFragment dialogFragment, String title) {
+        dialogFragment.show(getSupportFragmentManager(), title);
     }
 
     @Override

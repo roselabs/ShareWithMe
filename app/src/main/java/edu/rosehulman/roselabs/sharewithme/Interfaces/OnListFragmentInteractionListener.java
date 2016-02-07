@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.Interfaces;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
@@ -22,5 +23,7 @@ public interface OnListFragmentInteractionListener {
     void sendAdapterToMain(DraftsRidesAdapter adapter);
 
     void sendFragmentToInflate(Fragment fragment);
+
+    void sendDialogFragmentToInflate(DialogFragment dialogFragment, String title);
 
 }

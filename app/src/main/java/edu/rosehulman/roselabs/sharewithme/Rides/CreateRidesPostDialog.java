@@ -131,13 +131,13 @@ public class CreateRidesPostDialog extends DialogFragment {
                                 price, mPostTitle.getText().toString(), mPostDeparture.getText().toString(),
                                 c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
                                 mPostKeywords.getText().toString());
-//                        if (mPost == null)
+                        if (mPost == null)
                             mCallback.onDraftPostFinished(post);
-//                        else {
-//                            post.setKey(mPost.getKey());
-//                            post.setUserId(mPost.getUserId());
-//                            mCallback.onEditPostFinished(post);
-//                        }
+                        else {
+                            post.setKey(mPost.getKey());
+                            post.setUserId(mPost.getUserId());
+                            mCallback.onEditPostFinished(post);
+                        }
                         d.dismiss();
                     }
                 }
