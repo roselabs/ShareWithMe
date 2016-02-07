@@ -55,7 +55,11 @@ public class CreateLostAndFoundPostDialog extends DialogFragment {
                 .setPositiveButton(R.string.create_button_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        LostAndFoundPost post = new LostAndFoundPost();
+                        post.setTitle(mPostTitle.getText().toString());
+                        post.setDescription(mPostDescription.getText().toString());
+                        post.setLostFound(mRadioGroup.getCheckedRadioButtonId() == R.id.lost_radio_button);
+                        mCallback.onCreatePostFinished(post);
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)

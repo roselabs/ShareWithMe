@@ -44,6 +44,7 @@ import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundAdapter;
 import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundFragment;
+import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundPost;
 import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
 import edu.rosehulman.roselabs.sharewithme.Profile.UserProfile;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
@@ -277,6 +278,12 @@ public class MainActivity extends AppCompatActivity
     public void onCreatePostFinished(RidesPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mRidesAdapter.addPost(post);
+    }
+
+    @Override
+    public void onCreatePostFinished(LostAndFoundPost post) {
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        mLostAndFoundAdapter.addPost(post);
     }
 
     @Override

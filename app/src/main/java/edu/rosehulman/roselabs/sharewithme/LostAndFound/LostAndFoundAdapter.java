@@ -19,7 +19,6 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
-import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
  * Created by josebaf on 2/6/2016.
@@ -78,8 +77,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         LostAndFoundPost post = mLostAndFoundList.get(position);
 
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(),
-                Utils.getStringDate(post.getPostDate())));
+        holder.mDescriptionTextView.setText(post.getDescription());
 
         //TODO: Implement the click listeners
     }

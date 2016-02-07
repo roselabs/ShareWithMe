@@ -30,6 +30,8 @@ public class LostAndFoundPost implements Parcelable{
         this.keywords = "";
     }
 
+
+
     public int getPostId() {
         return postId;
     }
