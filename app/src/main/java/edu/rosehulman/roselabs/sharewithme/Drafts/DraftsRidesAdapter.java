@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme.Rides;
+package edu.rosehulman.roselabs.sharewithme.Drafts;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +21,13 @@ import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.FormatData.FormatData;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
+public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.ViewHolder>{
 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -33,13 +35,14 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
 
-    public RidesAdapter(OnListFragmentInteractionListener listener){
+    public DraftsRidesAdapter(OnListFragmentInteractionListener listener){
+        Log.d("THAIS", "Construtor do DraftsRidesAdapter");
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
         mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/Rides/posts");
         mChildEventListener = new RidesChildEventListener();
-        mRefFirebasePosts.addChildEventListener(mChildEventListener);
+        mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
     }
 
     @Override
@@ -52,6 +55,8 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+
+        Log.d("THAIS", "Deu log no BindViewHolder do DraftsRides");
 
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
@@ -84,18 +89,18 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         return mValues.size();
     }
 
-    public void setFilter(boolean offer){
-        //TODO deal to when there is no post on other toggle (update view)
-        Query query;
-        mRefFirebasePosts.removeEventListener(mChildEventListener);
-        if(offer)
-            query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
-        else
-            query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
-        mValues.clear();
-        query.addChildEventListener(mChildEventListener);
-        notifyDataSetChanged();
-    }
+//    public void setFilter(boolean offer){
+//        //TODO deal to when there is no post on other toggle (update view)
+//        Query query;
+//        mRefFirebasePosts.removeEventListener(mChildEventListener);
+//        if(offer)
+//            query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
+//        else
+//            query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
+//        mValues.clear();
+//        query.addChildEventListener(mChildEventListener);
+//        notifyDataSetChanged();
+//    }
 
     public void addPost(RidesPost post){
         mRefFirebasePosts.push().setValue(post);
@@ -131,6 +136,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
     private class RidesChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Log.d("THAIS", "Deu log no onChildAdded do DraftsRides");
             RidesPost rp = dataSnapshot.getValue(RidesPost.class);
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);

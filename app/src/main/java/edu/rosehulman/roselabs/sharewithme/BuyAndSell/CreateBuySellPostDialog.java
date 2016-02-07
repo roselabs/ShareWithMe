@@ -42,7 +42,13 @@ public class CreateBuySellPostDialog extends DialogFragment {
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(R.string.draft_button_text, null);
+                .setNeutralButton(R.string.draft_button_text, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        BuySellPost post = new BuySellPost(postTitle.getText().toString(), postDescription.getText().toString(), (radioGroup.getCheckedRadioButtonId() == R.id.buy_radio_button));
+                        mCallback.onDraftPostFinished(post);
+                    }
+                });
 
         return builder.create();
     }

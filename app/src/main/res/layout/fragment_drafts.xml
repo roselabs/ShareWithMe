@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    tools:context=".Drafts.DraftsFragment">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        tools:context=".Drafts.DraftsFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buy And Sell"
+            android:id="@+id/buy_sell_text_view"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/buy_sell_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buy_sell_recycler_view">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_below="@+id/buy_sell_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rides"
+            android:id="@+id/rides_text_view"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/rides_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rides_recycler_view">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+</ScrollView>

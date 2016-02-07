@@ -10,6 +10,10 @@
             android:id="@+id/menu_help_and_feedback"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_help_text" />
+        <item
+            android:id="@+id/menu_drafts"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/menu_drafts_text" />
     </group>
 
     <item android:title="@string/categories_text">

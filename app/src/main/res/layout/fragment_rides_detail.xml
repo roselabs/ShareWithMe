@@ -5,232 +5,229 @@
     android:background="@color/appBackground"
     tools:context=".Rides.RidesFragment">
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="15dp"
-    tools:context=".Rides.RidesFragment">
-
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card_view_header"
-        android:layout_gravity="center"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="8dp">
+        android:layout_height="match_parent"
+        android:padding="15dp"
+        tools:context=".Rides.RidesFragment">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/postBackground"
-            android:padding="15dp">
+            android:layout_gravity="center"
+            card_view:cardCornerRadius="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/buy_sell_i_wanna_text"
-                android:id="@+id/i_wanna_text_view" />
+                android:background="@color/postBackground"
+                android:padding="15dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/i_wanna_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/buy_sell_i_wanna_text" />
+
+                <TextView
+                    android:id="@+id/result_option_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/title_text_view"
+                    android:layout_centerHorizontal="true"
+                    android:text="Offer or Request"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/result_price_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="right"
+                    android:text="Result Price"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_price_text_view"
+                    android:text="@string/title_text" />
+
+                <TextView
+                    android:id="@+id/result_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Title"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/departure_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_title_text_view"
+                    android:text="@string/departure_text" />
+
+                <TextView
+                    android:id="@+id/result_departure_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/departure_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Departure"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/date_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_departure_text_view"
+                    android:text="@string/date_text" />
+
+                <TextView
+                    android:id="@+id/result_date_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/date_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Date"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/destination_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_date_text_view"
+                    android:text="@string/destination_text" />
+
+                <TextView
+                    android:id="@+id/result_destination_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/destination_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Destination"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/description_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_destination_text_view"
+                    android:text="@string/description_text" />
+
+                <TextView
+                    android:id="@+id/result_description_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/description_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Description"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/result_expiration_date_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_description_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Expiration" />
+
+                <TextView
+                    android:id="@+id/keyword_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/result_expiration_date_text_view"
+                    android:text="@string/keywords_text" />
+
+                <TextView
+                    android:id="@+id/result_keyword_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/keyword_text_view"
+                    android:layout_marginBottom="10dp"
+                    android:text="Result Keywords"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/author_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/result_keyword_text_view"
+                    android:layout_margin="5dp"
+                    android:text="\@author"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/edit_ride_post_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/result_keyword_text_view"
+                    android:text="@string/edit_post_button_text"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorPrimaryDark" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comments_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view_header">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comments_recycler_view"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            card_view:cardCornerRadius="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Offer or Request"
-                android:id="@+id/result_option_text_view"
-                android:layout_above="@+id/title_text_view"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Price"
-                android:id="@+id/result_price_text_view"
-                android:layout_gravity="right"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-            <TextView
-                android:layout_below="@+id/result_price_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_text"
-                android:id="@+id/title_text_view" />
-
-            <TextView
-                android:layout_below="@+id/title_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Title"
-                android:id="@+id/result_title_text_view"
-                android:layout_marginBottom="10dp"/>
-
-            <TextView
-                android:layout_below="@+id/result_title_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/departure_text"
-                android:id="@+id/departure_text_view" />
-
-            <TextView
-                android:layout_below="@+id/departure_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Departure"
-                android:id="@+id/result_departure_text_view"
-                android:layout_marginBottom="10dp" />
-
-            <TextView
-                android:layout_below="@+id/result_departure_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/date_text"
-                android:id="@+id/date_text_view" />
-
-            <TextView
-                android:layout_below="@+id/date_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Date"
-                android:id="@+id/result_date_text_view"
-                android:layout_marginBottom="10dp"/>
-
-            <TextView
-                android:layout_below="@+id/result_date_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/destination_text"
-                android:id="@+id/destination_text_view" />
-
-            <TextView
-                android:layout_below="@+id/destination_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Destination"
-                android:id="@+id/result_destination_text_view"
-                android:layout_marginBottom="10dp" />
-
-            <TextView
-                android:layout_below="@+id/result_destination_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/description_text"
-                android:id="@+id/description_text_view" />
-
-            <TextView
-                android:layout_below="@+id/description_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Description"
-                android:id="@+id/result_description_text_view"
-                android:layout_marginBottom="10dp" />
-
-            <TextView
-                android:layout_below="@+id/result_description_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Result Expiration"
-                android:id="@+id/result_expiration_date_text_view"
-                android:layout_marginBottom="10dp" />
-
-            <TextView
-                android:layout_below="@+id/result_expiration_date_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/keywords_text"
-                android:id="@+id/keyword_text_view" />
-
-            <TextView
-                android:layout_below="@+id/keyword_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Result Keywords"
-                android:id="@+id/result_keyword_text_view"
-                android:layout_marginBottom="10dp" />
-
-              <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:textAppearance="?android:attr/textAppearanceSmall"
-                  android:text="\@author"
-                  android:id="@+id/author_textView"
-                  android:layout_below="@+id/result_keyword_text_view"
-                  android:layout_alignParentRight="true"
-                  android:layout_alignParentEnd="true"
-                  android:layout_margin="5dp"
-                  android:textSize="9sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/edit_post_button_text"
-                android:textColor="@color/colorPrimaryDark"
-                android:id="@+id/edit_ride_post_text_view"
-                android:layout_below="@+id/result_keyword_text_view"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                android:layout_alignParentStart="true">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/comments_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/card_view_header">
+                <EditText
+                    android:id="@+id/comment_message_edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_toLeftOf="@+id/send_comment_button"
+                    android:hint="Insert a comment here..." />
 
-    </android.support.v7.widget.RecyclerView>
+                <Button
+                    android:id="@+id/send_comment_button"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Send" />
 
-      <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-          android:id="@+id/card_view"
-          android:layout_gravity="center"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="5dp"
-          card_view:cardCornerRadius="8dp"
-          android:layout_below="@id/comments_recycler_view">
+            </RelativeLayout>
 
-          <RelativeLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_alignParentBottom="true"
-              android:layout_alignParentLeft="true"
-              android:layout_alignParentStart="true">
-
-              <EditText
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:hint="Insert a comment here..."
-                  android:id="@+id/comment_message_edit_text"
-                  android:layout_toLeftOf="@+id/send_comment_button"
-                  android:layout_alignParentLeft="true"
-                  android:layout_alignParentStart="true" />
-
-              <Button
-                  style="?android:attr/buttonStyleSmall"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Send"
-                  android:id="@+id/send_comment_button"
-                  android:layout_alignParentTop="true"
-                  android:layout_alignParentRight="true"
-                  android:layout_alignParentEnd="true" />
-
-          </RelativeLayout>
-
-      </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
 
-
-  </RelativeLayout>
+    </RelativeLayout>
 
 </ScrollView>

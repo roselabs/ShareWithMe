@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,9 @@ import java.io.IOException;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
+import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
+import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
+import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsRidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity
 
     private BuySellAdapter mBuySellAdapter;
     private RidesAdapter mRidesAdapter;
+    private DraftsBuySellAdapter mDraftsBuySellAdapter;
+    private DraftsRidesAdapter mDraftsRidesAdapter;
+    private DraftsFragment mDraftsFragment;
     private BuyAndSellFragment mBuyAndSellFragment;
     private RidesFragment mRidesFragment;
     private ProfileFragment mProfileFragment;
@@ -69,6 +76,7 @@ public class MainActivity extends AppCompatActivity
 
         setupUser(mFirebase.getAuth().getUid());
 
+        mDraftsFragment = new DraftsFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
         mRidesFragment = new RidesFragment();
         mProfileFragment = new ProfileFragment();
@@ -176,6 +184,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.menu_help_and_feedback:
                 switchTo = new HelpAndFeedbackFragment();
                 break;
+            case R.id.menu_drafts:
+                switchTo = mDraftsFragment;
+                break;
             case R.id.categories_rides:
                 switchTo = mRidesFragment;
                 break;
@@ -262,6 +273,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void sendAdapterToMain(DraftsBuySellAdapter adapter) {
+        mDraftsBuySellAdapter = adapter;
+    }
+
+    @Override
+    public void sendAdapterToMain(DraftsRidesAdapter adapter) {
+        mDraftsRidesAdapter = adapter;
+    }
+
+    @Override
     public void sendFragmentToInflate(Fragment fragment) {
         switchToFragment(fragment);
     }
@@ -269,13 +290,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCreatePostFinished(BuySellPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        Log.d("THAIS", "Chegou no OnCreatePostFinished " + post.getTitle());
         mBuySellAdapter.add(post);
     }
 
     @Override
     public void onCreatePostFinished(RidesPost post){
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mRidesAdapter.add(post);
+        Log.d("THAIS", "Chegou no OnCreatePostFinished " + post.getTitle());
+        mRidesAdapter.addPost(post);
     }
 
     @Override
@@ -284,6 +307,21 @@ public class MainActivity extends AppCompatActivity
         mRidesAdapter.update(post);
         getSupportFragmentManager().popBackStack();
         switchToFragment(new RidesDetailFragment(post));
+    }
+
+    @Override
+    public void onDraftPostFinished(RidesPost post) {
+        //TODO DRAFT
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
+        mRidesAdapter.addDraft(post);
+    }
+
+    @Override
+    public void onDraftPostFinished(BuySellPost post) {
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
+        mBuySellAdapter.addDraft(post);
     }
 
     class MyChildEvent implements ChildEventListener {
