@@ -15,14 +15,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.camera.CropImageIntentBuilder;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -31,10 +29,7 @@ import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
@@ -219,6 +214,43 @@ public class MainActivity extends AppCompatActivity
         switchToLogin();
     }
 
+    private String encodeBitmap(Bitmap bitmap){
+        ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
+        byte[] byteArray = bYtE.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    public static Bitmap decodeStringToBitmap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == MainActivity.RESULT_OK) {
+            Uri chosenImageUri = data.getData();
+            Bitmap mBitmap = null;
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String str = encodeBitmap(mBitmap);
+            mUser.setPicture(str);
+            mFirebase.child("users").child(mUser.getKey()).setValue(mUser);
+            ImageView imageView = (ImageView) findViewById(R.id.profile_image_view);
+            imageView.setImageBitmap(decodeStringToBitmap(str));
+        }
+    }
+
     @Override
     public void sendAdapterToMain(BuySellAdapter adapter) {
         mBuySellAdapter = adapter;
@@ -254,30 +286,6 @@ public class MainActivity extends AppCompatActivity
         switchToFragment(new RidesDetailFragment(post));
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) return;
-
-        File croppedImageFile = new File(getFilesDir(), "profile_picture.jpg");
-
-        if (requestCode == Constants.PICK_IMAGE_REQUEST) {
-            Uri croppedImage = Uri.fromFile(croppedImageFile);
-            CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 200, croppedImage);
-            cropImage.setOutlineColor(0xFF03A9F4);
-            cropImage.setSourceImage(data.getData());
-
-            startActivityForResult(cropImage.getIntent(this), Constants.CROP_IMAGE_REQUEST);
-
-        } else if (requestCode == Constants.CROP_IMAGE_REQUEST){
-            Bitmap bitmap = BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath());
-            String str = Utils.encodeBitmap(bitmap);
-            mUser.setPicture(str);
-            Map<String, Object> userPicture = new HashMap<>();
-            userPicture.put("picture", str);
-            mFirebase.child("users").child(mUser.getKey()).updateChildren(userPicture);
-        }
-    }
-
     class MyChildEvent implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -285,15 +293,16 @@ public class MainActivity extends AppCompatActivity
             mUser.setKey(dataSnapshot.getKey());
             if (user.getPicture() != null) {
                 mUser.setPicture(user.getPicture());
-                mImageView.setImageBitmap(Utils.decodeStringToBitmap(mUser.getPicture()));
+                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
             }
             if (user.getName() != null) mProfileNameTextView.setText(user.getName());
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            String key = dataSnapshot.getKey();
             UserProfile user = dataSnapshot.getValue(UserProfile.class);
-            mImageView.setImageBitmap(Utils.decodeStringToBitmap(mUser.getPicture()));
+            mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
             if (user.getName() != null) mProfileNameTextView.setText(user.getName());
         }
 

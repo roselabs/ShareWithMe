@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
@@ -112,6 +110,39 @@ public class CreateRidesPostDialog extends DialogFragment {
                     }
                 }
             });
+
+            //Button Draft Under Construction
+            Button draftButton = d.getButton(Dialog.BUTTON_NEUTRAL);
+            draftButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mFlag = true;
+
+                    checkEditText(mPostTitle, "Title is required!", 3);
+                    checkEditText(mPostDescription, "Description is required!", 3);
+
+                    if(mFlag){
+                        String price = FormatData.formatPrice(mPostPrice);
+
+                        Calendar c = Calendar.getInstance();
+                        c.set(mPostRideDate.getYear(), mPostRideDate.getMonth(), mPostRideDate.getDayOfMonth());
+
+                        RidesPost post = new RidesPost((mRadioGroup.getCheckedRadioButtonId() == R.id.offer_radio_button),
+                                price, mPostTitle.getText().toString(), mPostDeparture.getText().toString(),
+                                c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
+                                mPostKeywords.getText().toString());
+//                        if (mPost == null)
+                            mCallback.onDraftPostFinished(post);
+//                        else {
+//                            post.setKey(mPost.getKey());
+//                            post.setUserId(mPost.getUserId());
+//                            mCallback.onEditPostFinished(post);
+//                        }
+                        d.dismiss();
+                    }
+                }
+            });
+
         }
     }
 
