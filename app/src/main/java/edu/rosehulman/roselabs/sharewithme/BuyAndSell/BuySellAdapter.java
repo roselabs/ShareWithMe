@@ -20,6 +20,7 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHolder> {
 
@@ -50,7 +51,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
 
         final BuySellPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(post.getDescription());
+        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +78,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         return mValues.size();
     }
 
-    public void setFilter(boolean buy){
+    public void setFilter(boolean buy) {
         Query query;
         mRefFirebasePost.removeEventListener(mChildEventListener);
         if (buy)
@@ -124,8 +125,8 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (int i = 0; i < mValues.size(); i++){
-                if(mValues.get(i).getKey().equals(key)){
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
                     mValues.remove(i);
                     break;
                 }

@@ -1,7 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.Drafts;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,22 +19,20 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
-import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
-import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.ViewHolder>{
+public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.ViewHolder> {
 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
 
-    public DraftsRidesAdapter(OnListFragmentInteractionListener listener){
+    public DraftsRidesAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
@@ -59,7 +56,7 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateRidesPostDialog crpd = new CreateRidesPostDialog();
+                CreateRidesDraftDialog crpd = new CreateRidesDraftDialog();
                 Bundle b = new Bundle();
                 b.putParcelable("post", mValues.get(position));
                 crpd.setArguments(b);
@@ -120,8 +117,8 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (int i = 0; i < mValues.size(); i++){
-                if(mValues.get(i).getKey().equals(key)){
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
                     mValues.remove(i);
                     break;
                 }

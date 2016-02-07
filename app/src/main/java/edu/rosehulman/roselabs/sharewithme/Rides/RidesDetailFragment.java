@@ -2,7 +2,6 @@ package edu.rosehulman.roselabs.sharewithme.Rides;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -19,17 +17,14 @@ import com.firebase.client.Firebase;
 import org.solovyev.android.views.llm.DividerItemDecoration;
 import org.solovyev.android.views.llm.LinearLayoutManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.SendNotificationTask;
-import edu.rosehulman.roselabs.sharewithme.Utils;
-import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +38,7 @@ public class RidesDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public RidesDetailFragment(RidesPost post){
+    public RidesDetailFragment(RidesPost post) {
         mPost = post;
     }
 
@@ -96,7 +91,7 @@ public class RidesDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String comment = commentEditText.getText().toString();
-                if (!comment.isEmpty()){
+                if (!comment.isEmpty()) {
                     Date date = new Date();
                     Comment c = new Comment();
                     c.setContent(comment);
@@ -113,13 +108,11 @@ public class RidesDetailFragment extends Fragment {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
                 }
-
-
             }
         });
 
         String optionValue;
-        if(mPost.isOffer())
+        if (mPost.isOffer())
             optionValue = "Offer";
         else
             optionValue = "Request";
@@ -127,49 +120,49 @@ public class RidesDetailFragment extends Fragment {
         //Displays the values and hides the view if empty
         option.setText(optionValue);
 
-        if(mPost.getPrice().isEmpty()){
+        if (mPost.getPrice().isEmpty()) {
             price.setText("$ not informed");
-        }else{
+        } else {
             price.setText("$ " + mPost.getPrice());
         }
 
         title.setText(mPost.getTitle());
 
-        if(mPost.getDepartureLocal().isEmpty()){
+        if (mPost.getDepartureLocal().isEmpty()) {
             hideView(departure);
             hideView(view.findViewById(R.id.departure_text_view));
-        }else{
+        } else {
             departure.setText(mPost.getDepartureLocal());
         }
         if (mPost.getRideDate() != null)
             date.setText(Utils.getStringDate(mPost.getRideDate()));
 
-        if(mPost.getDestinationLocal().isEmpty()){
+        if (mPost.getDestinationLocal().isEmpty()) {
             hideView(destination);
             hideView(view.findViewById(R.id.destination_text_view));
-        }else {
+        } else {
             destination.setText(mPost.getDestinationLocal());
         }
 
-        if(mPost.getDescription().isEmpty()){
+        if (mPost.getDescription().isEmpty()) {
             hideView(description);
             hideView(view.findViewById(R.id.description_text_view));
-        }else{
+        } else {
             description.setText(mPost.getDescription());
         }
 //        expiration.setText(mPost.getExpirationDate().toString());
 
-        if(mPost.getKeywords().isEmpty()){
+        if (mPost.getKeywords().isEmpty()) {
             hideView(keyword);
             hideView(view.findViewById(R.id.keyword_text_view));
-        }else{
+        } else {
             keyword.setText(mPost.getKeywords());
         }
 
         return view;
     }
 
-    private void hideView(View view){
+    private void hideView(View view) {
         view.setVisibility(View.GONE);
     }
 

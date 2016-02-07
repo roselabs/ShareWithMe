@@ -39,7 +39,6 @@ public class RidesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
-        mListener.sendAdapterToMain(mAdapter);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.buy_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +62,7 @@ public class RidesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof OnListFragmentInteractionListener){
+        if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()

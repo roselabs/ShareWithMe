@@ -1,7 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.Rides;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -14,9 +13,9 @@ import android.widget.RadioGroup;
 
 import java.util.Calendar;
 
-import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
  * Created by rodrigr1 on 1/19/2016.
@@ -30,12 +29,12 @@ public class CreateRidesPostDialog extends DialogFragment {
     private EditText mPostPrice, mPostTitle, mPostDeparture, mPostDestination, mPostDescription, mPostKeywords;
     private DatePicker mPostRideDate;
 
-    public CreateRidesPostDialog(){
+    public CreateRidesPostDialog() {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
-        if (getArguments() != null){
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        if (getArguments() != null) {
             mPost = getArguments().getParcelable("post");
         } else {
             mPost = null;
@@ -52,7 +51,7 @@ public class CreateRidesPostDialog extends DialogFragment {
         mPostDescription = (EditText) v.findViewById(R.id.description_edit_text);
         mPostKeywords = (EditText) v.findViewById(R.id.keyword_edit_text);
 
-        if (mPost != null){
+        if (mPost != null) {
             updateEditTexts();
         }
 
@@ -60,8 +59,10 @@ public class CreateRidesPostDialog extends DialogFragment {
         builder.setTitle("Create a post in Rides")
                 .setView(v)
                 .setPositiveButton(R.string.create_button_text, null)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setNeutralButton(R.string.draft_button_text, null);
+                .setNegativeButton(android.R.string.cancel, null);
+        if (mPost == null) {
+            builder.setNeutralButton(R.string.draft_button_text, null);
+        }
 
         return builder.create();
     }
@@ -69,21 +70,18 @@ public class CreateRidesPostDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        final AlertDialog d = (AlertDialog)getDialog();
-        if(d != null)
-        {
+        final AlertDialog d = (AlertDialog) getDialog();
+        if (d != null) {
             Button positiveButton = d.getButton(Dialog.BUTTON_POSITIVE);
-            positiveButton.setOnClickListener(new View.OnClickListener()
-            {
+            positiveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     mFlag = true;
 
                     checkEditText(mPostTitle, "Title is required!", 3);
                     checkEditText(mPostDescription, "Description is required!", 3);
 
-                    if(mFlag){
+                    if (mFlag) {
                         String price = Utils.formatPrice(mPostPrice);
 
                         Calendar c = Calendar.getInstance();
@@ -94,7 +92,7 @@ public class CreateRidesPostDialog extends DialogFragment {
                                 c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
                                 mPostKeywords.getText().toString());
 
-                        if(mPost!= null){
+                        if (mPost != null) {
                             post.setKey(mPost.getKey());
                             post.setUserId(mPost.getUserId());
                         }
@@ -116,7 +114,7 @@ public class CreateRidesPostDialog extends DialogFragment {
                     checkEditText(mPostTitle, "Title is required!", 3);
                     checkEditText(mPostDescription, "Description is required!", 3);
 
-                    if(mFlag){
+                    if (mFlag) {
                         String price = Utils.formatPrice(mPostPrice);
 
                         Calendar c = Calendar.getInstance();
@@ -127,7 +125,7 @@ public class CreateRidesPostDialog extends DialogFragment {
                                 c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
                                 mPostKeywords.getText().toString());
 
-                        if (mPost != null){
+                        if (mPost != null) {
                             post.setKey(mPost.getKey());
                             post.setUserId(mPost.getUserId());
                         }
@@ -141,14 +139,14 @@ public class CreateRidesPostDialog extends DialogFragment {
         }
     }
 
-    private void checkEditText(EditText et, String message, int minChar){
-        if (et.getText().toString().length() < minChar){
+    private void checkEditText(EditText et, String message, int minChar) {
+        if (et.getText().toString().length() < minChar) {
             et.setError(message);
             mFlag = false;
         }
     }
 
-    private void updateEditTexts(){
+    private void updateEditTexts() {
         if (mPost.isOffer())
             mRadioGroup.check(R.id.offer_radio_button);
         else

@@ -15,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
-import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
@@ -43,11 +41,9 @@ import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsRidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
-import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundAdapter;
 import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundFragment;
 import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
 import edu.rosehulman.roselabs.sharewithme.Profile.UserProfile;
-import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
@@ -55,9 +51,6 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnListFragmentInteractionListener, CreateCallback {
 
-    private BuySellAdapter mBuySellAdapter;
-    private RidesAdapter mRidesAdapter;
-    private LostAndFoundAdapter mLostAndFoundAdapter;
     private BuyAndSellFragment mBuyAndSellFragment;
     private RidesFragment mRidesFragment;
     private LostAndFoundFragment mLostAndFoundFragment;
@@ -217,9 +210,9 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (switchTo != null) {
+        if (switchTo != null)
             switchToFragment(switchTo);
-        }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -246,31 +239,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void sendAdapterToMain(BuySellAdapter adapter) {
-        mBuySellAdapter = adapter;
-    }
-
-    @Override
-    public void sendAdapterToMain(RidesAdapter adapter) {
-        mRidesAdapter = adapter;
-    }
-
-    @Override
-    public void sendAdapterToMain(LostAndFoundAdapter adapter) {
-        mLostAndFoundAdapter = adapter;
-    }
-
-    @Override
-    public void sendAdapterToMain(DraftsBuySellAdapter adapter) {
-        mDraftsBuySellAdapter = adapter;
-    }
-
-    @Override
-    public void sendAdapterToMain(DraftsRidesAdapter adapter) {
-        mDraftsRidesAdapter = adapter;
-    }
-
-    @Override
     public void sendFragmentToInflate(Fragment fragment) {
         switchToFragment(fragment);
     }
@@ -282,7 +250,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCreatePostFinished(BuySellPost post) {
-        if(post.getKey() != null){
+        if (post.getKey() != null) {
             mFirebaseBuySellDraft.child(post.getKey()).removeValue();
             mFirebaseBuySellPost.child(post.getKey()).removeValue();
         }
@@ -290,7 +258,7 @@ public class MainActivity extends AppCompatActivity
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mFirebaseBuySellPost.push().setValue(post);
 
-        if(post.getKey() != null) {
+        if (post.getKey() != null) {
             getSupportFragmentManager().popBackStack();
             switchToFragment(new BuySellDetailFragment(post));
         }
@@ -298,7 +266,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCreatePostFinished(RidesPost post) {
-        if(post.getKey() != null){
+        if (post.getKey() != null) {
             mFirebaseRideDraft.child(post.getKey()).removeValue();
             mFirebaseRidePost.child(post.getKey()).removeValue();
         }
@@ -306,26 +274,16 @@ public class MainActivity extends AppCompatActivity
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mFirebaseRidePost.push().setValue(post);
 
-        if(post.getKey() != null) {
+        if (post.getKey() != null) {
             getSupportFragmentManager().popBackStack();
             switchToFragment(new RidesDetailFragment(post));
         }
     }
 
     @Override
-    public void onEditPostFinished(RidesPost post) {
-//        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-//        mRidesAdapter.update(post);
-//        getSupportFragmentManager().popBackStack();
-//        switchToFragment(new RidesDetailFragment(post));
-    }
-
-    @Override
     public void onDraftPostFinished(RidesPost post) {
-        if(post.getKey() != null){
+        if (post.getKey() != null)
             mFirebaseRideDraft.child(post.getKey()).removeValue();
-            mFirebaseRidePost.child(post.getKey()).removeValue();
-        }
 
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mFirebaseRideDraft.push().setValue(post);
@@ -333,10 +291,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDraftPostFinished(BuySellPost post) {
-        if(post.getKey() != null){
+        if (post.getKey() != null)
             mFirebaseBuySellDraft.child(post.getKey()).removeValue();
-            mFirebaseBuySellPost.child(post.getKey()).removeValue();
-        }
 
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
         mFirebaseBuySellDraft.push().setValue(post);

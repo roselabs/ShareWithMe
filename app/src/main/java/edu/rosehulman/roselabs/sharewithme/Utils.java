@@ -15,31 +15,31 @@ import java.util.Date;
  */
 public class Utils {
 
-    public static String encodeBitmap(Bitmap bitmap){
+    public static String encodeBitmap(Bitmap bitmap) {
         ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
         byte[] byteArray = bYtE.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    public static Bitmap decodeStringToBitmap(String encodedString){
-        try{
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+    public static Bitmap decodeStringToBitmap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.getMessage();
             return null;
         }
     }
 
-    public static String formatPrice(EditText price){
+    public static String formatPrice(EditText price) {
         String formattedPrice = price.getText().toString();
 
-        if(formattedPrice.isEmpty())
+        if (formattedPrice.isEmpty())
             return formattedPrice;
 
-        if(formattedPrice.contains(".")) {
+        if (formattedPrice.contains(".")) {
             int decimal = formattedPrice.indexOf(".");
 
             if (formattedPrice.length() - 1 < decimal + 2) {
@@ -48,20 +48,20 @@ public class Utils {
             } else if (formattedPrice.length() - 1 > decimal + 2) {
                 formattedPrice = formattedPrice.substring(0, decimal + 3);
             }
-        }else{
+        } else {
             formattedPrice += ".00";
         }
 
         return formattedPrice;
     }
 
-    public static String formatDateFromPicker(DatePicker date){
-        String formattedDate = date.getYear() + "/" + (date.getMonth()+1) + "/" + date.getDayOfMonth();
+    public static String formatDateFromPicker(DatePicker date) {
+        String formattedDate = date.getYear() + "/" + (date.getMonth() + 1) + "/" + date.getDayOfMonth();
 
         return formattedDate;
     }
 
-    public static String formatDateToAmerican(String databaseFormat){
+    public static String formatDateToAmerican(String databaseFormat) {
         String[] dateArray = databaseFormat.split("/");
 
         String formattedDate = dateArray[1] + "/" + dateArray[2] + "/" + dateArray[0];
@@ -69,8 +69,8 @@ public class Utils {
         return formattedDate;
     }
 
-    public static String formatPhoneNumber(String phoneNumber){
-        if(phoneNumber == null || phoneNumber.isEmpty()){
+    public static String formatPhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
             return "";
         }
 
@@ -90,7 +90,7 @@ public class Utils {
         return phone;
     }
 
-    public static String getStringDate(Date date){
+    public static String getStringDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
         return dateFormat.format(date);
     }

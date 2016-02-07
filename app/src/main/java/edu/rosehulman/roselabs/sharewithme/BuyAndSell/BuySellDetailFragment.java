@@ -23,8 +23,6 @@ import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.R;
-import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
-import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
@@ -39,7 +37,7 @@ public class BuySellDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public BuySellDetailFragment(BuySellPost post){
+    public BuySellDetailFragment(BuySellPost post) {
         mPost = post;
     }
 
@@ -89,7 +87,7 @@ public class BuySellDetailFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String comment = commentEditText.getText().toString();
-                if (!comment.isEmpty()){
+                if (!comment.isEmpty()) {
                     Date date = new Date();
                     Comment c = new Comment();
                     c.setContent(comment);
@@ -107,7 +105,7 @@ public class BuySellDetailFragment extends Fragment {
         });
 
         String optionValue;
-        if(mPost.isBuy())
+        if (mPost.isBuy())
             optionValue = "Buy";
         else
             optionValue = "Sell";
@@ -115,33 +113,33 @@ public class BuySellDetailFragment extends Fragment {
         //Displays the values and hides the view if empty
         option.setText(optionValue);
 
-        if(mPost.getPrice().isEmpty()){
+        if (mPost.getPrice().isEmpty()) {
             price.setText("$ not informed");
-        }else{
+        } else {
             price.setText("$ " + mPost.getPrice());
         }
 
         title.setText(mPost.getTitle());
 
-        if(mPost.getDescription().isEmpty()){
+        if (mPost.getDescription().isEmpty()) {
             hideView(description);
             hideView(view.findViewById(R.id.description_text_view));
-        }else{
+        } else {
             description.setText(mPost.getDescription());
         }
 //        expiration.setText(mPost.getExpirationDate().toString());
 
-        if(mPost.getKeywords().isEmpty()){
+        if (mPost.getKeywords().isEmpty()) {
             hideView(keyword);
             hideView(view.findViewById(R.id.keyword_text_view));
-        }else{
+        } else {
             keyword.setText(mPost.getKeywords());
         }
 
         return view;
     }
 
-    private void hideView(View view){
+    private void hideView(View view) {
         view.setVisibility(View.GONE);
     }
 

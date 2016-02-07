@@ -25,7 +25,7 @@ import edu.rosehulman.roselabs.sharewithme.Utils;
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
+public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> {
 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -33,7 +33,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
 
-    public RidesAdapter(OnListFragmentInteractionListener listener){
+    public RidesAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
@@ -83,11 +83,11 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         return mValues.size();
     }
 
-    public void setFilter(boolean offer){
+    public void setFilter(boolean offer) {
         //TODO deal to when there is no post on other toggle (update view)
         Query query;
         mRefFirebasePosts.removeEventListener(mChildEventListener);
-        if(offer)
+        if (offer)
             query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
         else
             query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
@@ -131,8 +131,8 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (int i = 0; i < mValues.size(); i++){
-                if(mValues.get(i).getKey().equals(key)){
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
                     mValues.remove(i);
                     break;
                 }

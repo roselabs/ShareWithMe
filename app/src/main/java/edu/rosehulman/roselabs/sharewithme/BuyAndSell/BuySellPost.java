@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Calendar;
 import java.util.Date;
 
-public class BuySellPost implements Parcelable{
+public class BuySellPost implements Parcelable {
 
     private boolean buy;
     private String title;
@@ -39,7 +39,7 @@ public class BuySellPost implements Parcelable{
     }
 
     //Temporary constructor just for testing purposes
-    public BuySellPost(String title, String desc, boolean buy){
+    public BuySellPost(String title, String desc, boolean buy) {
         this.title = title;
         this.description = desc;
         this.buy = buy;

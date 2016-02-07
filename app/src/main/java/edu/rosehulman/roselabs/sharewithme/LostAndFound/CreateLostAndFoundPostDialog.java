@@ -30,7 +30,7 @@ public class CreateLostAndFoundPostDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        if (getArguments() != null){
+        if (getArguments() != null) {
             mPost = getArguments().getParcelable("post");
         } else {
             mPost = null;
@@ -40,12 +40,12 @@ public class CreateLostAndFoundPostDialog extends DialogFragment {
         mCallback = (CreateCallback) getActivity();
         View view = inflater.inflate(R.layout.fragment_create_lost_and_found, null);
 
-        mRadioGroup = (RadioGroup)view.findViewById(R.id.lost_and_found_radio_group);
-        mPostTitle = (EditText)view.findViewById(R.id.title_edit_text);
-        mPostDescription = (EditText)view.findViewById(R.id.description_edit_text);
-        mPostKeywords = (EditText)view.findViewById(R.id.keyword_edit_text);
+        mRadioGroup = (RadioGroup) view.findViewById(R.id.lost_and_found_radio_group);
+        mPostTitle = (EditText) view.findViewById(R.id.title_edit_text);
+        mPostDescription = (EditText) view.findViewById(R.id.description_edit_text);
+        mPostKeywords = (EditText) view.findViewById(R.id.keyword_edit_text);
 
-        if (mPost != null){
+        if (mPost != null) {
             updateEditTexts();
         }
 
@@ -70,7 +70,7 @@ public class CreateLostAndFoundPostDialog extends DialogFragment {
     }
 
 
-    private void updateEditTexts(){
+    private void updateEditTexts() {
         if (mPost.isLostFound())
             mRadioGroup.check(R.id.lost_radio_button);
         else

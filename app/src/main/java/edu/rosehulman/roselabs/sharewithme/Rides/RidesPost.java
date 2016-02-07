@@ -11,17 +11,17 @@ import java.util.Date;
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class RidesPost implements Parcelable{
+public class RidesPost implements Parcelable {
 
-    private boolean offer;//
-    private String title;//
-    private String description;//
-    private String keywords;//
+    private boolean offer;
+    private String title;
+    private String description;
+    private String keywords;
     private String userId;
-    private String price;//
-    private String departureLocal;//
-    private String destinationLocal;//
-    private Date rideDate;//
+    private String price;
+    private String departureLocal;
+    private String destinationLocal;
+    private Date rideDate;
     private Date postDate;
     private Date expirationDate;
 
@@ -39,7 +39,7 @@ public class RidesPost implements Parcelable{
 
     public RidesPost(boolean offer, String price, String title, String departureLocal,
                      Date rideDate, String destinationLocal, String description,
-                     String keywords){
+                     String keywords) {
         this.offer = offer;
         this.title = title;
         this.description = description;
@@ -51,7 +51,7 @@ public class RidesPost implements Parcelable{
         this.postDate = Calendar.getInstance().getTime();
     }
 
-    public RidesPost(String title, String description, boolean offer){
+    public RidesPost(String title, String description, boolean offer) {
         this.title = title;
         this.description = description;
         this.offer = offer;

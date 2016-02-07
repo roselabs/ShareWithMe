@@ -31,7 +31,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
     private final OnListFragmentInteractionListener mListener; // Not being used yet but will be.
     private ChildEventListener mChildEventListener;
 
-    public LostAndFoundAdapter(OnListFragmentInteractionListener listener){
+    public LostAndFoundAdapter(OnListFragmentInteractionListener listener) {
         mListener = listener;
         mLostAndFoundList = new ArrayList<>();
         mLostAndFoundRef = new Firebase(Constants.FIREBASE_URL + "/categories/LostAndFound/posts");
@@ -39,11 +39,11 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         mLostAndFoundRef.addChildEventListener(mChildEventListener);
     }
 
-    public void addPost(LostAndFoundPost post){
+    public void addPost(LostAndFoundPost post) {
         mLostAndFoundRef.push().setValue(post);
     }
 
-    public void addDraft(LostAndFoundPost post){
+    public void addDraft(LostAndFoundPost post) {
         mLostAndFoundRef.push().setValue(post);
     }
 
@@ -51,11 +51,11 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         mLostAndFoundRef.child(post.getKey()).setValue(post);
     }
 
-    public void setFilterPost(int checkedId){
+    public void setFilterPost(int checkedId) {
         Query query;
         mLostAndFoundRef.removeEventListener(mChildEventListener);
 
-        if(checkedId == R.id.lost_radio_button_filter)
+        if (checkedId == R.id.lost_radio_button_filter)
             query = mLostAndFoundRef.orderByChild("lostFound").equalTo(true);
         else
             query = mLostAndFoundRef.orderByChild("lostFound").equalTo(false);
@@ -119,8 +119,8 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for(LostAndFoundPost post : mLostAndFoundList){
-                if(post.getKey().equals(key)){
+            for (LostAndFoundPost post : mLostAndFoundList) {
+                if (post.getKey().equals(key)) {
                     mLostAndFoundList.remove(post);
                 }
             }

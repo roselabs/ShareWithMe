@@ -17,11 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
-import edu.rosehulman.roselabs.sharewithme.BuyAndSell.CreateBuySellPostDialog;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
-import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
 public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdapter.ViewHolder> {
@@ -43,11 +41,13 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
+
         final BuySellPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
         holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
@@ -55,7 +55,7 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateBuySellPostDialog crpd = new CreateBuySellPostDialog();
+                CreateBuySellDraftDialog crpd = new CreateBuySellDraftDialog();
                 Bundle b = new Bundle();
                 b.putParcelable("post", mValues.get(position));
                 crpd.setArguments(b);
@@ -115,8 +115,8 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (int i = 0; i < mValues.size(); i++){
-                if(mValues.get(i).getKey().equals(key)){
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
                     mValues.remove(i);
                     break;
                 }
