@@ -37,9 +37,8 @@ public class LostAndFoundFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: implement CreateLostAndFoundDialog
-//                CreateRidesPostDialog dialog = new CreateRidesPostDialog();
-//                dialog.show(getFragmentManager(), "Create new post on Rides");
+                CreateLostAndFoundPostDialog dialog = new CreateLostAndFoundPostDialog();
+                dialog.show(getFragmentManager(), "Create new post on Lost and Found");
             }
         });
 
