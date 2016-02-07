@@ -69,7 +69,7 @@ public class LostAndFoundDetailFragment extends Fragment{
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(),
                 Utils.getStringDate(mPost.getPostDate())));
 
-        mAdapter = new CommentsAdapter("rides", mPost.getKey());
+        mAdapter = new CommentsAdapter("lost and found", mPost.getKey());
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 

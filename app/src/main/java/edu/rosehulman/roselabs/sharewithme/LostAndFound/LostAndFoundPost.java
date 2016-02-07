@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public class LostAndFoundPost implements Parcelable {
 
-    private int postId;
     private boolean lostFound; // True for Lost, False for Found
     private String title;//
     private String description;//
@@ -38,14 +37,6 @@ public class LostAndFoundPost implements Parcelable {
         this.description = description;
         this.keywords = keywords;
         this.postDate = Calendar.getInstance().getTime();
-    }
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
     }
 
     public boolean isLostFound() {

@@ -79,7 +79,6 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         LostAndFoundPost post = mLostAndFoundList.get(position);
 
         holder.mTitleTextView.setText(post.getTitle());
-        //holder.mDescriptionTextView.setText(post.getDescription());
         holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(),
                 Utils.getStringDate(post.getPostDate())));
 
