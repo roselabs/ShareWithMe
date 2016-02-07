@@ -67,11 +67,18 @@ public class MainActivity extends AppCompatActivity
     private ProfileFragment mProfileFragment;
     private ImageView mImageView;
     private UserProfile mUser;
-    private Firebase mFirebase;
+
     private TextView mProfileNameTextView;
     private DraftsBuySellAdapter mDraftsBuySellAdapter;
     private DraftsRidesAdapter mDraftsRidesAdapter;
     private DraftsFragment mDraftsFragment;
+
+    private Firebase mFirebase;
+    private Firebase mFirebaseRidePost;
+    private Firebase mFirebaseRideDraft;
+    private Firebase mFirebaseBuySellPost;
+    private Firebase mFirebaseBuySellDraft;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +90,11 @@ public class MainActivity extends AppCompatActivity
             switchToLogin();
             return;
         }
+
+        mFirebaseRidePost = new Firebase(Constants.FIREBASE_RIDES_POST_URL);
+        mFirebaseRideDraft = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
+        mFirebaseBuySellPost = new Firebase(Constants.FIREBASE_BUY_SELL_POST_URL);
+        mFirebaseBuySellDraft = new Firebase(Constants.FIREBASE_BUY_SELL_DRAFT_URL);
 
         setupUser(mFirebase.getAuth().getUid());
 
