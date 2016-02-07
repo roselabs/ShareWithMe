@@ -1,9 +1,11 @@
 package edu.rosehulman.roselabs.sharewithme;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
@@ -15,25 +17,35 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.camera.CropImageIntentBuilder;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
+import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
+import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsRidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
@@ -103,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void setupUser(String uid){
+    private void setupUser(String uid) {
         mUser = new UserProfile();
         mUser.setUserID(uid);
 
@@ -186,7 +198,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        if (switchTo != null){
+        if (switchTo != null) {
             switchToFragment(switchTo);
         }
 
@@ -195,14 +207,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void switchToFragment(Fragment fragment){
+    private void switchToFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
         ft.addToBackStack("fragBack");
         ft.commit();
     }
 
-    private void switchToLogin(){
+    private void switchToLogin() {
         Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         firebase.unauth();
         finish();
@@ -214,51 +226,24 @@ public class MainActivity extends AppCompatActivity
         switchToLogin();
     }
 
-    private String encodeBitmap(Bitmap bitmap){
-        ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bYtE);
-        byte[] byteArray = bYtE.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
-    }
-
-    public static Bitmap decodeStringToBitmap(String encodedString){
-        try{
-            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }catch(Exception e){
-            e.getMessage();
-            return null;
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == MainActivity.RESULT_OK) {
-            Uri chosenImageUri = data.getData();
-            Bitmap mBitmap = null;
-            try {
-                mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String str = encodeBitmap(mBitmap);
-            mUser.setPicture(str);
-            mFirebase.child("users").child(mUser.getKey()).setValue(mUser);
-            ImageView imageView = (ImageView) findViewById(R.id.profile_image_view);
-            imageView.setImageBitmap(decodeStringToBitmap(str));
-        }
-    }
-
     @Override
     public void sendAdapterToMain(BuySellAdapter adapter) {
         mBuySellAdapter = adapter;
     }
 
     @Override
-    public void sendAdapterToMain(RidesAdapter adapter){
+    public void sendAdapterToMain(RidesAdapter adapter) {
         mRidesAdapter = adapter;
+    }
+
+    @Override
+    public void sendAdapterToMain(DraftsBuySellAdapter adapter) {
+
+    }
+
+    @Override
+    public void sendAdapterToMain(DraftsRidesAdapter adapter) {
+
     }
 
     @Override
@@ -273,9 +258,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCreatePostFinished(RidesPost post){
+    public void onCreatePostFinished(RidesPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mRidesAdapter.add(post);
+        mRidesAdapter.addPost(post);
     }
 
     @Override
@@ -286,6 +271,51 @@ public class MainActivity extends AppCompatActivity
         switchToFragment(new RidesDetailFragment(post));
     }
 
+    @Override
+    public void onDraftPostFinished(RidesPost post) {
+
+    }
+
+    @Override
+    public void onDraftPostFinished(BuySellPost post) {
+
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) return;
+
+        File croppedImageFile = new File(getFilesDir(), "profile_picture.jpg");
+
+        if (requestCode == Constants.PICK_IMAGE_REQUEST) {
+            Uri croppedImage = Uri.fromFile(croppedImageFile);
+            CropImageIntentBuilder cropImage = new CropImageIntentBuilder(200, 200, croppedImage);
+            cropImage.setOutlineColor(0xFF03A9F4);
+            cropImage.setSourceImage(data.getData());
+
+            Intent intent = cropImage.getIntent(this);
+            if (Build.VERSION.SDK_INT > 19) {
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                //noinspection ResourceType
+                getContentResolver().takePersistableUriPermission(data.getData(), takeFlags);
+            }
+
+            startActivityForResult(intent, Constants.CROP_IMAGE_REQUEST);
+
+        } else if (requestCode == Constants.CROP_IMAGE_REQUEST) {
+            Bitmap bitmap = BitmapFactory.decodeFile(croppedImageFile.getAbsolutePath());
+            String str = Utils.encodeBitmap(bitmap);
+            mUser.setPicture(str);
+            Map<String, Object> userPicture = new HashMap<>();
+            userPicture.put("picture", str);
+            mFirebase.child("users").child(mUser.getKey()).updateChildren(userPicture);
+        }
+    }
+
     class MyChildEvent implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -293,16 +323,15 @@ public class MainActivity extends AppCompatActivity
             mUser.setKey(dataSnapshot.getKey());
             if (user.getPicture() != null) {
                 mUser.setPicture(user.getPicture());
-                mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
+                mImageView.setImageBitmap(Utils.decodeStringToBitmap(mUser.getPicture()));
             }
             if (user.getName() != null) mProfileNameTextView.setText(user.getName());
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            String key = dataSnapshot.getKey();
             UserProfile user = dataSnapshot.getValue(UserProfile.class);
-            mImageView.setImageBitmap(decodeStringToBitmap(mUser.getPicture()));
+            mImageView.setImageBitmap(Utils.decodeStringToBitmap(mUser.getPicture()));
             if (user.getName() != null) mProfileNameTextView.setText(user.getName());
         }
 

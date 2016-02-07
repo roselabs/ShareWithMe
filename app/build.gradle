@@ -45,4 +45,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.0+'
     compile 'org.solovyev.android.views:linear-layout-manager:0.5@aar'
     compile 'me.villani.lorenzo.android:android-cropimage:1.1.+'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
