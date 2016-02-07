@@ -37,7 +37,6 @@ public class DraftsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        //substitute by a rides fragment view
         View view = inflater.inflate(R.layout.fragment_drafts, container, false);
 
         mDraftsBuySellAdapter = new DraftsBuySellAdapter(mListener);
@@ -56,23 +55,6 @@ public class DraftsFragment extends Fragment {
         ridesRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
         ridesRecyclerView.setNestedScrollingEnabled(false);
         ridesRecyclerView.setAdapter(mDraftsRidesAdapter);
-
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.buy_fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                CreateRidesPostDialog dialog = new CreateRidesPostDialog();
-//                dialog.show(getFragmentManager(), "Create new post on Rides");
-//            }
-//        });
-
-//        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.radioGroupFilter);
-//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                mAdapter.setFilter(checkedId == R.id.offer_radio_button_filter);
-//            }
-//        });
 
         return view;
     }

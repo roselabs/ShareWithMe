@@ -24,7 +24,7 @@ import edu.rosehulman.roselabs.sharewithme.R;
 public class CreateRidesPostDialog extends DialogFragment {
 
     private RidesPost mPost;
-    CreateCallback mCallback;
+    private CreateCallback mCallback;
     private boolean mFlag;
     private RadioGroup mRadioGroup;
     private EditText mPostPrice, mPostTitle, mPostDeparture, mPostDestination, mPostDescription, mPostKeywords;
@@ -51,7 +51,6 @@ public class CreateRidesPostDialog extends DialogFragment {
         mPostDestination = (EditText) v.findViewById(R.id.destination_edit_text);
         mPostDescription = (EditText) v.findViewById(R.id.description_edit_text);
         mPostKeywords = (EditText) v.findViewById(R.id.keyword_edit_text);
-//        final Button buttonDate = (Button) v.findViewById(R.id.button_date);
 
         if (mPost != null){
             updateEditTexts();
@@ -60,12 +59,7 @@ public class CreateRidesPostDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Create a post in Rides")
                 .setView(v)
-                .setPositiveButton(R.string.create_button_text, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
+                .setPositiveButton(R.string.create_button_text, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setNeutralButton(R.string.draft_button_text, null);
 
@@ -99,13 +93,14 @@ public class CreateRidesPostDialog extends DialogFragment {
                                 price, mPostTitle.getText().toString(), mPostDeparture.getText().toString(),
                                 c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
                                 mPostKeywords.getText().toString());
-                        if (mPost == null)
-                            mCallback.onCreatePostFinished(post);
-                        else {
+
+                        if(mPost!= null){
                             post.setKey(mPost.getKey());
                             post.setUserId(mPost.getUserId());
-                            mCallback.onEditPostFinished(post);
                         }
+
+                        mCallback.onCreatePostFinished(post);
+
                         d.dismiss();
                     }
                 }
@@ -131,13 +126,13 @@ public class CreateRidesPostDialog extends DialogFragment {
                                 price, mPostTitle.getText().toString(), mPostDeparture.getText().toString(),
                                 c.getTime(), mPostDestination.getText().toString(), mPostDescription.getText().toString(),
                                 mPostKeywords.getText().toString());
-//                        if (mPost == null)
-                            mCallback.onDraftPostFinished(post);
-//                        else {
-//                            post.setKey(mPost.getKey());
-//                            post.setUserId(mPost.getUserId());
-//                            mCallback.onEditPostFinished(post);
-//                        }
+
+                        if (mPost != null){
+                            post.setKey(mPost.getKey());
+                            post.setUserId(mPost.getUserId());
+                        }
+                        mCallback.onDraftPostFinished(post);
+
                         d.dismiss();
                     }
                 }

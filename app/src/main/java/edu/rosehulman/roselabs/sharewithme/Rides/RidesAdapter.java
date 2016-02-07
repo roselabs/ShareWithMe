@@ -37,7 +37,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/Rides/posts");
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/Rides/posts");
         mChildEventListener = new RidesChildEventListener();
         mRefFirebasePosts.addChildEventListener(mChildEventListener);
     }
@@ -69,7 +69,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("THAIS", "Chamou a funcao");
                 String key = post.getKey();
                 //TODO verify user permission
                 mRefFirebasePosts.child(key).removeValue();
@@ -97,18 +96,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         notifyDataSetChanged();
     }
 
-    public void addPost(RidesPost post){
-        mRefFirebasePosts.push().setValue(post);
-    }
-
-    public void addDraft(RidesPost post){
-        mRefFirebaseDrafts.push().setValue(post);
-    }
-
-    public void update(RidesPost post) {
-        mRefFirebasePosts.child(post.getKey()).setValue(post);
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public TextView mTitleTextView;
@@ -119,7 +106,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             mView = view;
             mTitleTextView = (TextView) view.findViewById(R.id.post_title);
             mDescriptionTextView = (TextView) view.findViewById(R.id.post_description);
-
         }
 
         @Override
@@ -135,10 +121,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);
             notifyDataSetChanged();
-//            Log.d("THAIS", "Value of ref " + dataSnapshot.getRef());
-//            String a = dataSnapshot.getRef().toString();
-//            String b[] = a.split("/");
-//            Log.d("THAIS", "Value of ref " + b[4]);
         }
 
         @Override

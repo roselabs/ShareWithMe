@@ -39,7 +39,7 @@ public class BuyAndSellFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 CreateBuySellPostDialog dialog = new CreateBuySellPostDialog();
-                dialog.show(getFragmentManager(), "Create new post on Buy/Sell");
+                dialog.show(getFragmentManager(), "Create new post on Buy and Sell");
             }
         });
 

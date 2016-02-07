@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.Drafts;
 
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,30 +12,30 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.CreateBuySellPostDialog;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdapter.ViewHolder> {
 
     private List<BuySellPost> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Firebase mRefFirebasePosts;
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
 
     public DraftsBuySellAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
-        mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/BuyAndSell/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/BuyAndSell/posts");
-        mChildEventListener = new WeatherPicsChildEventListener();
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_BUY_SELL_DRAFT_URL);
+        mChildEventListener = new BuySellChildEventListener();
         mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
     }
 
@@ -46,20 +47,30 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final BuySellPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(post.getDescription());
+        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.sendAdapterToMain(holder.mPost);
-                }
+                CreateBuySellPostDialog crpd = new CreateBuySellPostDialog();
+                Bundle b = new Bundle();
+                b.putParcelable("post", mValues.get(position));
+                crpd.setArguments(b);
+                mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
+            }
+        });
+
+        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String key = post.getKey();
+                //TODO verify user permission
+                mRefFirebaseDrafts.child(key).removeValue();
+                return false;
             }
         });
     }
@@ -68,23 +79,6 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
     public int getItemCount() {
         return mValues.size();
     }
-
-//    public void setFilter(boolean buy){
-//        Query query;
-//        mRefFirebasePosts.removeEventListener(mChildEventListener);
-//        if (buy)
-//            query = mRefFirebasePosts.orderByChild("buy").equalTo(true);
-//        else
-//            query = mRefFirebasePosts.orderByChild("buy").equalTo(false);
-//        mValues.clear();
-//        query.addChildEventListener(mChildEventListener);
-//    }
-
-    public void addPost(BuySellPost post){
-        mRefFirebasePosts.push().setValue(post);
-    }
-
-    //TODO ADD DRAFT
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -104,7 +98,7 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
         }
     }
 
-    private class WeatherPicsChildEventListener implements ChildEventListener {
+    private class BuySellChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             BuySellPost wp = dataSnapshot.getValue(BuySellPost.class);
@@ -115,12 +109,19 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+            //No change
         }
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+            String key = dataSnapshot.getKey();
+            for (int i = 0; i < mValues.size(); i++){
+                if(mValues.get(i).getKey().equals(key)){
+                    mValues.remove(i);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
