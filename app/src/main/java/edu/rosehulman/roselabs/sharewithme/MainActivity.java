@@ -36,6 +36,7 @@ import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
@@ -291,7 +292,7 @@ public class MainActivity extends AppCompatActivity
 
         if(post.getKey() != null) {
             getSupportFragmentManager().popBackStack();
-            switchToFragment(new BuyAndSellFragment());
+            switchToFragment(new BuySellDetailFragment(post));
         }
     }
 

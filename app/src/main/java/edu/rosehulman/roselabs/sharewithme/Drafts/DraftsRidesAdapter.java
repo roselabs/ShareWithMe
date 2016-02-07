@@ -32,16 +32,13 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Firebase mRefFirebasePosts;
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
 
     public DraftsRidesAdapter(OnListFragmentInteractionListener listener){
-        Log.d("THAIS", "Construtor do DraftsRidesAdapter");
         mValues = new ArrayList<>();
         mListener = listener;
-        mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/Rides/posts");
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
         mChildEventListener = new RidesChildEventListener();
         mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
     }
@@ -50,15 +47,11 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        Log.d("THAIS", "Deu log no BindViewHolder do DraftsRides");
-
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
         holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
@@ -70,11 +63,7 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
                 Bundle b = new Bundle();
                 b.putParcelable("post", mValues.get(position));
                 crpd.setArguments(b);
-//                crpd.show(getFragmentManager(), "Edit Post");
-
                 mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
-//                Fragment fragment = new CreateRidesPostDialog();
-//                mListener.sendFragmentToInflate(crpd);
             }
         });
 
@@ -82,10 +71,9 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("THAIS", "Chamou a funcao");
                 String key = post.getKey();
                 //TODO verify user permission
-                mRefFirebasePosts.child(key).removeValue();
+                mRefFirebaseDrafts.child(key).removeValue();
                 return false;
             }
         });
@@ -95,18 +83,6 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     @Override
     public int getItemCount() {
         return mValues.size();
-    }
-
-    public void addPost(RidesPost post){
-        mRefFirebasePosts.push().setValue(post);
-    }
-
-    public void addDraft(RidesPost post){
-        mRefFirebaseDrafts.push().setValue(post);
-    }
-
-    public void update(RidesPost post) {
-        mRefFirebasePosts.child(post.getKey()).setValue(post);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -119,7 +95,6 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
             mView = view;
             mTitleTextView = (TextView) view.findViewById(R.id.post_title);
             mDescriptionTextView = (TextView) view.findViewById(R.id.post_description);
-
         }
 
         @Override
@@ -131,7 +106,6 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     private class RidesChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Log.d("THAIS", "Deu log no onChildAdded do DraftsRides");
             RidesPost rp = dataSnapshot.getValue(RidesPost.class);
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);
@@ -140,7 +114,7 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            notifyDataSetChanged();
+            //No change
         }
 
         @Override

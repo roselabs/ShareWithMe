@@ -13,7 +13,6 @@ import java.util.Date;
  */
 public class RidesPost implements Parcelable{
 
-    private int postId;
     private boolean offer;//
     private String title;//
     private String description;//
@@ -41,12 +40,10 @@ public class RidesPost implements Parcelable{
     public RidesPost(boolean offer, String price, String title, String departureLocal,
                      Date rideDate, String destinationLocal, String description,
                      String keywords){
-        //this.postId = postId;
         this.offer = offer;
         this.title = title;
         this.description = description;
         this.keywords = keywords;
-        //this.userId = userId;
         this.price = price;
         this.departureLocal = departureLocal;
         this.destinationLocal = destinationLocal;
@@ -62,7 +59,6 @@ public class RidesPost implements Parcelable{
 
     @JsonIgnore
     protected RidesPost(Parcel in) {
-        postId = in.readInt();
         offer = in.readByte() != 0;
         title = in.readString();
         description = in.readString();
@@ -86,14 +82,6 @@ public class RidesPost implements Parcelable{
             return new RidesPost[size];
         }
     };
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
-    }
 
     public boolean isOffer() {
         return offer;
@@ -200,7 +188,6 @@ public class RidesPost implements Parcelable{
     @JsonIgnore
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(postId);
         dest.writeByte((byte) (offer ? 1 : 0));
         dest.writeString(title);
         dest.writeString(description);
