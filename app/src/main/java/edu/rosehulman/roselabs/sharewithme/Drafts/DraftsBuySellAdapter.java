@@ -28,13 +28,17 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
+    private boolean mEmpty;
 
     public DraftsBuySellAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
+        mEmpty = true;
         mListener = listener;
         mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_BUY_SELL_DRAFT_URL);
         mChildEventListener = new BuySellChildEventListener();
         mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
+        BuySellPost emptyPost = new BuySellPost("No drafts in this category", "*data may be loading", false);
+        mValues.add(emptyPost);
     }
 
     @Override
@@ -50,29 +54,46 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
 
         final BuySellPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateBuySellDraftDialog crpd = new CreateBuySellDraftDialog();
-                Bundle b = new Bundle();
-                b.putParcelable("post", mValues.get(position));
-                crpd.setArguments(b);
-                mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
-            }
-        });
+        if(!mEmpty){
+            holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
-        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String key = post.getKey();
-                //TODO verify user permission
-                mRefFirebaseDrafts.child(key).removeValue();
-                return false;
-            }
-        });
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CreateBuySellDraftDialog crpd = new CreateBuySellDraftDialog();
+                    Bundle b = new Bundle();
+                    b.putParcelable("post", mValues.get(position));
+                    crpd.setArguments(b);
+                    mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
+                }
+            });
+
+            //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String key = post.getKey();
+                    //TODO verify user permission
+                    mRefFirebaseDrafts.child(key).removeValue();
+                    return false;
+                }
+            });
+        }else{
+            holder.mDescriptionTextView.setText(post.getDescription());
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -101,6 +122,10 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
     private class BuySellChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            if(mEmpty){
+                mValues.remove(0);
+                mEmpty = false;
+            }
             BuySellPost wp = dataSnapshot.getValue(BuySellPost.class);
             wp.setKey(dataSnapshot.getKey());
             mValues.add(0, wp);
@@ -120,6 +145,11 @@ public class DraftsBuySellAdapter extends RecyclerView.Adapter<DraftsBuySellAdap
                     mValues.remove(i);
                     break;
                 }
+            }
+            if (mValues.size() < 1){
+                BuySellPost emptyPost = new BuySellPost("No drafts in this category", "*data may be loading", false);
+                mEmpty = true;
+                mValues.add(emptyPost);
             }
             notifyDataSetChanged();
         }

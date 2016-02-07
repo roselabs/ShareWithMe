@@ -31,13 +31,17 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
+    private boolean mEmpty;
 
     public DraftsRidesAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
+        mEmpty = true;
         mListener = listener;
         mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
         mChildEventListener = new RidesChildEventListener();
         mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
+        RidesPost emptyPost = new RidesPost("No drafts in this category", "*data may be loading", false);
+        mValues.add(emptyPost);
     }
 
     @Override
@@ -51,30 +55,46 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateRidesDraftDialog crpd = new CreateRidesDraftDialog();
-                Bundle b = new Bundle();
-                b.putParcelable("post", mValues.get(position));
-                crpd.setArguments(b);
-                mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
-            }
-        });
+        if (!mEmpty) {
+            holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
-        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String key = post.getKey();
-                //TODO verify user permission
-                mRefFirebaseDrafts.child(key).removeValue();
-                return false;
-            }
-        });
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CreateRidesDraftDialog crpd = new CreateRidesDraftDialog();
+                    Bundle b = new Bundle();
+                    b.putParcelable("post", mValues.get(position));
+                    crpd.setArguments(b);
+                    mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
+                }
+            });
 
+            //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String key = post.getKey();
+                    //TODO verify user permission
+                    mRefFirebaseDrafts.child(key).removeValue();
+                    return false;
+                }
+            });
+        } else {
+            holder.mDescriptionTextView.setText(post.getDescription());
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -103,6 +123,10 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     private class RidesChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            if (mEmpty) {
+                mValues.remove(0);
+                mEmpty = false;
+            }
             RidesPost rp = dataSnapshot.getValue(RidesPost.class);
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);
@@ -122,6 +146,11 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
                     mValues.remove(i);
                     break;
                 }
+            }
+            if (mValues.size() < 1){
+                RidesPost emptyPost = new RidesPost("No drafts in this category", "*data may be loading", false);
+                mEmpty = true;
+                mValues.add(emptyPost);
             }
             notifyDataSetChanged();
         }
