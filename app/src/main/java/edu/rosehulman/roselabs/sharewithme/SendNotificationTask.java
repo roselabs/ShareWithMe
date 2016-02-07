@@ -30,14 +30,15 @@ public class SendNotificationTask extends AsyncTask<String, Void, String> {
 
         URL url;
         String response;
-        String message = params[0];
+        String path = params[0];
+        String message = params[1];
 
         try {
             String authString = "Yaw5g-YYRuSfSmzRHug9lw:Udh8o5LhScuPq8J90GNLLg";
             byte[] str = Base64.encode(authString.getBytes(), 64);
             String authS = new String(str);
 
-            url = new URL("https://go.urbanairship.com/api/push");
+            url = new URL("https://go.urbanairship.com/" + path);
             connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json");
@@ -45,13 +46,13 @@ public class SendNotificationTask extends AsyncTask<String, Void, String> {
             connection.setRequestProperty("Accept", "application/vnd.urbanairship+json; version=3;");
             connection.setRequestMethod("POST");
             request = new OutputStreamWriter(connection.getOutputStream());
-            request.write("{\"audience\": \"all\", \"notification\": {\"alert\": \" " + message + " \"},\"device_types\": \"all\"}");
+            request.write(message);
             request.flush();
             request.close();
 
             int responseCode = connection.getResponseCode();
 
-            Log.d("BILADA", "Response code: " + responseCode);
+            Log.d("BILADA", "Response code: " + responseCode + " | " + path + " | " + message);
 
             String line;
             InputStreamReader isr;

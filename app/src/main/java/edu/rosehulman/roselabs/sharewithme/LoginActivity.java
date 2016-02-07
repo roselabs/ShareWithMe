@@ -53,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
         Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         RosefireAuth roseAuth = new RosefireAuth(firebase, getString(R.string.rosefire_token));
         roseAuth.authWithRoseHulman(email, password, new MyAuthResultHandler());
-
     }
 
     private void startApp() {
+        Utils.associateUser();
         finish();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
