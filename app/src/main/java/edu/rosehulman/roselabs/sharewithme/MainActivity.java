@@ -1,13 +1,11 @@
 package edu.rosehulman.roselabs.sharewithme;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -17,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +29,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +42,8 @@ import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsRidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
+import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundAdapter;
+import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundFragment;
 import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
 import edu.rosehulman.roselabs.sharewithme.Profile.UserProfile;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
@@ -62,8 +56,10 @@ public class MainActivity extends AppCompatActivity
 
     private BuySellAdapter mBuySellAdapter;
     private RidesAdapter mRidesAdapter;
+    private LostAndFoundAdapter mLostAndFoundAdapter;
     private BuyAndSellFragment mBuyAndSellFragment;
     private RidesFragment mRidesFragment;
+    private LostAndFoundFragment mLostAndFoundFragment;
     private ProfileFragment mProfileFragment;
     private ImageView mImageView;
     private UserProfile mUser;
@@ -101,6 +97,7 @@ public class MainActivity extends AppCompatActivity
         mDraftsFragment = new DraftsFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
         mRidesFragment = new RidesFragment();
+        mLostAndFoundFragment = new LostAndFoundFragment();
         mProfileFragment = new ProfileFragment();
 
         setContentView(R.layout.activity_main);
@@ -195,7 +192,7 @@ public class MainActivity extends AppCompatActivity
                 //TODO Implement: switchTo = new PreferencesFragment();
                 break;
             case R.id.categories_lost_found:
-                //TODO Implement: switchTo = new LostFoundFragment();
+                switchTo = mLostAndFoundFragment;
                 break;
             case R.id.categories_events:
                 //TODO Implement: switchTo = new EventsFragment();
@@ -255,6 +252,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendAdapterToMain(RidesAdapter adapter) {
         mRidesAdapter = adapter;
+    }
+
+    @Override
+    public void sendAdapterToMain(LostAndFoundAdapter adapter) {
+        mLostAndFoundAdapter = adapter;
     }
 
     @Override
