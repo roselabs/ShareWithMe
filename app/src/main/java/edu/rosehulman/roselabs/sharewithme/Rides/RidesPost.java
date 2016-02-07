@@ -11,18 +11,17 @@ import java.util.Date;
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class RidesPost implements Parcelable{
+public class RidesPost implements Parcelable {
 
-    private int postId;
-    private boolean offer;//
-    private String title;//
-    private String description;//
-    private String keywords;//
+    private boolean offer;
+    private String title;
+    private String description;
+    private String keywords;
     private String userId;
-    private String price;//
-    private String departureLocal;//
-    private String destinationLocal;//
-    private Date rideDate;//
+    private String price;
+    private String departureLocal;
+    private String destinationLocal;
+    private Date rideDate;
     private Date postDate;
     private Date expirationDate;
 
@@ -41,7 +40,7 @@ public class RidesPost implements Parcelable{
 
     public RidesPost(boolean offer, String price, String title, String departureLocal,
                      Date rideDate, String destinationLocal, String description,
-                     String keywords){
+                     String keywords) {
         this.offer = offer;
         this.title = title;
         this.description = description;
@@ -61,7 +60,6 @@ public class RidesPost implements Parcelable{
 
     @JsonIgnore
     protected RidesPost(Parcel in) {
-        postId = in.readInt();
         offer = in.readByte() != 0;
         title = in.readString();
         description = in.readString();
@@ -85,14 +83,6 @@ public class RidesPost implements Parcelable{
             return new RidesPost[size];
         }
     };
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
-    }
 
     public boolean isOffer() {
         return offer;
@@ -199,7 +189,6 @@ public class RidesPost implements Parcelable{
     @JsonIgnore
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(postId);
         dest.writeByte((byte) (offer ? 1 : 0));
         dest.writeString(title);
         dest.writeString(description);

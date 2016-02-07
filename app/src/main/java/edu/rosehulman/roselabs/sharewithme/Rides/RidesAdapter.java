@@ -25,7 +25,7 @@ import edu.rosehulman.roselabs.sharewithme.Utils;
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
+public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> {
 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -33,11 +33,11 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
 
-    public RidesAdapter(OnListFragmentInteractionListener listener){
+    public RidesAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/Rides/posts");
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/Rides/posts");
         mChildEventListener = new RidesChildEventListener();
         mRefFirebasePosts.addChildEventListener(mChildEventListener);
     }
@@ -70,7 +70,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("THAIS", "Chamou a funcao");
                 String key = post.getKey();
                 //TODO verify user permission
                 mRefFirebasePosts.child(key).removeValue();
@@ -85,29 +84,17 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         return mValues.size();
     }
 
-    public void setFilter(boolean offer){
+    public void setFilter(boolean offer) {
         //TODO deal to when there is no post on other toggle (update view)
         Query query;
         mRefFirebasePosts.removeEventListener(mChildEventListener);
-        if(offer)
+        if (offer)
             query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
         else
             query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
         notifyDataSetChanged();
-    }
-
-    public void addPost(RidesPost post){
-        mRefFirebasePosts.push().setValue(post);
-    }
-
-    public void addDraft(RidesPost post){
-        mRefFirebaseDrafts.push().setValue(post);
-    }
-
-    public void update(RidesPost post) {
-        mRefFirebasePosts.child(post.getKey()).setValue(post);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -120,7 +107,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             mView = view;
             mTitleTextView = (TextView) view.findViewById(R.id.post_title);
             mDescriptionTextView = (TextView) view.findViewById(R.id.post_description);
-
         }
 
         @Override
@@ -136,10 +122,6 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);
             notifyDataSetChanged();
-//            Log.d("THAIS", "Value of ref " + dataSnapshot.getRef());
-//            String a = dataSnapshot.getRef().toString();
-//            String b[] = a.split("/");
-//            Log.d("THAIS", "Value of ref " + b[4]);
         }
 
         @Override
@@ -150,8 +132,8 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (int i = 0; i < mValues.size(); i++){
-                if(mValues.get(i).getKey().equals(key)){
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
                     mValues.remove(i);
                     break;
                 }

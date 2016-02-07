@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/create_buy_sell"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/create_buy_sell"
     android:padding="15dp">
 
     <LinearLayout
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/scrollView" >
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buy_sell_i_wanna_text"
-        android:id="@+id/i_wanna_text_view" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buy_sell_radio_group"
-        android:orientation="horizontal">
-
-        <RadioButton
+        <TextView
+            android:id="@+id/i_wanna_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/buy_radio_button_text"
-            android:checked="true"
-            android:id="@+id/buy_radio_button"
-            android:layout_gravity="right" />
+            android:text="@string/buy_sell_i_wanna_text" />
 
-        <RadioButton
+        <RadioGroup
+            android:id="@+id/buy_sell_radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sell_radio_button_text"
-            android:id="@+id/sell_radio_button"
-            android:layout_gravity="right" />
+            android:orientation="horizontal">
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/buy_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:checked="true"
+                android:text="@string/buy_radio_button_text" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="6"
-        android:hint="@string/value_hint"
-        android:id="@+id/price_edit_text"
-        android:layout_gravity="right" />
+            <RadioButton
+                android:id="@+id/sell_radio_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/sell_radio_button_text" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_text"
-        android:id="@+id/title_text_view" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/price_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:ems="6"
+            android:hint="@string/value_hint"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_text" />
 
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/title_hint"
-        android:id="@+id/title_edit_text" />
+        <EditText
+            android:id="@+id/title_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/title_hint" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/description_text"
-        android:id="@+id/description_text_view" />
+        <TextView
+            android:id="@+id/description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description_text" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:hint="@string/description_hint"
-        android:id="@+id/description_edit_text" />
+        <EditText
+            android:id="@+id/description_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:ems="10"
+            android:hint="@string/description_hint"
+            android:inputType="textMultiLine" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/default_expiration_text"
-        android:id="@+id/expiration_date_text_view" />
+        <TextView
+            android:id="@+id/expiration_date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/default_expiration_text" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/keywords_text"
-        android:id="@+id/keyword_text_view" />
+        <TextView
+            android:id="@+id/keyword_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/keywords_text" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/keyword_edit_text"
-        android:hint="@string/keyword_hint"/>
+        <EditText
+            android:id="@+id/keyword_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/keyword_hint" />
 
     </LinearLayout>
 

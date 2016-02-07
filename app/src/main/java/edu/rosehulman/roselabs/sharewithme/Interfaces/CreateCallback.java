@@ -15,8 +15,6 @@ public interface CreateCallback {
 
     void onCreatePostFinished(LostAndFoundPost post);
 
-    void onEditPostFinished(RidesPost post);
-
     void onDraftPostFinished(RidesPost post);
 
     void onDraftPostFinished(BuySellPost post);

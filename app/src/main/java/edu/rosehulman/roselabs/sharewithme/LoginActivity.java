@@ -1,9 +1,8 @@
 package edu.rosehulman.roselabs.sharewithme;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mUserEdit = (EditText)findViewById(R.id.user_edit_text);
+        mUserEdit = (EditText) findViewById(R.id.user_edit_text);
         mPasswordEdit = (EditText) findViewById(R.id.password_edit_text);
         mLoginButton = (Button) findViewById(R.id.login_button);
 
@@ -39,15 +38,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void login (){
+    protected void login() {
         String email = mUserEdit.getText().toString();
         String password = mPasswordEdit.getText().toString();
 
-        if(email.isEmpty() || password.isEmpty()){
+        if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.login_email_password_empty, Toast.LENGTH_SHORT).show();
         }
 
-        if(!email.endsWith("@rose-hulman.edu")){
+        if (!email.endsWith("@rose-hulman.edu")) {
             email += "@rose-hulman.edu";
         }
 
@@ -57,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void startApp(){
+    private void startApp() {
         finish();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);

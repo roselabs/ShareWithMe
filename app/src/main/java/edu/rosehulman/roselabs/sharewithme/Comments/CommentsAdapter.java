@@ -99,7 +99,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     public void add(Comment comment){
-        comment.setUserId(mRefFirebase.getAuth().getUid());
         mRefFirebase.push().setValue(comment);
     }
 }

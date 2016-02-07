@@ -31,7 +31,6 @@ public class LostAndFoundFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(mAdapter);
         recyclerView.setHasFixedSize(true);
-        mListener.sendAdapterToMain(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.buy_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +56,7 @@ public class LostAndFoundFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof OnListFragmentInteractionListener){
+        if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()

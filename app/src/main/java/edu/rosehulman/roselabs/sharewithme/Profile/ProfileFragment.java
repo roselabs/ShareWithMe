@@ -4,15 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +17,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.camera.CropImageIntentBuilder;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
-import edu.rosehulman.roselabs.sharewithme.MainActivity;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment {
 
     private Firebase mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
     private UserProfile mUserProfile;
@@ -81,7 +74,7 @@ public class ProfileFragment extends Fragment{
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT < 19){
+                if (Build.VERSION.SDK_INT < 19) {
                     Intent intent = new Intent();
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -98,8 +91,8 @@ public class ProfileFragment extends Fragment{
         return view;
     }
 
-    public void showUpdateProfile(){
-        DialogFragment df = new DialogFragment(){
+    public void showUpdateProfile() {
+        DialogFragment df = new DialogFragment() {
             @NonNull
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -109,18 +102,18 @@ public class ProfileFragment extends Fragment{
                 View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_edit_profile, null, false);
                 builder.setView(view);
 
-                final EditText nameEditText = (EditText)view.findViewById(R.id.dialog_name_text);
+                final EditText nameEditText = (EditText) view.findViewById(R.id.dialog_name_text);
                 String name;
-                if(mUserProfile.getName() == null || mUserProfile.getName().isEmpty()){
+                if (mUserProfile.getName() == null || mUserProfile.getName().isEmpty()) {
                     name = "";
                 } else {
                     name = mUserProfile.getName();
                 }
                 nameEditText.setText(name);
 
-                final EditText phoneEditText = (EditText)view.findViewById(R.id.dialog_phone_text);
+                final EditText phoneEditText = (EditText) view.findViewById(R.id.dialog_phone_text);
                 String phone;
-                if(mUserProfile.getPhone() == null || mUserProfile.getPhone().isEmpty()){
+                if (mUserProfile.getPhone() == null || mUserProfile.getPhone().isEmpty()) {
                     phone = "";
                 } else {
                     phone = mUserProfile.getPhone();
@@ -151,19 +144,19 @@ public class ProfileFragment extends Fragment{
         df.show(getFragmentManager(), "update profile dialog");
     }
 
-    private void updateUserProfile(UserProfile user){
+    private void updateUserProfile(UserProfile user) {
         mProfileNameView.setText(user.getName());
         mProfilePhoneView.setText(user.getPhone());
         if (user.getPicture() != null)
             mImageView.setImageBitmap(Utils.decodeStringToBitmap(user.getPicture()));
     }
 
-    class MyChildEventListener implements ChildEventListener{
+    class MyChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot snapshot, String previousChild) {
             mUserProfile = snapshot.getValue(UserProfile.class);
             mUserProfile.setKey(snapshot.getKey());
-            if(mUserProfile != null){
+            if (mUserProfile != null) {
                 if (mUserProfile.getName() != null) {
                     String userName = "name: " + mUserProfile.getName();
                     mProfileNameView.setText(userName);

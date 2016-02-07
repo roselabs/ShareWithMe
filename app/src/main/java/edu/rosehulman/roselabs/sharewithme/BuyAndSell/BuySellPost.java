@@ -1,13 +1,15 @@
 package edu.rosehulman.roselabs.sharewithme.BuyAndSell;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class BuySellPost {
+public class BuySellPost implements Parcelable {
 
-    private int postId;
     private boolean buy;
     private String title;
     private String description;
@@ -20,25 +22,50 @@ public class BuySellPost {
     @JsonIgnore
     private String key;
 
-    public BuySellPost() {}
+    public BuySellPost() {
+        this.title = "";
+        this.description = "";
+        this.keywords = "";
+        this.price = "";
+    }
 
-    public BuySellPost(int postId, boolean buy, String title, String description, String keywords, String userId, String price) {
-        this.postId = postId;
+    public BuySellPost(boolean buy, String title, String description, String keywords, String price) {
         this.buy = buy;
         this.title = title;
         this.description = description;
         this.keywords = keywords;
-        this.userId = userId;
         this.price = price;
         this.postDate = Calendar.getInstance().getTime();
     }
 
     //Temporary constructor just for testing purposes
-    public BuySellPost(String title, String desc, boolean buy){
+    public BuySellPost(String title, String desc, boolean buy) {
         this.title = title;
         this.description = desc;
         this.buy = buy;
     }
+
+    protected BuySellPost(Parcel in) {
+        buy = in.readByte() != 0;
+        title = in.readString();
+        description = in.readString();
+        keywords = in.readString();
+        userId = in.readString();
+        price = in.readString();
+        key = in.readString();
+    }
+
+    public static final Creator<BuySellPost> CREATOR = new Creator<BuySellPost>() {
+        @Override
+        public BuySellPost createFromParcel(Parcel in) {
+            return new BuySellPost(in);
+        }
+
+        @Override
+        public BuySellPost[] newArray(int size) {
+            return new BuySellPost[size];
+        }
+    };
 
     public String getKey() {
         return key;
@@ -46,14 +73,6 @@ public class BuySellPost {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public int getPostId() {
-        return postId;
-    }
-
-    public void setPostId(int postId) {
-        this.postId = postId;
     }
 
     public boolean isBuy() {
@@ -118,5 +137,23 @@ public class BuySellPost {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    @JsonIgnore
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @JsonIgnore
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (buy ? 1 : 0));
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(keywords);
+        dest.writeString(userId);
+        dest.writeString(price);
+        dest.writeString(key);
     }
 }

@@ -14,7 +14,7 @@ import android.widget.RadioGroup;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
-public class BuyAndSellFragment extends Fragment{
+public class BuyAndSellFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
     private BuySellAdapter mAdapter;
@@ -33,13 +33,12 @@ public class BuyAndSellFragment extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
-        mListener.sendAdapterToMain(mAdapter);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.buy_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CreateBuySellPostDialog dialog = new CreateBuySellPostDialog();
-                dialog.show(getFragmentManager(), "Create new post on Buy/Sell");
+                dialog.show(getFragmentManager(), "Create new post on Buy and Sell");
             }
         });
 

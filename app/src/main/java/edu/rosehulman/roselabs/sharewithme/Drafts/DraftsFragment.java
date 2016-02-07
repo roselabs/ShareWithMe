@@ -2,22 +2,18 @@ package edu.rosehulman.roselabs.sharewithme.Drafts;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-//import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 
 import org.solovyev.android.views.llm.DividerItemDecoration;
 import org.solovyev.android.views.llm.LinearLayoutManager;
 
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
-import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
-import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +58,7 @@ public class DraftsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof OnListFragmentInteractionListener){
+        if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()

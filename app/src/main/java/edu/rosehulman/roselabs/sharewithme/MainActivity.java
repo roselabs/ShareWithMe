@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
-import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
@@ -64,11 +64,18 @@ public class MainActivity extends AppCompatActivity
     private ProfileFragment mProfileFragment;
     private ImageView mImageView;
     private UserProfile mUser;
-    private Firebase mFirebase;
+
     private TextView mProfileNameTextView;
     private DraftsBuySellAdapter mDraftsBuySellAdapter;
     private DraftsRidesAdapter mDraftsRidesAdapter;
     private DraftsFragment mDraftsFragment;
+
+    private Firebase mFirebase;
+    private Firebase mFirebaseRidePost;
+    private Firebase mFirebaseRideDraft;
+    private Firebase mFirebaseBuySellPost;
+    private Firebase mFirebaseBuySellDraft;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +87,11 @@ public class MainActivity extends AppCompatActivity
             switchToLogin();
             return;
         }
+
+        mFirebaseRidePost = new Firebase(Constants.FIREBASE_RIDES_POST_URL);
+        mFirebaseRideDraft = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
+        mFirebaseBuySellPost = new Firebase(Constants.FIREBASE_BUY_SELL_POST_URL);
+        mFirebaseBuySellDraft = new Firebase(Constants.FIREBASE_BUY_SELL_DRAFT_URL);
 
         setupUser(mFirebase.getAuth().getUid());
 
@@ -270,43 +282,52 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCreatePostFinished(BuySellPost post) {
+        if (post.getKey() != null) {
+            mFirebaseBuySellDraft.child(post.getKey()).removeValue();
+            mFirebaseBuySellPost.child(post.getKey()).removeValue();
+        }
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mBuySellAdapter.add(post);
+        mFirebaseBuySellPost.push().setValue(post);
+
+        if (post.getKey() != null) {
+            getSupportFragmentManager().popBackStack();
+            switchToFragment(new BuySellDetailFragment(post));
+        }
     }
 
     @Override
     public void onCreatePostFinished(RidesPost post) {
-        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mRidesAdapter.addPost(post);
-    }
+        if (post.getKey() != null) {
+            mFirebaseRideDraft.child(post.getKey()).removeValue();
+            mFirebaseRidePost.child(post.getKey()).removeValue();
+        }
 
-    @Override
-    public void onCreatePostFinished(LostAndFoundPost post) {
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mLostAndFoundAdapter.addPost(post);
-    }
+        mFirebaseRidePost.push().setValue(post);
 
-    @Override
-    public void onEditPostFinished(RidesPost post) {
-        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mRidesAdapter.update(post);
-        getSupportFragmentManager().popBackStack();
-        switchToFragment(new RidesDetailFragment(post));
+        if (post.getKey() != null) {
+            getSupportFragmentManager().popBackStack();
+            switchToFragment(new RidesDetailFragment(post));
+        }
     }
 
     @Override
     public void onDraftPostFinished(RidesPost post) {
-        //TODO DRAFT
+        if (post.getKey() != null)
+            mFirebaseRideDraft.child(post.getKey()).removeValue();
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
-        mRidesAdapter.addDraft(post);
+        mFirebaseRideDraft.push().setValue(post);
     }
 
     @Override
     public void onDraftPostFinished(BuySellPost post) {
+        if (post.getKey() != null)
+            mFirebaseBuySellDraft.child(post.getKey()).removeValue();
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
-        mBuySellAdapter.addDraft(post);
+        mFirebaseBuySellDraft.push().setValue(post);
     }
 
 

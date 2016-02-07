@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.BuyAndSell;
 
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Utils;
 
 public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHolder> {
 
@@ -32,8 +34,8 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebasePost = new Firebase(Constants.FIREBASE_URL + "/categories/BuyAndSell/posts");
-        mRefFirebaseDraft = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/BuyAndSell/posts");
-        mChildEventListener = new WeatherPicsChildEventListener();
+        mRefFirebaseDraft = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/BuyAndSell/posts");
+        mChildEventListener = new BuySellChildEventListener();
         mRefFirebasePost.addChildEventListener(mChildEventListener);
     }
 
@@ -45,20 +47,28 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         final BuySellPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(post.getDescription());
+        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.sendAdapterToMain(holder.mPost);
-                }
+                Fragment fragment = new BuySellDetailFragment(mValues.get(position));
+                mListener.sendFragmentToInflate(fragment);
+            }
+        });
+
+        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String key = post.getKey();
+                //TODO verify user permission
+                mRefFirebasePost.child(key).removeValue();
+                return false;
             }
         });
     }
@@ -68,7 +78,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         return mValues.size();
     }
 
-    public void setFilter(boolean buy){
+    public void setFilter(boolean buy) {
         Query query;
         mRefFirebasePost.removeEventListener(mChildEventListener);
         if (buy)
@@ -77,14 +87,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
             query = mRefFirebasePost.orderByChild("buy").equalTo(false);
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
-    }
-
-    public void add(BuySellPost post){
-        mRefFirebasePost.push().setValue(post);
-    }
-
-    public void addDraft(BuySellPost post) {
-        mRefFirebaseDraft.push().setValue(post);
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -105,7 +108,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         }
     }
 
-    private class WeatherPicsChildEventListener implements ChildEventListener {
+    private class BuySellChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             BuySellPost wp = dataSnapshot.getValue(BuySellPost.class);
@@ -121,7 +124,14 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+            String key = dataSnapshot.getKey();
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
+                    mValues.remove(i);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override

@@ -2,7 +2,6 @@ package edu.rosehulman.roselabs.sharewithme.Comments;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Comment {

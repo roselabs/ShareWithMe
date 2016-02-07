@@ -17,10 +17,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Buy And Sell"
-            android:id="@+id/buy_sell_text_view"/>
+            android:textSize="20sp"
+            android:id="@+id/buy_sell_text_view" />
+
+        <TextView
+            android:visibility="gone"
+            android:layout_below="@id/buy_sell_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="No drafts in this category"
+            android:background="@color/postBackground"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:id="@+id/buy_sell_empty_text_view"
+            android:elegantTextHeight="false"
+            android:elevation="5dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
 
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@+id/buy_sell_text_view"
+            android:layout_below="@+id/buy_sell_empty_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/buy_sell_recycler_view">
@@ -32,15 +49,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Rides"
+            android:textSize="20sp"
             android:id="@+id/rides_text_view"/>
 
+        <TextView
+            android:visibility="gone"
+            android:layout_below="@id/rides_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="No drafts in this category"
+            android:background="@color/postBackground"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:id="@+id/rides_empty_text_view"
+            android:elevation="5dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+
         <android.support.v7.widget.RecyclerView
-            android:layout_below="@+id/rides_text_view"
+            android:layout_below="@+id/rides_empty_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rides_recycler_view">
 
         </android.support.v7.widget.RecyclerView>
+
 
     </RelativeLayout>
 

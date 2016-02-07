@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * Created by josebaf on 2/6/2016.
  */
-public class LostAndFoundPost implements Parcelable{
+public class LostAndFoundPost implements Parcelable {
 
     private int postId;
     private boolean lostFound; // True for Lost, False for Found
@@ -25,7 +25,7 @@ public class LostAndFoundPost implements Parcelable{
     @JsonIgnore
     private String key;
 
-    public LostAndFoundPost (){
+    public LostAndFoundPost() {
         this.title = "";
         this.description = "";
         this.keywords = "";

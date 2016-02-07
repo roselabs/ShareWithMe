@@ -1,7 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme.Drafts;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,93 +19,87 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
-import edu.rosehulman.roselabs.sharewithme.Rides.CreateRidesPostDialog;
-import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
 /**
  * Created by Thais Faria on 1/29/2016.
  */
-public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.ViewHolder>{
+public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.ViewHolder> {
 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Firebase mRefFirebasePosts;
     private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
+    private boolean mEmpty;
 
-    public DraftsRidesAdapter(OnListFragmentInteractionListener listener){
-        Log.d("THAIS", "Construtor do DraftsRidesAdapter");
+    public DraftsRidesAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
+        mEmpty = true;
         mListener = listener;
-        mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/Rides/posts");
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
         mChildEventListener = new RidesChildEventListener();
         mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
+        RidesPost emptyPost = new RidesPost("No drafts in this category", "*data may be loading", false);
+        mValues.add(emptyPost);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
-
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
-        Log.d("THAIS", "Deu log no BindViewHolder do DraftsRides");
-
         final RidesPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
-        holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateRidesPostDialog crpd = new CreateRidesPostDialog();
-                Bundle b = new Bundle();
-                b.putParcelable("post", mValues.get(position));
-                crpd.setArguments(b);
-//                crpd.show(getFragmentManager(), "Edit Post");
+        if (!mEmpty) {
+            holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
 
-                mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
-//                Fragment fragment = new CreateRidesPostDialog();
-//                mListener.sendFragmentToInflate(crpd);
-            }
-        });
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CreateRidesDraftDialog crpd = new CreateRidesDraftDialog();
+                    Bundle b = new Bundle();
+                    b.putParcelable("post", mValues.get(position));
+                    crpd.setArguments(b);
+                    mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
+                }
+            });
 
-        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.d("THAIS", "Chamou a funcao");
-                String key = post.getKey();
-                //TODO verify user permission
-                mRefFirebasePosts.child(key).removeValue();
-                return false;
-            }
-        });
+            //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    String key = post.getKey();
+                    //TODO verify user permission
+                    mRefFirebaseDrafts.child(key).removeValue();
+                    return false;
+                }
+            });
+        } else {
+            holder.mDescriptionTextView.setText(post.getDescription());
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });
+            holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return mValues.size();
-    }
-
-    public void addPost(RidesPost post){
-        mRefFirebasePosts.push().setValue(post);
-    }
-
-    public void addDraft(RidesPost post){
-        mRefFirebaseDrafts.push().setValue(post);
-    }
-
-    public void update(RidesPost post) {
-        mRefFirebasePosts.child(post.getKey()).setValue(post);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -119,7 +112,6 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
             mView = view;
             mTitleTextView = (TextView) view.findViewById(R.id.post_title);
             mDescriptionTextView = (TextView) view.findViewById(R.id.post_description);
-
         }
 
         @Override
@@ -131,7 +123,10 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     private class RidesChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Log.d("THAIS", "Deu log no onChildAdded do DraftsRides");
+            if (mEmpty) {
+                mValues.remove(0);
+                mEmpty = false;
+            }
             RidesPost rp = dataSnapshot.getValue(RidesPost.class);
             rp.setKey(dataSnapshot.getKey());
             mValues.add(0, rp);
@@ -140,17 +135,22 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+            //No change
         }
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (int i = 0; i < mValues.size(); i++){
-                if(mValues.get(i).getKey().equals(key)){
+            for (int i = 0; i < mValues.size(); i++) {
+                if (mValues.get(i).getKey().equals(key)) {
                     mValues.remove(i);
                     break;
                 }
+            }
+            if (mValues.size() < 1){
+                RidesPost emptyPost = new RidesPost("No drafts in this category", "*data may be loading", false);
+                mEmpty = true;
+                mValues.add(emptyPost);
             }
             notifyDataSetChanged();
         }

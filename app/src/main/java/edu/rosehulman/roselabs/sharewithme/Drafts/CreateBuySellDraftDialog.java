@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme.BuyAndSell;
+package edu.rosehulman.roselabs.sharewithme.Drafts;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -10,12 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
 
-public class CreateBuySellPostDialog extends DialogFragment {
+public class CreateBuySellDraftDialog extends DialogFragment {
 
     private BuySellPost mPost;
     private CreateCallback mCallback;
@@ -23,7 +24,7 @@ public class CreateBuySellPostDialog extends DialogFragment {
     private RadioGroup mRadioGroup;
     private EditText mPostPrice, mPostTitle, mPostDescription, mPostKeywords;
 
-    public CreateBuySellPostDialog() {
+    public CreateBuySellDraftDialog() {
 
     }
 
@@ -51,10 +52,8 @@ public class CreateBuySellPostDialog extends DialogFragment {
         builder.setTitle("Create a post in Buy/Sell")
                 .setView(v)
                 .setPositiveButton(R.string.create_button_text, null)
-                .setNegativeButton(android.R.string.cancel, null);
-        if (mPost == null) {
-            builder.setNeutralButton(R.string.draft_button_text, null);
-        }
+                .setNegativeButton(android.R.string.cancel, null)
+                .setNeutralButton(R.string.draft_button_text, null);
 
         return builder.create();
     }
