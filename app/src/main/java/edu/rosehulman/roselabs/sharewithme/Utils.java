@@ -1,19 +1,79 @@
 package edu.rosehulman.roselabs.sharewithme;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+import com.urbanairship.UAirship;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by rodrigr1 on 2/6/2016.
  */
 public class Utils {
+
+    public static void sendNotification(String commentUserId, String mPostAuthorUserId){
+        if (commentUserId.equals(mPostAuthorUserId)) return;
+        SendNotificationTask task = new SendNotificationTask();
+        JSONObject json = new JSONObject();
+        List<String> devices_types = new ArrayList<>();
+        devices_types.add("android");
+
+        try {
+            json.put("audience", new JSONObject().put("named_user", mPostAuthorUserId));
+            json.put("device_types",  new JSONArray(devices_types));
+            json.put("notification", new JSONObject().put("alert", "@" + commentUserId + " commented your post"));
+        } catch (JSONException e){
+            Log.d("BILADA", e.toString());
+        }
+        task.execute("api/push", json.toString());
+    }
+
+    public static void associateUser(){
+        String channelId = UAirship.shared().getPushManager().getChannelId();
+        SendNotificationTask task = new SendNotificationTask();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("channel_id", channelId);
+            json.put("device_type", "android");
+            json.put("named_user_id", new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        } catch (JSONException e){
+            Log.d("BILADA", e.toString());
+        }
+        task.execute("api/named_users/associate", json.toString());
+    }
+
+    public static void disassociateUser(){
+        String channelId = UAirship.shared().getPushManager().getChannelId();
+        SendNotificationTask task = new SendNotificationTask();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("channel_id", channelId);
+            json.put("device_type", "android");
+            json.put("named_user_id", new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        } catch (JSONException e){
+            Log.d("BILADA", e.toString());
+        }
+        task.execute("api/named_users/disassociate", json.toString());
+    }
 
     public static String encodeBitmap(Bitmap bitmap) {
         ByteArrayOutputStream bYtE = new ByteArrayOutputStream();
