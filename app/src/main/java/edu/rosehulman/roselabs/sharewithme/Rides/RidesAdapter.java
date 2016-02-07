@@ -37,7 +37,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder>{
         mValues = new ArrayList<>();
         mListener = listener;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFTS_URL + "/categories/Rides/posts");
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/Rides/posts");
         mChildEventListener = new RidesChildEventListener();
         mRefFirebasePosts.addChildEventListener(mChildEventListener);
     }

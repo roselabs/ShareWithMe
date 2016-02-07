@@ -279,37 +279,64 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCreatePostFinished(BuySellPost post) {
+        if(post.getKey() != null){
+            mFirebaseBuySellDraft.child(post.getKey()).removeValue();
+            mFirebaseBuySellPost.child(post.getKey()).removeValue();
+        }
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mBuySellAdapter.add(post);
+        mFirebaseBuySellPost.push().setValue(post);
+
+        if(post.getKey() != null) {
+            getSupportFragmentManager().popBackStack();
+            switchToFragment(new BuyAndSellFragment());
+        }
     }
 
     @Override
     public void onCreatePostFinished(RidesPost post) {
+        if(post.getKey() != null){
+            mFirebaseRideDraft.child(post.getKey()).removeValue();
+            mFirebaseRidePost.child(post.getKey()).removeValue();
+        }
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mRidesAdapter.addPost(post);
+        mFirebaseRidePost.push().setValue(post);
+
+        if(post.getKey() != null) {
+            getSupportFragmentManager().popBackStack();
+            switchToFragment(new RidesDetailFragment(post));
+        }
     }
 
     @Override
     public void onEditPostFinished(RidesPost post) {
-        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        mRidesAdapter.update(post);
-        getSupportFragmentManager().popBackStack();
-        switchToFragment(new RidesDetailFragment(post));
+//        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+//        mRidesAdapter.update(post);
+//        getSupportFragmentManager().popBackStack();
+//        switchToFragment(new RidesDetailFragment(post));
     }
 
     @Override
     public void onDraftPostFinished(RidesPost post) {
-        //TODO DRAFT
+        if(post.getKey() != null){
+            mFirebaseRideDraft.child(post.getKey()).removeValue();
+            mFirebaseRidePost.child(post.getKey()).removeValue();
+        }
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
-        mRidesAdapter.addDraft(post);
+        mFirebaseRideDraft.push().setValue(post);
     }
 
     @Override
     public void onDraftPostFinished(BuySellPost post) {
+        if(post.getKey() != null){
+            mFirebaseBuySellDraft.child(post.getKey()).removeValue();
+            mFirebaseBuySellPost.child(post.getKey()).removeValue();
+        }
+
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-        Log.d("THAIS", "Chegou no OnDraftPostFinished " + post.getTitle());
-        mBuySellAdapter.addDraft(post);
+        mFirebaseBuySellDraft.push().setValue(post);
     }
 
 
