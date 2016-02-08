@@ -27,14 +27,12 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
     private List<BuySellPost> mValues;
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebasePost;
-    private Firebase mRefFirebaseDraft;
     private ChildEventListener mChildEventListener;
 
     public BuySellAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
-        mRefFirebasePost = new Firebase(Constants.FIREBASE_URL + "/categories/BuyAndSell/posts");
-        mRefFirebaseDraft = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/BuyAndSell/posts");
+        mRefFirebasePost = new Firebase(Constants.FIREBASE_BUY_SELL_POST_URL);
         mChildEventListener = new BuySellChildEventListener();
         mRefFirebasePost.addChildEventListener(mChildEventListener);
     }
@@ -78,13 +76,17 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         return mValues.size();
     }
 
-    public void setFilter(boolean buy) {
+    public void setFilter(int value) {
         Query query;
         mRefFirebasePost.removeEventListener(mChildEventListener);
-        if (buy)
+
+        if (value < 1)
             query = mRefFirebasePost.orderByChild("buy").equalTo(true);
-        else
+        else if (value < 2)
             query = mRefFirebasePost.orderByChild("buy").equalTo(false);
+        else
+            query = mRefFirebasePost.orderByChild("buy");
+
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
         notifyDataSetChanged();

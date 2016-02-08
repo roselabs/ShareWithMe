@@ -22,9 +22,6 @@ import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionL
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-/**
- * Created by josebaf on 2/6/2016.
- */
 public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapter.ViewHolder> {
 
     private List<LostAndFoundPost> mLostAndFoundList;
@@ -40,14 +37,6 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         mLostAndFoundRef.addChildEventListener(mChildEventListener);
     }
 
-    public void addPost(LostAndFoundPost post) {
-        mLostAndFoundRef.push().setValue(post);
-    }
-
-    public void addDraft(LostAndFoundPost post) {
-        mLostAndFoundRef.push().setValue(post);
-    }
-
     public void update(LostAndFoundPost post) {
         mLostAndFoundRef.child(post.getKey()).setValue(post);
     }
@@ -56,10 +45,12 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         Query query;
         mLostAndFoundRef.removeEventListener(mChildEventListener);
 
-        if (checkedId == R.id.lost_radio_button_filter)
+        if (checkedId < 1)
             query = mLostAndFoundRef.orderByChild("lostFound").equalTo(true);
-        else
+        else if (checkedId < 2)
             query = mLostAndFoundRef.orderByChild("lostFound").equalTo(false);
+        else
+            query = mLostAndFoundRef.orderByChild("lostFound");
 
         mLostAndFoundList.clear();
         query.addChildEventListener(mChildEventListener);

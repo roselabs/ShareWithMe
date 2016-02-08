@@ -22,9 +22,6 @@ import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionL
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-/**
- * Created by Thais Faria on 1/29/2016.
- */
 public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> {
 
     private List<RidesPost> mValues;
@@ -84,14 +81,17 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
         return mValues.size();
     }
 
-    public void setFilter(boolean offer) {
-        //TODO deal to when there is no post on other toggle (update view)
+    public void setFilter(int value) {
         Query query;
         mRefFirebasePosts.removeEventListener(mChildEventListener);
-        if (offer)
+
+        if (value < 1)
             query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
-        else
+        else if (value < 2)
             query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
+        else
+            query = mRefFirebasePosts.orderByChild("offer");
+
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
         notifyDataSetChanged();

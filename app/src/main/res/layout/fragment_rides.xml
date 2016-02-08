@@ -29,6 +29,14 @@
             android:id="@+id/request_radio_button_filter"
             android:layout_gravity="right" />
 
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/all_radio_button_filter"
+            android:id="@+id/all_radio_button_filter"
+            android:layout_gravity="right"
+            android:checked="true"/>
+
     </RadioGroup>
 
     <android.support.v7.widget.RecyclerView
@@ -48,13 +56,5 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp" />
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-        <!--android:text="Rides View"-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_gravity="center_horizontal|top" />-->
 
 </RelativeLayout>

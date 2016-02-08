@@ -14,9 +14,6 @@ import android.widget.RadioGroup;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 
-/**
- * Created by josebaf on 2/7/2016.
- */
 public class LostAndFoundFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
@@ -45,7 +42,13 @@ public class LostAndFoundFragment extends Fragment {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mAdapter.setFilterPost(checkedId);
+                if(checkedId == R.id.lost_radio_button_filter){
+                    mAdapter.setFilterPost(0);
+                }else if (checkedId == R.id.found_radio_button_filter){
+                    mAdapter.setFilterPost(1);
+                }else {
+                    mAdapter.setFilterPost(2);
+                }
             }
         });
 
