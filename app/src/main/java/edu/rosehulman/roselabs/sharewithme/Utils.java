@@ -31,7 +31,7 @@ import java.util.List;
 public class Utils {
 
     public static void sendNotification(String commentUserId, String mPostAuthorUserId, String postKey, String category){
-        //if (commentUserId.equals(mPostAuthorUserId)) return;
+        if (commentUserId.equals(mPostAuthorUserId)) return;
         SendNotificationTask task = new SendNotificationTask();
         JSONObject json = new JSONObject();
         List<String> devices_types = new ArrayList<>();

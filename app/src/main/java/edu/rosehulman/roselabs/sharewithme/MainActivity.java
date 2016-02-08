@@ -289,7 +289,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void switchToLogin() {
-        Utils.disassociateUser();
         Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         firebase.unauth();
         finish();
@@ -298,6 +297,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onLogout() {
+        Utils.disassociateUser();
         switchToLogin();
     }
 
