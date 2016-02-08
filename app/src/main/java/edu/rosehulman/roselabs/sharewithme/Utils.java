@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class Utils {
 
-    public static void sendNotification(String commentUserId, String mPostAuthorUserId, String postKey){
+    public static void sendNotification(String commentUserId, String mPostAuthorUserId, String postKey, String category){
         //if (commentUserId.equals(mPostAuthorUserId)) return;
         SendNotificationTask task = new SendNotificationTask();
         JSONObject json = new JSONObject();
@@ -40,7 +40,13 @@ public class Utils {
         try {
             json.put("audience", new JSONObject().put("named_user", mPostAuthorUserId));
             json.put("device_types",  new JSONArray(devices_types));
-            json.put("notification", new JSONObject().put("alert", "@" + commentUserId + " commented your post").put("actions", new JSONObject().put("open", new JSONObject().put("type", "deep_link").put("content", "sharewithme://deeplink/categories/posts?postKey=" + postKey))));
+            String deepLinkContent = "sharewithme://deeplink/categories/posts?postKey=" + postKey + "&category=" + category;
+            json.put("notification", new JSONObject()
+                    .put("alert", "@" + commentUserId + " commented your post")
+                    .put("actions", new JSONObject()
+                            .put("open", new JSONObject()
+                                    .put("type", "deep_link")
+                                    .put("content", deepLinkContent))));
         } catch (JSONException e){
             Log.d("BILADA", e.toString());
         }

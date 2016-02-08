@@ -103,7 +103,7 @@ public class RidesDetailFragment extends Fragment {
                     c.setDate(date);
                     c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
                     mAdapter.add(c);
-                    Utils.sendNotification(c.getUserId(), mPost.getUserId(), mPost.getKey());
+                    Utils.sendNotification(c.getUserId(), mPost.getUserId(), mPost.getKey(), "rides");
                     commentEditText.setText("");
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
@@ -167,6 +167,10 @@ public class RidesDetailFragment extends Fragment {
 
     private void hideView(View view) {
         view.setVisibility(View.GONE);
+    }
+
+    public void setPost(RidesPost post){
+        mPost = post;
     }
 
 }

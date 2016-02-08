@@ -94,7 +94,7 @@ public class BuySellDetailFragment extends Fragment {
                     c.setPostKey(mPost.getKey());
                     c.setDate(date);
                     c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
-                    Utils.sendNotification(c.getUserId(), mPost.getUserId(), mPost.getKey());
+                    Utils.sendNotification(c.getUserId(), mPost.getUserId(), mPost.getKey(), "buyandsell");
                     mAdapter.add(c);
                     commentEditText.setText("");
                     View view = getActivity().getCurrentFocus();
@@ -143,6 +143,10 @@ public class BuySellDetailFragment extends Fragment {
 
     private void hideView(View view) {
         view.setVisibility(View.GONE);
+    }
+
+    public void setPost(BuySellPost post){
+        mPost = post;
     }
 
 }

@@ -57,9 +57,6 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnListFragmentInteractionListener, CreateCallback {
 
-    private BuySellAdapter mBuySellAdapter;
-    private RidesAdapter mRidesAdapter;
-    private LostAndFoundAdapter mLostAndFoundAdapter;
     private BuyAndSellFragment mBuyAndSellFragment;
     private RidesFragment mRidesFragment;
     private LostAndFoundFragment mLostAndFoundFragment;
@@ -142,14 +139,44 @@ public class MainActivity extends AppCompatActivity
     private void checkDeepLink(){
         Bundle bundle = getIntent().getExtras();
         if (bundle == null || bundle.isEmpty()) return;
+        final String category = bundle.getString("category");
         final String postKey = bundle.getString("postKey");
         if (postKey == null) return;
-        mFirebaseRidePost.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase firebase = null;
+        switch(category){
+            case "rides":
+                firebase = mFirebaseRidePost;
+                break;
+            case "buyandsell":
+                firebase = mFirebaseBuySellPost;
+                break;
+            case "lostandfound":
+                firebase = mFirebaseLostAndFoundPost;
+                break;
+        }
+
+        firebase.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                RidesPost post = dataSnapshot.getValue(RidesPost.class);
-                post.setKey(postKey);
-                switchToFragment(new RidesDetailFragment(post));
+                Fragment fragment = null;
+                switch(category){
+                    case "rides":
+                        RidesPost post = dataSnapshot.getValue(RidesPost.class);
+                        post.setKey(dataSnapshot.getKey());
+                        fragment = new RidesDetailFragment(post);
+                        break;
+                    case "buyandsell":
+                        BuySellPost post2 = dataSnapshot.getValue(BuySellPost.class);
+                        post2.setKey(dataSnapshot.getKey());
+                        fragment = new BuySellDetailFragment(post2);
+                        break;
+                    case "lostandfound":
+                        LostAndFoundPost post3 = dataSnapshot.getValue(LostAndFoundPost.class);
+                        post3.setKey(dataSnapshot.getKey());
+                        fragment = new LostAndFoundDetailFragment(post3);
+                        break;
+                }
+                switchToFragment(fragment);
             }
 
             @Override
