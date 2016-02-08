@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,6 +99,8 @@ public class MainActivity extends AppCompatActivity
         mFirebaseLostAndFoundPost = new Firebase(Constants.FIREBASE_LOST_AND_FOUND_POST_URL);
         mFirebaseLostAndFoundDraft = new Firebase(Constants.FIREBASE_LOST_AND_FOUND_DRAFT_URL);
 
+        checkDeepLink();
+
         setupUser(mFirebase.getAuth().getUid());
 
         mDraftsFragment = new DraftsFragment();
@@ -134,6 +137,26 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+    }
+
+    private void checkDeepLink(){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null || bundle.isEmpty()) return;
+        final String postKey = bundle.getString("postKey");
+        if (postKey == null) return;
+        mFirebaseRidePost.child(postKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                RidesPost post = dataSnapshot.getValue(RidesPost.class);
+                post.setKey(postKey);
+                switchToFragment(new RidesDetailFragment(post));
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void setupUser(String uid) {

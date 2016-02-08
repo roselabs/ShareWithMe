@@ -31,6 +31,17 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".ParseDeepLinkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <!-- Handles any vnd.urbanairship.sample://deeplink URI's -->
+                <data android:scheme="sharewithme" android:host="deeplink" />
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
