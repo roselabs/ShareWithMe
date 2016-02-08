@@ -62,4 +62,5 @@
     <string name="found_radio_button_text">Found</string>
     <string name="lost_and_found_begin_text">I ...</string>
     <string name="lost_and_found_end_text">... something!</string>
+    <string name="all_radio_button_filter">All</string>
 </resources>

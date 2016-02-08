@@ -46,7 +46,13 @@ public class BuyAndSellFragment extends Fragment {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mAdapter.setFilter(checkedId == R.id.buy_radio_button_filter);
+                if(checkedId == R.id.buy_radio_button_filter){
+                    mAdapter.setFilter(0);
+                }else if(checkedId == R.id.sell_radio_button_filter){
+                    mAdapter.setFilter(1);
+                }else{
+                    mAdapter.setFilter(2);
+                }
             }
         });
 

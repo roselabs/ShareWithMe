@@ -25,9 +25,6 @@ import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-/**
- * Created by josebaf on 2/7/2016.
- */
 public class LostAndFoundDetailFragment extends Fragment{
 
     private LostAndFoundPost mPost;
