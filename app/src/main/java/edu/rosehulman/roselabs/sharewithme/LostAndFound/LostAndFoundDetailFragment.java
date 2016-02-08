@@ -92,7 +92,9 @@ public class LostAndFoundDetailFragment extends Fragment{
                     c.setContent(comment);
                     c.setPostKey(mPost.getKey());
                     c.setDate(date);
+                    c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
                     mAdapter.add(c);
+                    Utils.sendNotification(c.getUserId(), mPost.getUserId());
                     commentEditText.setText("");
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {

@@ -104,8 +104,6 @@ public class RidesDetailFragment extends Fragment {
                     c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
                     mAdapter.add(c);
                     Utils.sendNotification(c.getUserId(), mPost.getUserId());
-                    //SendNotificationTask task = new SendNotificationTask();
-                    //task.execute("New comment from " + c.getUserId());
                     commentEditText.setText("");
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
