@@ -1,6 +1,5 @@
 package edu.rosehulman.roselabs.sharewithme;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -8,11 +7,7 @@ import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.urbanairship.UAirship;
 
 import org.json.JSONArray;
@@ -24,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import edu.rosehulman.roselabs.sharewithme.PushNotification.SendNotificationTask;
 
 /**
  * Created by rodrigr1 on 2/6/2016.

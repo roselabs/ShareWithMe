@@ -1,16 +1,17 @@
-package edu.rosehulman.roselabs.sharewithme;
+package edu.rosehulman.roselabs.sharewithme.PushNotification;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.urbanairship.util.UriUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import edu.rosehulman.roselabs.sharewithme.MainActivity;
 
 public class ParseDeepLinkActivity extends Activity {
 

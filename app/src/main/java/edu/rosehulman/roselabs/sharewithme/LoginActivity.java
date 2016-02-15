@@ -71,7 +71,9 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onAuthenticationError(FirebaseError firebaseError) {
-            Log.e("BILADA", "onAuthentication" + firebaseError.getMessage());
+            Toast.makeText(getBaseContext(), getString(R.string.login_error) + firebaseError.getMessage(),
+                    Toast.LENGTH_SHORT).show();
+            Log.e("onAuthError", firebaseError.getMessage());
         }
     }
 

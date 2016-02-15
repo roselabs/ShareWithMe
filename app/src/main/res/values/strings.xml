@@ -63,4 +63,6 @@
     <string name="lost_and_found_begin_text">I ...</string>
     <string name="lost_and_found_end_text">... something!</string>
     <string name="all_radio_button_filter">All</string>
+    <string name="login_error">"Login failed! "</string>
+    <string name="menu_dashboard_text">Dashboard</string>
 </resources>

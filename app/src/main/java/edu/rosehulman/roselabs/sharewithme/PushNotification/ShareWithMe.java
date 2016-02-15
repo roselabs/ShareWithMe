@@ -1,4 +1,4 @@
-package edu.rosehulman.roselabs.sharewithme;
+package edu.rosehulman.roselabs.sharewithme.PushNotification;
 
 import android.app.Application;
 

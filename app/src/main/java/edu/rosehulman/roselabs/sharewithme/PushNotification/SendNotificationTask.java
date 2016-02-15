@@ -1,7 +1,6 @@
-package edu.rosehulman.roselabs.sharewithme;
+package edu.rosehulman.roselabs.sharewithme.PushNotification;
 
 import android.os.AsyncTask;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
@@ -11,8 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by rodrigr1 on 2/7/2016.
