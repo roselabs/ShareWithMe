@@ -15,7 +15,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,21 +34,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuyAndSellFragment;
-import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellPost;
+import edu.rosehulman.roselabs.sharewithme.Dashboard.DashboardFragment;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsBuySellAdapter;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsFragment;
 import edu.rosehulman.roselabs.sharewithme.Drafts.DraftsRidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.CreateCallback;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
-import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundAdapter;
 import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundFragment;
 import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundPost;
 import edu.rosehulman.roselabs.sharewithme.Profile.ProfileFragment;
 import edu.rosehulman.roselabs.sharewithme.Profile.UserProfile;
-import edu.rosehulman.roselabs.sharewithme.Rides.RidesAdapter;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
@@ -57,6 +54,7 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnListFragmentInteractionListener, CreateCallback {
 
+    private DashboardFragment mDashboardFragment;
     private BuyAndSellFragment mBuyAndSellFragment;
     private RidesFragment mRidesFragment;
     private LostAndFoundFragment mLostAndFoundFragment;
@@ -100,6 +98,7 @@ public class MainActivity extends AppCompatActivity
 
         setupUser(mFirebase.getAuth().getUid());
 
+        mDashboardFragment = new DashboardFragment();
         mDraftsFragment = new DraftsFragment();
         mBuyAndSellFragment = new BuyAndSellFragment();
         mRidesFragment = new RidesFragment();
@@ -134,6 +133,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        switchToFragment(mDashboardFragment);
     }
 
     private void checkDeepLink(){
@@ -244,8 +244,23 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         Fragment switchTo = null;
         switch (item.getItemId()) {
+            case R.id.menu_dashboard:
+                switchTo = mDashboardFragment;
+                break;
+            case R.id.menu_drafts:
+                switchTo = mDraftsFragment;
+                break;
             case R.id.menu_preferences:
                 //TODO Implement: switchTo = new PreferencesFragment();
+                break;
+            case R.id.menu_help_and_feedback:
+                switchTo = new HelpAndFeedbackFragment();
+                break;
+            case R.id.categories_rides:
+                switchTo = mRidesFragment;
+                break;
+            case R.id.categories_buy:
+                switchTo = mBuyAndSellFragment;
                 break;
             case R.id.categories_lost_found:
                 switchTo = mLostAndFoundFragment;
@@ -255,18 +270,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.categories_others:
                 //TODO Implement: switchTo = new OthersFragment();
-                break;
-            case R.id.menu_help_and_feedback:
-                switchTo = new HelpAndFeedbackFragment();
-                break;
-            case R.id.menu_drafts:
-                switchTo = mDraftsFragment;
-                break;
-            case R.id.categories_rides:
-                switchTo = mRidesFragment;
-                break;
-            case R.id.categories_buy:
-                switchTo = mBuyAndSellFragment;
                 break;
             default:
                 break;

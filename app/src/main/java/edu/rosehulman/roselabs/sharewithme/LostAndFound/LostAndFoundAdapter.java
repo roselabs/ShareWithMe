@@ -26,7 +26,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
 
     private List<LostAndFoundPost> mLostAndFoundList;
     private Firebase mLostAndFoundRef;
-    private final OnListFragmentInteractionListener mListener; // Not being used yet but will be.
+    private final OnListFragmentInteractionListener mListener;
     private ChildEventListener mChildEventListener;
 
     public LostAndFoundAdapter(OnListFragmentInteractionListener listener) {
