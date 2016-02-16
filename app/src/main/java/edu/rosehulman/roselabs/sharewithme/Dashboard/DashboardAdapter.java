@@ -43,7 +43,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private Query mLostAndFoundQuery;
     private ChildEventListener mChildEventListener;
 
-    private DashboardPost mDashboardPost;
     private RidesPost mRidesPost;
     private BuySellPost mBuyAndSellPost;
     private LostAndFoundPost mLostAndFoundPost;
@@ -77,26 +76,26 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        mDashboardPost = mDashboardPostList.get(position);
+        final DashboardPost dashboardPost = mDashboardPostList.get(position);
 
-        holder.mTitleTextView.setText(mDashboardPost.getTitle());
-        holder.mDescriptionTextView.setText(String.format("@%s at %s", mDashboardPost.getUserId(),
-                Utils.getStringDate(mDashboardPost.getPostDate())));
+        holder.mTitleTextView.setText(dashboardPost.getTitle());
+        holder.mDescriptionTextView.setText(String.format("@%s at %s", dashboardPost.getUserId(),
+                Utils.getStringDate(dashboardPost.getPostDate())));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: create a fragment for each category and sendFragmentToInflate
-                switch (mDashboardPost.getCategory()){
+
+                switch (dashboardPost.getCategory()){
                     case "Rides":
-                        Query rides = mRidesRef.orderByChild("title").equalTo(mDashboardPost.getTitle());
+                        Query rides = mRidesRef.orderByChild("title").equalTo(dashboardPost.getTitle());
                         rides.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 mRidesPost = dataSnapshot.getValue(RidesPost.class);
                                 mRidesPost.setKey(dataSnapshot.getKey());
 
-                                if (!mRidesPost.getKey().equals(mDashboardPost.getKey()))
+                                if (!mRidesPost.getKey().equals(dashboardPost.getKey()))
                                     return;
 
                                 Fragment fragment = new RidesDetailFragment(mRidesPost);
@@ -125,14 +124,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                         });
                         break;
                     case "BuyAndSell":
-                        Query buyAndSell = mBuyAndSellRef.orderByChild("title").equalTo(mDashboardPost.getTitle());
+                        Query buyAndSell = mBuyAndSellRef.orderByChild("title").equalTo(dashboardPost.getTitle());
                         buyAndSell.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 mBuyAndSellPost = dataSnapshot.getValue(BuySellPost.class);
                                 mBuyAndSellPost.setKey(dataSnapshot.getKey());
 
-                                if (!mBuyAndSellPost.getKey().equals(mDashboardPost.getKey()))
+                                if (!mBuyAndSellPost.getKey().equals(dashboardPost.getKey()))
                                     return;
 
                                 Fragment fragment = new BuySellDetailFragment(mBuyAndSellPost);
@@ -161,14 +160,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                         });
                         break;
                     case "LostAndFound":
-                        Query lostAndFound = mLostAndFoundRef.orderByChild("title").equalTo(mDashboardPost.getTitle());
+                        Query lostAndFound = mLostAndFoundRef.orderByChild("title").equalTo(dashboardPost.getTitle());
                         lostAndFound.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 mLostAndFoundPost = dataSnapshot.getValue(LostAndFoundPost.class);
                                 mLostAndFoundPost.setKey(dataSnapshot.getKey());
 
-                                if(!mLostAndFoundPost.getKey().equals(mDashboardPost.getKey()))
+                                if(!mLostAndFoundPost.getKey().equals(dashboardPost.getKey()))
                                     return;
 
                                 Fragment fragment = new LostAndFoundDetailFragment(mLostAndFoundPost);
@@ -274,7 +273,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
-            //TODO
+            String key = dataSnapshot.getKey();
+            for (DashboardPost post : mDashboardPostList) {
+                if (post.getKey().equals(key)) {
+                    mDashboardPostList.remove(post);
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
