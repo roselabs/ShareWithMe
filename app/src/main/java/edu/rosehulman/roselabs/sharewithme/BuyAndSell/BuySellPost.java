@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Calendar;
 import java.util.Date;
 
+import edu.rosehulman.roselabs.sharewithme.Constants;
+
 public class BuySellPost implements Parcelable {
 
     private boolean buy;
@@ -27,6 +29,8 @@ public class BuySellPost implements Parcelable {
         this.description = "";
         this.keywords = "";
         this.price = "";
+        this.postDate = Calendar.getInstance().getTime();
+        this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
     public BuySellPost(boolean buy, String title, String description, String keywords, String price) {
@@ -36,6 +40,7 @@ public class BuySellPost implements Parcelable {
         this.keywords = keywords;
         this.price = price;
         this.postDate = Calendar.getInstance().getTime();
+        this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
     //Temporary constructor just for testing purposes
@@ -53,6 +58,8 @@ public class BuySellPost implements Parcelable {
         userId = in.readString();
         price = in.readString();
         key = in.readString();
+        postDate = (java.util.Date) in.readSerializable();
+        expirationDate = (java.util.Date) in.readSerializable();
     }
 
     public static final Creator<BuySellPost> CREATOR = new Creator<BuySellPost>() {
@@ -155,5 +162,7 @@ public class BuySellPost implements Parcelable {
         dest.writeString(userId);
         dest.writeString(price);
         dest.writeString(key);
+        dest.writeSerializable(postDate);
+        dest.writeSerializable(expirationDate);
     }
 }

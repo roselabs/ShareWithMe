@@ -19,6 +19,10 @@ public class LostAndFoundFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private LostAndFoundAdapter mAdapter;
 
+    public LostAndFoundFragment(){
+        // Required empty public constructor
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_lost_and_found, container, false);

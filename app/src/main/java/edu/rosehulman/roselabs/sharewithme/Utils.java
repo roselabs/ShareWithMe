@@ -22,9 +22,6 @@ import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.PushNotification.SendNotificationTask;
 
-/**
- * Created by rodrigr1 on 2/6/2016.
- */
 public class Utils {
 
     public static void sendNotification(String commentUserId, String mPostAuthorUserId, String postKey, String category){
@@ -116,20 +113,6 @@ public class Utils {
         }
 
         return formattedPrice;
-    }
-
-    public static String formatDateFromPicker(DatePicker date) {
-        String formattedDate = date.getYear() + "/" + (date.getMonth() + 1) + "/" + date.getDayOfMonth();
-
-        return formattedDate;
-    }
-
-    public static String formatDateToAmerican(String databaseFormat) {
-        String[] dateArray = databaseFormat.split("/");
-
-        String formattedDate = dateArray[1] + "/" + dateArray[2] + "/" + dateArray[0];
-
-        return formattedDate;
     }
 
     public static String formatPhoneNumber(String phoneNumber) {

@@ -28,10 +28,12 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebasePost;
     private ChildEventListener mChildEventListener;
+    private int mToggleValue;
 
     public BuySellAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
+        mToggleValue = 2;
         mRefFirebasePost = new Firebase(Constants.FIREBASE_BUY_SELL_POST_URL);
         mChildEventListener = new BuySellChildEventListener();
         mRefFirebasePost.addChildEventListener(mChildEventListener);
@@ -80,12 +82,8 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         Query query;
         mRefFirebasePost.removeEventListener(mChildEventListener);
 
-        if (value < 1)
-            query = mRefFirebasePost.orderByChild("buy").equalTo(true);
-        else if (value < 2)
-            query = mRefFirebasePost.orderByChild("buy").equalTo(false);
-        else
-            query = mRefFirebasePost.orderByChild("buy");
+        mToggleValue = value;
+        query = mRefFirebasePost.orderByChild("expirationDate").startAt(System.currentTimeMillis());
 
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
@@ -111,12 +109,29 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
     }
 
     private class BuySellChildEventListener implements ChildEventListener {
+
+        public void addPost(BuySellPost bp) {
+            mValues.add(0, bp);
+            notifyDataSetChanged();
+        }
+
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            BuySellPost wp = dataSnapshot.getValue(BuySellPost.class);
-            wp.setKey(dataSnapshot.getKey());
-            mValues.add(0, wp);
-            notifyDataSetChanged();
+            BuySellPost bp = dataSnapshot.getValue(BuySellPost.class);
+            bp.setKey(dataSnapshot.getKey());
+            if(mToggleValue == 2){
+                addPost(bp);
+            }else{
+                if(mToggleValue == 0){
+                    if(bp.isBuy()){
+                        addPost(bp);
+                    }
+                }else{
+                    if(!bp.isBuy()){
+                        addPost(bp);
+                    }
+                }
+            }
         }
 
         @Override

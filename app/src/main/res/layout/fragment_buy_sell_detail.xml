@@ -89,7 +89,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/result_description_text_view"
                     android:layout_marginBottom="10dp"
-                    android:text="Result Expiration" />
+                    android:text="Result Expiration"
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/keyword_text_view"

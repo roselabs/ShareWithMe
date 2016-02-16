@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -27,9 +28,13 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ServerValue;
 import com.firebase.client.ValueEventListener;
 
 import java.io.File;
+import java.security.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -322,6 +327,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+
         mFirebaseBuySellPost.push().setValue(post);
 
         if (post.getKey() != null) {
@@ -349,7 +355,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCreatePostFinished(LostAndFoundPost post) {
         if (post.getKey() != null) {
-            //mFirebaseLostAndFoundDraft.child(post.getKey()).removeValue();
+            mFirebaseLostAndFoundDraft.child(post.getKey()).removeValue();
             mFirebaseLostAndFoundPost.child(post.getKey()).removeValue();
         }
 
@@ -380,6 +386,14 @@ public class MainActivity extends AppCompatActivity
         mFirebaseBuySellDraft.push().setValue(post);
     }
 
+    @Override
+    public void onDraftPostFinished(LostAndFoundPost post) {
+        if (post.getKey() != null)
+            mFirebaseLostAndFoundDraft.child(post.getKey()).removeValue();
+
+        post.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
+        mFirebaseLostAndFoundDraft.push().setValue(post);
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

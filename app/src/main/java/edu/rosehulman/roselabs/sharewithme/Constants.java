@@ -15,4 +15,6 @@ public class Constants {
 
     public static final int PICK_IMAGE_REQUEST = 1;
     public static final int CROP_IMAGE_REQUEST = 2;
+
+    public static final long DAYS_TO_EXPIRE = 1209600000; //14 days
 }

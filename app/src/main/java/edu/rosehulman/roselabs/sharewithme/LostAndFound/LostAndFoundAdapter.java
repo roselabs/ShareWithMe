@@ -20,6 +20,7 @@ import java.util.List;
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
+import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
 public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapter.ViewHolder> {
@@ -28,10 +29,12 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
     private Firebase mLostAndFoundRef;
     private final OnListFragmentInteractionListener mListener;
     private ChildEventListener mChildEventListener;
+    private int mToggleValue;
 
     public LostAndFoundAdapter(OnListFragmentInteractionListener listener) {
         mListener = listener;
         mLostAndFoundList = new ArrayList<>();
+        mToggleValue = 2;
         mLostAndFoundRef = new Firebase(Constants.FIREBASE_URL + "/categories/LostAndFound/posts");
         mChildEventListener = new LostAndFoundEventListener();
         mLostAndFoundRef.addChildEventListener(mChildEventListener);
@@ -45,12 +48,8 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         Query query;
         mLostAndFoundRef.removeEventListener(mChildEventListener);
 
-        if (checkedId < 1)
-            query = mLostAndFoundRef.orderByChild("lostFound").equalTo(true);
-        else if (checkedId < 2)
-            query = mLostAndFoundRef.orderByChild("lostFound").equalTo(false);
-        else
-            query = mLostAndFoundRef.orderByChild("lostFound");
+        mToggleValue = checkedId;
+        query = mLostAndFoundRef.orderByChild("expirationDate").startAt(System.currentTimeMillis());
 
         mLostAndFoundList.clear();
         query.addChildEventListener(mChildEventListener);
@@ -67,7 +66,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        LostAndFoundPost post = mLostAndFoundList.get(position);
+        final LostAndFoundPost post = mLostAndFoundList.get(position);
 
         holder.mTitleTextView.setText(post.getTitle());
         holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(),
@@ -78,6 +77,17 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
             public void onClick(View v) {
                 Fragment fragment = new LostAndFoundDetailFragment(mLostAndFoundList.get(position));
                 mListener.sendFragmentToInflate(fragment);
+            }
+        });
+
+        //Este codigo abaixo funciona mas nao achei funcional pro futuro, so para apagar mais facil nos testes
+        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String key = post.getKey();
+                //TODO verify user permission
+                mLostAndFoundRef.child(key).removeValue();
+                return false;
             }
         });
     }
@@ -101,12 +111,31 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
     }
 
     private class LostAndFoundEventListener implements ChildEventListener {
+
+        public void addPost(LostAndFoundPost lp){
+            mLostAndFoundList.add(0, lp);
+            notifyDataSetChanged();
+        }
+
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            LostAndFoundPost post = dataSnapshot.getValue(LostAndFoundPost.class);
-            post.setKey(dataSnapshot.getKey());
-            mLostAndFoundList.add(0, post);
-            notifyDataSetChanged();
+            LostAndFoundPost lp = dataSnapshot.getValue(LostAndFoundPost.class);
+            lp.setKey(dataSnapshot.getKey());
+
+            if(mToggleValue == 2){
+                addPost(lp);
+            }else{
+                if(mToggleValue == 0){
+                    if(lp.isLostFound()){
+                        addPost(lp);
+                    }
+                }else{
+                    if(!lp.isLostFound()){
+                        addPost(lp);
+                    }
+                }
+            }
+
         }
 
         @Override
@@ -117,9 +146,10 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (LostAndFoundPost post : mLostAndFoundList) {
-                if (post.getKey().equals(key)) {
-                    mLostAndFoundList.remove(post);
+            for (int i = 0; i < mLostAndFoundList.size(); i++) {
+                if (mLostAndFoundList.get(i).getKey().equals(key)) {
+                    mLostAndFoundList.remove(i);
+                    break;
                 }
             }
             notifyDataSetChanged();

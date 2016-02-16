@@ -28,9 +28,6 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-/**
- * Created by josebaf on 2/15/2016.
- */
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
 
     private List<DashboardPost> mDashboardPostList;
@@ -274,12 +271,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
             String key = dataSnapshot.getKey();
-            for (DashboardPost post : mDashboardPostList) {
-                if (post.getKey().equals(key)) {
-                    mDashboardPostList.remove(post);
+            for (int i = 0; i < mDashboardPostList.size(); i++) {
+                if (mDashboardPostList.get(i).getKey().equals(key)) {
+                    mDashboardPostList.remove(i);
+                    break;
                 }
             }
             notifyDataSetChanged();
+
+//            String key = dataSnapshot.getKey();
+//            for (DashboardPost post : mDashboardPostList) {
+//                if (post.getKey().equals(key)) {
+//                    mDashboardPostList.remove(post);
+//                }
+//            }
+//            notifyDataSetChanged();
         }
 
         @Override

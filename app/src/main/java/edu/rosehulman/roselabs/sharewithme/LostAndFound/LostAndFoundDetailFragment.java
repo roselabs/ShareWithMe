@@ -120,7 +120,11 @@ public class LostAndFoundDetailFragment extends Fragment{
             description.setText(mPost.getDescription());
         }
 
-        //expiration.setText(mPost.getExpirationDate().toString());
+        if (mPost.getExpirationDate() == null){
+            expiration.setText("Expiration Date");
+        } else {
+            expiration.setText("Expires at " + Utils.getStringDate(mPost.getExpirationDate()));
+        }
 
         if(mPost.getKeywords().isEmpty()){
             hideView(keyword);

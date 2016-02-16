@@ -8,9 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by Thais Faria on 1/29/2016.
- */
+import edu.rosehulman.roselabs.sharewithme.Constants;
+
 public class RidesPost implements Parcelable {
 
     private boolean offer;
@@ -36,6 +35,7 @@ public class RidesPost implements Parcelable {
         this.departureLocal = "";
         this.destinationLocal = "";
         this.postDate = Calendar.getInstance().getTime();
+        this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
     public RidesPost(boolean offer, String price, String title, String departureLocal,
@@ -50,6 +50,7 @@ public class RidesPost implements Parcelable {
         this.destinationLocal = destinationLocal;
         this.rideDate = rideDate;
         this.postDate = Calendar.getInstance().getTime();
+        this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
     public RidesPost(String title, String description, boolean offer){
@@ -69,6 +70,9 @@ public class RidesPost implements Parcelable {
         departureLocal = in.readString();
         destinationLocal = in.readString();
         key = in.readString();
+        rideDate = (java.util.Date) in.readSerializable();
+        postDate = (java.util.Date) in.readSerializable();
+        expirationDate = (java.util.Date) in.readSerializable();
     }
 
     @JsonIgnore
@@ -198,5 +202,8 @@ public class RidesPost implements Parcelable {
         dest.writeString(departureLocal);
         dest.writeString(destinationLocal);
         dest.writeString(key);
+        dest.writeSerializable(rideDate);
+        dest.writeSerializable(postDate);
+        dest.writeSerializable(expirationDate);
     }
 }

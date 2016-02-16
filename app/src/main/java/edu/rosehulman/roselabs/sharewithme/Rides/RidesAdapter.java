@@ -27,14 +27,14 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
     private List<RidesPost> mValues;
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRefFirebasePosts;
-    private Firebase mRefFirebaseDrafts;
     private ChildEventListener mChildEventListener;
+    private int mToggleValue;
 
     public RidesAdapter(OnListFragmentInteractionListener listener) {
         mValues = new ArrayList<>();
         mListener = listener;
+        mToggleValue = 2;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_DRAFT_URL + "/categories/Rides/posts");
         mChildEventListener = new RidesChildEventListener();
         mRefFirebasePosts.addChildEventListener(mChildEventListener);
     }
@@ -85,12 +85,8 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
         Query query;
         mRefFirebasePosts.removeEventListener(mChildEventListener);
 
-        if (value < 1)
-            query = mRefFirebasePosts.orderByChild("offer").equalTo(true);
-        else if (value < 2)
-            query = mRefFirebasePosts.orderByChild("offer").equalTo(false);
-        else
-            query = mRefFirebasePosts.orderByChild("offer");
+        mToggleValue = value;
+        query = mRefFirebasePosts.orderByChild("expirationDate").startAt(System.currentTimeMillis());
 
         mValues.clear();
         query.addChildEventListener(mChildEventListener);
@@ -116,12 +112,29 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
     }
 
     private class RidesChildEventListener implements ChildEventListener {
+
+        public void addPost(RidesPost rp){
+            mValues.add(0, rp);
+            notifyDataSetChanged();
+        }
+
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
             RidesPost rp = dataSnapshot.getValue(RidesPost.class);
             rp.setKey(dataSnapshot.getKey());
-            mValues.add(0, rp);
-            notifyDataSetChanged();
+            if(mToggleValue == 2){
+                addPost(rp);
+            }else{
+                if(mToggleValue == 0){
+                    if(rp.isOffer()){
+                        addPost(rp);
+                    }
+                }else{
+                    if(!rp.isOffer()){
+                        addPost(rp);
+                    }
+                }
+            }
         }
 
         @Override

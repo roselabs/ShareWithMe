@@ -8,9 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by josebaf on 2/6/2016.
- */
+import edu.rosehulman.roselabs.sharewithme.Constants;
+
 public class LostAndFoundPost implements Parcelable {
 
     private boolean lostFound; // True for Lost, False for Found
@@ -29,6 +28,7 @@ public class LostAndFoundPost implements Parcelable {
         this.description = "";
         this.keywords = "";
         this.postDate = Calendar.getInstance().getTime();
+        this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
     public LostAndFoundPost(boolean lostFound, String title, String description, String keywords) {
@@ -37,6 +37,7 @@ public class LostAndFoundPost implements Parcelable {
         this.description = description;
         this.keywords = keywords;
         this.postDate = Calendar.getInstance().getTime();
+        this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
     public boolean isLostFound() {
@@ -125,5 +126,13 @@ public class LostAndFoundPost implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (lostFound ? 1 : 0));
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(keywords);
+        dest.writeString(userId);
+        dest.writeString(key);
+        dest.writeSerializable(postDate);
+        dest.writeSerializable(expirationDate);
     }
 }
