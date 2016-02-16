@@ -10,8 +10,8 @@ public class DashboardPost {
     private String title;
     private String userId;
     private String category;
-    private String key;
     private Date postDate;
+    private String key;
 
     public DashboardPost() {
         this.title = "";
