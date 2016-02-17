@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.solovyev.android.views.llm.DividerItemDecoration;
 import org.solovyev.android.views.llm.LinearLayoutManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
@@ -102,7 +114,7 @@ public class LostAndFoundDetailFragment extends Fragment{
                     c.setDate(date);
                     c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
                     mAdapter.add(c);
-                    Utils.sendNotification(c.getUserId(), mPost.getUserId(), mPost.getKey(), "lostandfound");
+                    sendNotification(c.getUserId());
                     commentEditText.setText("");
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
@@ -145,6 +157,31 @@ public class LostAndFoundDetailFragment extends Fragment{
         }
 
         return rootView;
+    }
+
+    public void sendNotification(final String cUser){
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL + "/comments/lost and found");
+        final Query query = firebase.orderByChild("postKey").equalTo(mPost.getKey());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> notificationUsers = new ArrayList<>();
+                notificationUsers.add(mPost.getUserId());
+                Map<String, HashMap<String, String>> map = (Map<String, HashMap<String, String>>) dataSnapshot.getValue();;
+                for (HashMap<String, String> s : map.values()) {
+                    String userId = s.get("userId");
+                    if (!notificationUsers.contains(userId))
+                        notificationUsers.add(userId);
+                }
+                Utils.sendNotification(cUser, notificationUsers, mPost.getKey(), "lostandfound");
+                query.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void hideView(View view){
