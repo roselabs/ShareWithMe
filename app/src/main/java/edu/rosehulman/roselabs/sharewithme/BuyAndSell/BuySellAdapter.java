@@ -36,7 +36,7 @@ public class BuySellAdapter extends RecyclerView.Adapter<BuySellAdapter.ViewHold
         mToggleValue = 2;
         mRefFirebasePost = new Firebase(Constants.FIREBASE_BUY_SELL_POST_URL);
         mChildEventListener = new BuySellChildEventListener();
-        mRefFirebasePost.addChildEventListener(mChildEventListener);
+        mRefFirebasePost.orderByChild("expirationDate").startAt(System.currentTimeMillis()).addChildEventListener(mChildEventListener);
     }
 
     @Override

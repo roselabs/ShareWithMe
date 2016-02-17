@@ -37,7 +37,7 @@ public class LostAndFoundAdapter extends RecyclerView.Adapter<LostAndFoundAdapte
         mToggleValue = 2;
         mLostAndFoundRef = new Firebase(Constants.FIREBASE_URL + "/categories/LostAndFound/posts");
         mChildEventListener = new LostAndFoundEventListener();
-        mLostAndFoundRef.addChildEventListener(mChildEventListener);
+        mLostAndFoundRef.orderByChild("expirationDate").startAt(System.currentTimeMillis()).addChildEventListener(mChildEventListener);
     }
 
     public void update(LostAndFoundPost post) {

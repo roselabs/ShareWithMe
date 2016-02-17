@@ -15,6 +15,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellDetailFragment;
@@ -61,6 +62,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         mLostAndFoundRef = new Firebase(Constants.FIREBASE_LOST_AND_FOUND_POST_URL);
         mLostAndFoundQuery = mLostAndFoundRef.orderByChild("postDate").limitToFirst(20);
         mLostAndFoundQuery.addChildEventListener(mChildEventListener);
+
+//        Collections.sort(mDashboardPostList);
     }
 
     @Override
@@ -164,7 +167,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                                 mLostAndFoundPost = dataSnapshot.getValue(LostAndFoundPost.class);
                                 mLostAndFoundPost.setKey(dataSnapshot.getKey());
 
-                                if(!mLostAndFoundPost.getKey().equals(dashboardPost.getKey()))
+                                if (!mLostAndFoundPost.getKey().equals(dashboardPost.getKey()))
                                     return;
 
                                 Fragment fragment = new LostAndFoundDetailFragment(mLostAndFoundPost);

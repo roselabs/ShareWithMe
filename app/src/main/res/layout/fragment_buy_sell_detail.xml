@@ -118,7 +118,8 @@
                     android:layout_margin="5dp"
                     android:text="\@author"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="9sp" />
+                    android:textSize="9sp"
+                    android:textColor="#194bd8" />
 
                 <TextView
                     android:id="@+id/edit_ride_post_text_view"

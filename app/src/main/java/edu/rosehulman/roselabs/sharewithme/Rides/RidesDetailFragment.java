@@ -22,6 +22,7 @@ import java.util.Date;
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
@@ -32,6 +33,7 @@ public class RidesDetailFragment extends Fragment {
 
     private RidesPost mPost;
     private CommentsAdapter mAdapter;
+    private OnListFragmentInteractionListener mListener;
 
     public RidesDetailFragment() {
         // Required empty public constructor
@@ -44,6 +46,8 @@ public class RidesDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mListener = (OnListFragmentInteractionListener) getActivity();
+
         View view = inflater.inflate(R.layout.fragment_rides_detail, container, false);
 
         TextView option = (TextView) view.findViewById(R.id.result_option_text_view);
@@ -73,7 +77,14 @@ public class RidesDetailFragment extends Fragment {
         });
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), Utils.getStringDate(mPost.getPostDate())));
 
-        mAdapter = new CommentsAdapter("rides", mPost.getKey());
+        authorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.sendProfileFragmentToInflate(mPost.getUserId());
+            }
+        });
+
+        mAdapter = new CommentsAdapter("rides", mPost.getKey(), (OnListFragmentInteractionListener) getContext());
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 

@@ -10,5 +10,7 @@ public interface OnListFragmentInteractionListener {
 
     void sendFragmentToInflate(Fragment fragment);
 
+    void sendProfileFragmentToInflate(String userKey);
+
     void sendDialogFragmentToInflate(DialogFragment dialogFragment, String title);
 }

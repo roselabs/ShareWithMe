@@ -36,7 +36,7 @@ public class RidesAdapter extends RecyclerView.Adapter<RidesAdapter.ViewHolder> 
         mToggleValue = 2;
         mRefFirebasePosts = new Firebase(Constants.FIREBASE_URL + "/categories/Rides/posts");
         mChildEventListener = new RidesChildEventListener();
-        mRefFirebasePosts.addChildEventListener(mChildEventListener);
+        mRefFirebasePosts.orderByChild("expirationDate").startAt(System.currentTimeMillis()).addChildEventListener(mChildEventListener);
     }
 
     @Override

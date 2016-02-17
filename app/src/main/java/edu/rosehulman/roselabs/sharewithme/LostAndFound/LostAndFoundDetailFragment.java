@@ -22,6 +22,7 @@ import java.util.Date;
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
 import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
@@ -29,6 +30,7 @@ public class LostAndFoundDetailFragment extends Fragment{
 
     private LostAndFoundPost mPost;
     private CommentsAdapter mAdapter;
+    private OnListFragmentInteractionListener mListener;
 
     public LostAndFoundDetailFragment() {
         // Required empty public constructor
@@ -40,6 +42,8 @@ public class LostAndFoundDetailFragment extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mListener = (OnListFragmentInteractionListener) getActivity();
+
         View rootView = inflater.inflate(R.layout.fragment_lost_and_found_detail, container, false);
 
         TextView lostFound = (TextView)rootView.findViewById(R.id.result_option_text_view);
@@ -66,7 +70,14 @@ public class LostAndFoundDetailFragment extends Fragment{
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(),
                 Utils.getStringDate(mPost.getPostDate())));
 
-        mAdapter = new CommentsAdapter("lost and found", mPost.getKey());
+        authorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.sendProfileFragmentToInflate(mPost.getUserId());
+            }
+        });
+
+        mAdapter = new CommentsAdapter("lost and found", mPost.getKey(), (OnListFragmentInteractionListener) getContext());
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
 

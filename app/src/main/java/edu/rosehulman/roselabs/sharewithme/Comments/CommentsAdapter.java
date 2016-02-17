@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
+import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 import edu.rosehulman.roselabs.sharewithme.R;
 
@@ -28,8 +29,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     private final Firebase mRefFirebase;
     private List<Comment> mComments;
     private String mCategory, mPostKey;
+    private OnListFragmentInteractionListener mListener;
 
-    public CommentsAdapter(String category, String postKey) {
+    public CommentsAdapter(String category, String postKey, OnListFragmentInteractionListener listener) {
+        mListener = listener;
         mComments = new ArrayList<>();
         mCategory = category.toLowerCase();
         mPostKey = postKey;
@@ -74,10 +77,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(CommentsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(CommentsAdapter.ViewHolder holder, final int position) {
         final Comment comment = mComments.get(position);
         holder.mContentTextView.setText(comment.getContent());
         holder.mAuthorTextView.setText(String.format("@%s at %s", comment.getUserId(), Utils.getStringDate(comment.getDate())));
+
+        holder.mAuthorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Comment cm = mComments.get(position);
+                mListener.sendProfileFragmentToInflate(cm.getUserId());
+            }
+        });
     }
 
     @Override

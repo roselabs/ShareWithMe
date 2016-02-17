@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Fragment fragment = null;
-                switch(category){
+                switch (category) {
                     case "rides":
                         RidesPost post = dataSnapshot.getValue(RidesPost.class);
                         post.setKey(dataSnapshot.getKey());
@@ -312,6 +312,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendFragmentToInflate(Fragment fragment) {
         switchToFragment(fragment);
+    }
+
+    @Override
+    public void sendProfileFragmentToInflate(String userid) {
+        Fragment profile = new ProfileFragment(userid);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_container, profile);
+        ft.addToBackStack("fragBack");
+        ft.commit();
     }
 
     @Override

@@ -34,15 +34,19 @@ public class ProfileFragment extends Fragment {
 
     private Firebase mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
     private UserProfile mUserProfile;
-
     private ImageView mImageView;
     private TextView mProfileNameView;
     private TextView mProfileEmailView;
     private TextView mProfilePhoneView;
     private Button mUpdateProfileButton;
+    private String mUserProfileKey;
 
     public ProfileFragment() {
         // Required empty constructor.
+    }
+
+    public ProfileFragment(String userProfileKey) {
+        mUserProfileKey = userProfileKey;
     }
 
     @Override
@@ -67,8 +71,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        Query queryRef;
         mFirebaseRef = new Firebase(Constants.FIREBASE_URL);
-        Query queryRef = mFirebaseRef.child("users").orderByChild("userID").equalTo(mFirebaseRef.getAuth().getUid());
+        if(mUserProfileKey == null){
+            queryRef = mFirebaseRef.child("users").orderByChild("userID").equalTo(mFirebaseRef.getAuth().getUid());
+        }else{
+            queryRef = mFirebaseRef.child("users").orderByChild("userID").equalTo(mUserProfileKey);
+            mUpdateProfileButton.setVisibility(View.GONE);
+        }
+
         queryRef.addChildEventListener(new MyChildEventListener());
 
         mImageView.setOnClickListener(new View.OnClickListener() {
