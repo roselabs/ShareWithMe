@@ -31,6 +31,12 @@ public class LostAndFoundPost implements Parcelable {
         this.expirationDate = new Date(Calendar.getInstance().getTimeInMillis() + Constants.DAYS_TO_EXPIRE);
     }
 
+    public LostAndFoundPost(String title, String description, boolean lostFound){
+        this.title = title;
+        this.description = description;
+        this.lostFound = lostFound;
+    }
+
     public LostAndFoundPost(boolean lostFound, String title, String description, String keywords) {
         this.lostFound = lostFound;
         this.title = title;

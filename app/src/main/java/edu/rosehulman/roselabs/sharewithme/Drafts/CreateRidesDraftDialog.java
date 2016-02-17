@@ -62,6 +62,9 @@ public class CreateRidesDraftDialog extends DialogFragment {
                 .setPositiveButton(R.string.create_button_text, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .setNeutralButton(R.string.draft_button_text, null);
+//        if (mPost == null) {
+//            builder.setNeutralButton(R.string.draft_button_text, null);
+//        }
 
         return builder.create();
     }

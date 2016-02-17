@@ -1,6 +1,7 @@
 package edu.rosehulman.roselabs.sharewithme.Drafts;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,32 +13,35 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.Constants;
 import edu.rosehulman.roselabs.sharewithme.Interfaces.OnListFragmentInteractionListener;
+import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundDetailFragment;
+import edu.rosehulman.roselabs.sharewithme.LostAndFound.LostAndFoundPost;
 import edu.rosehulman.roselabs.sharewithme.R;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.ViewHolder> {
+public class DraftsLostAndFoundAdapter extends RecyclerView.Adapter<DraftsLostAndFoundAdapter.ViewHolder> {
 
-    private List<RidesPost> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private List<LostAndFoundPost> mValues;
     private Firebase mRefFirebaseDrafts;
+    private final OnListFragmentInteractionListener mListener;
     private ChildEventListener mChildEventListener;
     private boolean mEmpty;
 
-    public DraftsRidesAdapter(OnListFragmentInteractionListener listener) {
+    public DraftsLostAndFoundAdapter(OnListFragmentInteractionListener listener) {
+        mListener = listener;
         mValues = new ArrayList<>();
         mEmpty = true;
-        mListener = listener;
-        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_RIDES_DRAFT_URL);
-        mChildEventListener = new RidesChildEventListener();
+        mRefFirebaseDrafts = new Firebase(Constants.FIREBASE_LOST_AND_FOUND_DRAFT_URL);
+        mChildEventListener = new LostAndFoundEventListener();
         mRefFirebaseDrafts.addChildEventListener(mChildEventListener);
-        RidesPost emptyPost = new RidesPost("No drafts in this category", "*data may be loading", false);
+        LostAndFoundPost emptyPost = new LostAndFoundPost("No drafts in this category", "*data may be loading", false);
         mValues.add(emptyPost);
     }
 
@@ -45,25 +49,27 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_post, parent, false);
+
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final RidesPost post = mValues.get(position);
+        final LostAndFoundPost post = mValues.get(position);
         holder.mTitleTextView.setText(post.getTitle());
 
-        if (!mEmpty) {
-            holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(), Utils.getStringDate(post.getPostDate())));
+        if(!mEmpty){
+            holder.mDescriptionTextView.setText(String.format("@%s at %s", post.getUserId(),
+                    Utils.getStringDate(post.getPostDate())));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CreateRidesDraftDialog crpd = new CreateRidesDraftDialog();
+                    CreateLostAndFoundDraftDialog clfd = new CreateLostAndFoundDraftDialog();
                     Bundle b = new Bundle();
                     b.putParcelable("post", mValues.get(position));
-                    crpd.setArguments(b);
-                    mListener.sendDialogFragmentToInflate(crpd, "Edit Post");
+                    clfd.setArguments(b);
+                    mListener.sendDialogFragmentToInflate(clfd, "Edit Post");
                 }
             });
 
@@ -110,29 +116,26 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
             mTitleTextView = (TextView) view.findViewById(R.id.post_title);
             mDescriptionTextView = (TextView) view.findViewById(R.id.post_description);
         }
-
-        @Override
-        public String toString() {
-            return super.toString() + "TODO";
-        }
     }
 
-    private class RidesChildEventListener implements ChildEventListener {
+    private class LostAndFoundEventListener implements ChildEventListener {
+
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            if (mEmpty) {
+            if(mEmpty){
                 mValues.remove(0);
                 mEmpty = false;
             }
-            RidesPost rp = dataSnapshot.getValue(RidesPost.class);
-            rp.setKey(dataSnapshot.getKey());
-            mValues.add(0, rp);
+
+            LostAndFoundPost lp = dataSnapshot.getValue(LostAndFoundPost.class);
+            lp.setKey(dataSnapshot.getKey());
+            mValues.add(0, lp);
             notifyDataSetChanged();
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            //No change
+            //empty
         }
 
         @Override
@@ -144,8 +147,8 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
                     break;
                 }
             }
-            if (mValues.size() < 1) {
-                RidesPost emptyPost = new RidesPost("No drafts in this category", "*data may be loading", false);
+            if(mValues.size() < 1) {
+                LostAndFoundPost emptyPost = new LostAndFoundPost("No drafts in this category", "*data may be loading", false);
                 mEmpty = true;
                 mValues.add(emptyPost);
             }
@@ -159,7 +162,7 @@ public class DraftsRidesAdapter extends RecyclerView.Adapter<DraftsRidesAdapter.
 
         @Override
         public void onCancelled(FirebaseError firebaseError) {
-            Log.e("MQ", firebaseError.getMessage());
+            Log.d("LostAndFound: ", firebaseError.getMessage());
         }
     }
 }

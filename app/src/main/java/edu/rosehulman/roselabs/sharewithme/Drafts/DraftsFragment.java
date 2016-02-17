@@ -23,6 +23,7 @@ public class DraftsFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private DraftsBuySellAdapter mDraftsBuySellAdapter;
     private DraftsRidesAdapter mDraftsRidesAdapter;
+    private DraftsLostAndFoundAdapter mDraftsLostAndFoundAdapter;
 
     public DraftsFragment() {
         // Required empty public constructor
@@ -51,6 +52,14 @@ public class DraftsFragment extends Fragment {
         ridesRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
         ridesRecyclerView.setNestedScrollingEnabled(false);
         ridesRecyclerView.setAdapter(mDraftsRidesAdapter);
+
+        mDraftsLostAndFoundAdapter = new DraftsLostAndFoundAdapter(mListener);
+        final LinearLayoutManager lostAndFoundLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        RecyclerView lostAndFoundRecyclerView = (RecyclerView) view.findViewById(R.id.lost_and_found_recycler_view);
+        lostAndFoundRecyclerView.setLayoutManager(lostAndFoundLayoutManager);
+        lostAndFoundRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), null));
+        lostAndFoundRecyclerView.setNestedScrollingEnabled(false);
+        lostAndFoundRecyclerView.setAdapter(mDraftsLostAndFoundAdapter);
 
         return view;
     }

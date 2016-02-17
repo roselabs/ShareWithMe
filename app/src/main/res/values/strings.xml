@@ -65,4 +65,7 @@
     <string name="all_radio_button_filter">All</string>
     <string name="login_error">"Login failed! "</string>
     <string name="menu_dashboard_text">Dashboard</string>
+    <string name="lost_and_found_drafts_text">Lost And Found</string>
+    <string name="rides_drafts_text">Rides</string>
+    <string name="buy_and_sell_draft_text">Buy And Sell</string>
 </resources>
