@@ -1,6 +1,8 @@
 package edu.rosehulman.roselabs.sharewithme.BuyAndSell;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -57,6 +59,7 @@ public class BuySellDetailFragment extends Fragment {
         TextView keyword = (TextView) view.findViewById(R.id.result_keyword_text_view);
         TextView authorTextView = (TextView) view.findViewById(R.id.author_textView);
         TextView editButton = (TextView) view.findViewById(R.id.edit_ride_post_text_view);
+        TextView inactivateButton = (TextView) view.findViewById(R.id.inactivate_post_text_view);
 
         if (!mPost.getUserId().equalsIgnoreCase(new Firebase(Constants.FIREBASE_URL).getAuth().getUid()))
             hideView(editButton);
@@ -71,6 +74,25 @@ public class BuySellDetailFragment extends Fragment {
                 crpd.show(getFragmentManager(), "Edit Post");
             }
         });
+
+        if (!mPost.getUserId().equalsIgnoreCase(new Firebase(Constants.FIREBASE_URL).getAuth().getUid()))
+            hideView(inactivateButton);
+
+        inactivateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                ad.setMessage(R.string.inactivate_alert_message);
+                ad.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.inactivatePost(mPost);
+                    }
+                }).setNegativeButton(android.R.string.cancel, null);
+                ad.show();
+            }
+        });
+
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(), Utils.getStringDate(mPost.getPostDate())));
 
         authorTextView.setOnClickListener(new View.OnClickListener() {

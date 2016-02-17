@@ -52,15 +52,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         mChildEventListener = new DashboardEventListener();
 
         mRidesRef = new Firebase(Constants.FIREBASE_RIDES_POST_URL);
-        mRidesQuery = mRidesRef.orderByChild("postDate").limitToFirst(20);
+//        mRidesQuery = mRidesRef.orderByChild("postDate").limitToFirst(20);
+        mRidesQuery = mRidesRef.orderByChild("expirationDate").startAt(System.currentTimeMillis()).limitToFirst(20);
         mRidesQuery.addChildEventListener(mChildEventListener);
 
         mBuyAndSellRef = new Firebase(Constants.FIREBASE_BUY_SELL_POST_URL);
-        mBuyAndSellQuery = mBuyAndSellRef.orderByChild("postDate").limitToFirst(20);
+//        mBuyAndSellQuery = mBuyAndSellRef.orderByChild("postDate").limitToFirst(20);
+        mBuyAndSellQuery = mBuyAndSellRef.orderByChild("expirationDate").startAt(System.currentTimeMillis()).limitToFirst(20);
         mBuyAndSellQuery.addChildEventListener(mChildEventListener);
 
         mLostAndFoundRef = new Firebase(Constants.FIREBASE_LOST_AND_FOUND_POST_URL);
-        mLostAndFoundQuery = mLostAndFoundRef.orderByChild("postDate").limitToFirst(20);
+//        mLostAndFoundQuery = mLostAndFoundRef.orderByChild("postDate").limitToFirst(20);
+        mLostAndFoundQuery = mLostAndFoundRef.orderByChild("expirationDate").startAt(System.currentTimeMillis()).limitToFirst(20);
         mLostAndFoundQuery.addChildEventListener(mChildEventListener);
 
 //        Collections.sort(mDashboardPostList);

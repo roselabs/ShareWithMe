@@ -68,4 +68,6 @@
     <string name="lost_and_found_drafts_text">Lost And Found</string>
     <string name="rides_drafts_text">Rides</string>
     <string name="buy_and_sell_draft_text">Buy And Sell</string>
+    <string name="inactivate_post_text"><u>Inactivate Post</u></string>
+    <string name="inactivate_alert_message">Are you sure you want to inactivate this post?\nThis post will no longer be visible.</string>
 </resources>

@@ -1,6 +1,8 @@
 package edu.rosehulman.roselabs.sharewithme.LostAndFound;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -65,6 +67,7 @@ public class LostAndFoundDetailFragment extends Fragment{
         TextView keyword = (TextView) rootView.findViewById(R.id.result_keyword_text_view);
         TextView authorTextView = (TextView) rootView.findViewById(R.id.author_textView);
         TextView editButton = (TextView) rootView.findViewById(R.id.edit_ride_post_text_view);
+        TextView inactivateButton = (TextView) rootView.findViewById(R.id.inactivate_post_text_view);
 
         if (!mPost.getUserId().equalsIgnoreCase(new Firebase(Constants.FIREBASE_URL).getAuth().getUid()))
             hideView(editButton);
@@ -79,6 +82,25 @@ public class LostAndFoundDetailFragment extends Fragment{
                 createLostAndFoundPostDialog.show(getFragmentManager(), "Edit post");
             }
         });
+
+        if (!mPost.getUserId().equalsIgnoreCase(new Firebase(Constants.FIREBASE_URL).getAuth().getUid()))
+            hideView(inactivateButton);
+
+        inactivateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                ad.setMessage(R.string.inactivate_alert_message);
+                ad.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.inactivatePost(mPost);
+                    }
+                }).setNegativeButton(android.R.string.cancel, null);
+                ad.show();
+            }
+        });
+
         authorTextView.setText(String.format("@%s at %s", mPost.getUserId(),
                 Utils.getStringDate(mPost.getPostDate())));
 

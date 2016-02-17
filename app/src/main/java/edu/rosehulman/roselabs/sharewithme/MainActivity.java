@@ -1,5 +1,6 @@
 package edu.rosehulman.roselabs.sharewithme;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -326,6 +327,30 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void sendDialogFragmentToInflate(DialogFragment dialogFragment, String title) {
         dialogFragment.show(getSupportFragmentManager(), title);
+    }
+
+    @Override
+    public void inactivatePost(BuySellPost mPost) {
+        mPost.setExpirationDate(new Date(System.currentTimeMillis()));
+        onCreatePostFinished(mPost);
+
+        onBackPressed();
+    }
+
+    @Override
+    public void inactivatePost(RidesPost mPost) {
+        mPost.setExpirationDate(new Date(System.currentTimeMillis()));
+        onCreatePostFinished(mPost);
+
+        onBackPressed();
+    }
+
+    @Override
+    public void inactivatePost(LostAndFoundPost mPost) {
+        mPost.setExpirationDate(new Date(System.currentTimeMillis()));
+        onCreatePostFinished(mPost);
+
+        onBackPressed();
     }
 
     @Override
