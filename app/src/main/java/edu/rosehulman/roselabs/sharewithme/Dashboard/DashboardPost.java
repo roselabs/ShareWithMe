@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by josebaf on 2/15/2016.
  */
-public class DashboardPost {
+public class DashboardPost implements Comparable<DashboardPost>{
 
     private String title;
     private String userId;
@@ -67,5 +67,10 @@ public class DashboardPost {
 
     public void setPostDate(Date postDate) {
         this.postDate = postDate;
+    }
+
+    @Override
+    public int compareTo(DashboardPost another) {
+        return another.postDate.compareTo(this.postDate);
     }
 }

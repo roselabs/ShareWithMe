@@ -70,8 +70,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 //        mLostAndFoundQuery = mLostAndFoundRef.orderByChild("postDate").limitToFirst(20);
         mLostAndFoundQuery = mLostAndFoundRef.orderByChild("expirationDate").startAt(System.currentTimeMillis()).limitToFirst(20);
         mLostAndFoundQuery.addChildEventListener(mChildEventListener);
-
-//        Collections.sort(mDashboardPostList);
     }
 
     @Override
@@ -275,8 +273,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                     break;
             }
 
-            mDashboardPostList.add(0, dashboardPost);
-            mFilteredPostList.add(0, dashboardPost);
+            mDashboardPostList.add(dashboardPost);
+            mFilteredPostList.add(dashboardPost);
+            Collections.sort(mDashboardPostList);
+            Collections.sort(mFilteredPostList);
             notifyDataSetChanged();
         }
 
@@ -339,7 +339,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 mFilteredList.addAll(mOriginalList);
             } else {
                 final String filterPattern = constraint.toString().toLowerCase().trim();
-
                 for (final DashboardPost post : mOriginalList) {
                     if (post.getTitle().toLowerCase().contains(filterPattern)) {
                         mFilteredList.add(post);
