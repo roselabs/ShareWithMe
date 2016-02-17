@@ -14,12 +14,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import org.solovyev.android.views.llm.DividerItemDecoration;
 import org.solovyev.android.views.llm.LinearLayoutManager;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import edu.rosehulman.roselabs.sharewithme.Comments.Comment;
 import edu.rosehulman.roselabs.sharewithme.Comments.CommentsAdapter;
@@ -131,8 +139,8 @@ public class RidesDetailFragment extends Fragment {
                     c.setDate(date);
                     c.setUserId(new Firebase(Constants.FIREBASE_URL).getAuth().getUid());
                     mAdapter.add(c);
-                    Utils.sendNotification(c.getUserId(), mPost.getUserId(), mPost.getKey(), "rides");
                     commentEditText.setText("");
+                    sendNotification(c.getUserId());
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -196,6 +204,31 @@ public class RidesDetailFragment extends Fragment {
         }
 
         return view;
+    }
+
+    public void sendNotification(final String cUser){
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL + "/comments/rides");
+        final Query query = firebase.orderByChild("postKey").equalTo(mPost.getKey());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> notificationUsers = new ArrayList<>();
+                notificationUsers.add(mPost.getUserId());
+                Map<String, HashMap<String, String>> map = (Map<String, HashMap<String, String>>) dataSnapshot.getValue();;
+                for (HashMap<String, String> s : map.values()) {
+                    String userId = s.get("userId");
+                    if (!notificationUsers.contains(userId))
+                        notificationUsers.add(userId);
+                }
+                Utils.sendNotification(cUser, notificationUsers, mPost.getKey(), "rides");
+                query.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private void hideView(View view) {

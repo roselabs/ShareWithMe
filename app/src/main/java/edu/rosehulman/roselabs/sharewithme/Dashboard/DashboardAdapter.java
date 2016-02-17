@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.firebase.client.ChildEventListener;
@@ -16,6 +18,7 @@ import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import edu.rosehulman.roselabs.sharewithme.BuyAndSell.BuySellDetailFragment;
@@ -29,9 +32,10 @@ import edu.rosehulman.roselabs.sharewithme.Rides.RidesDetailFragment;
 import edu.rosehulman.roselabs.sharewithme.Rides.RidesPost;
 import edu.rosehulman.roselabs.sharewithme.Utils;
 
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
+public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> implements Filterable {
 
     private List<DashboardPost> mDashboardPostList;
+    private List<DashboardPost> mFilteredPostList;
     private final OnListFragmentInteractionListener mListener;
     private Firebase mRidesRef;
     private Firebase mBuyAndSellRef;
@@ -45,9 +49,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private BuySellPost mBuyAndSellPost;
     private LostAndFoundPost mLostAndFoundPost;
 
-    public DashboardAdapter(OnListFragmentInteractionListener listener) {
+    public DashboardAdapter(OnListFragmentInteractionListener listener){
         this.mListener = listener;
         mDashboardPostList = new ArrayList<>();
+        mFilteredPostList = new ArrayList<>();
 
         mChildEventListener = new DashboardEventListener();
 
@@ -79,7 +84,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final DashboardPost dashboardPost = mDashboardPostList.get(position);
+        final DashboardPost dashboardPost = mFilteredPostList.get(position);
 
         holder.mTitleTextView.setText(dashboardPost.getTitle());
         holder.mDescriptionTextView.setText(String.format("@%s at %s", dashboardPost.getUserId(),
@@ -207,7 +212,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public int getItemCount() {
-        return mDashboardPostList.size();
+        return mFilteredPostList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new ContactFilter(this, mDashboardPostList);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -266,6 +276,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
 
             mDashboardPostList.add(0, dashboardPost);
+            mFilteredPostList.add(0, dashboardPost);
             notifyDataSetChanged();
         }
 
@@ -283,6 +294,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                     break;
                 }
             }
+            mFilteredPostList = new ArrayList<>(mDashboardPostList);
             notifyDataSetChanged();
 
 //            String key = dataSnapshot.getKey();
@@ -302,6 +314,48 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         @Override
         public void onCancelled(FirebaseError firebaseError) {
             Log.d("Dashboard: ", firebaseError.getMessage());
+        }
+    }
+
+    private class ContactFilter extends Filter {
+
+        private DashboardAdapter mContactsAdapter;
+        private List<DashboardPost> mOriginalList;
+        private List<DashboardPost> mFilteredList;
+
+        public ContactFilter(DashboardAdapter dashboardAdapter, List<DashboardPost> posts) {
+            super();
+            mContactsAdapter = dashboardAdapter;
+            mOriginalList = new LinkedList<>(posts);
+            mFilteredList = new ArrayList<>();
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            mFilteredList.clear();
+            final FilterResults results = new FilterResults();
+
+            if (constraint.length() == 0) {
+                mFilteredList.addAll(mOriginalList);
+            } else {
+                final String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (final DashboardPost post : mOriginalList) {
+                    if (post.getTitle().toLowerCase().contains(filterPattern)) {
+                        mFilteredList.add(post);
+                    }
+                }
+            }
+            results.values = mFilteredList;
+            results.count = mFilteredList.size();
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mContactsAdapter.mFilteredPostList.clear();
+            mContactsAdapter.mFilteredPostList.addAll((ArrayList<DashboardPost>) results.values);
+            mContactsAdapter.notifyDataSetChanged();
         }
     }
 }
